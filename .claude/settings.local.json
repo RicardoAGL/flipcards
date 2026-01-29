@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(git init:*)",
+      "Bash(git branch:*)",
+      "Bash(git -C /Users/ricardolopez/Desktop/github/flipcards status)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

@@ -1,0 +1,166 @@
+/**
+ * Dutch Pronunciation Flip Cards
+ * Main stylesheet
+ */
+
+/* CSS Custom Properties (Design Tokens) */
+:root {
+  /* Colors - Duolingo-inspired bright palette */
+  --color-primary: #58cc02;
+  --color-primary-dark: #46a302;
+  --color-secondary: #1cb0f6;
+  --color-accent: #ff9600;
+  --color-error: #ff4b4b;
+  --color-success: #58cc02;
+
+  /* Neutral colors */
+  --color-white: #ffffff;
+  --color-gray-50: #f7f7f7;
+  --color-gray-100: #e5e5e5;
+  --color-gray-200: #cccccc;
+  --color-gray-600: #777777;
+  --color-gray-800: #3c3c3c;
+  --color-gray-900: #1a1a1a;
+
+  /* Typography */
+  --font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  --font-size-base: 16px;
+  --font-size-lg: 1.25rem;
+  --font-size-xl: 1.5rem;
+  --font-size-2xl: 2rem;
+  --font-size-3xl: 3rem;
+  --line-height-base: 1.5;
+
+  /* Spacing */
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+
+  /* Border radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 20px rgba(0, 0, 0, 0.15);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+
+  /* Touch targets (iOS minimum) */
+  --touch-target-min: 44px;
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Base styles */
+html {
+  font-size: var(--font-size-base);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-family);
+  line-height: var(--line-height-base);
+  color: var(--color-gray-900);
+  background-color: var(--color-gray-50);
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+}
+
+/* Focus styles for accessibility */
+:focus-visible {
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* App container */
+.app-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: var(--spacing-md);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.app-header {
+  text-align: center;
+  padding: var(--spacing-xl) var(--spacing-md);
+}
+
+.app-header h1 {
+  font-size: var(--font-size-xl);
+  color: var(--color-gray-900);
+  margin-bottom: var(--spacing-sm);
+}
+
+.app-header p {
+  color: var(--color-gray-600);
+  font-size: var(--font-size-lg);
+}
+
+/* Coming soon placeholder */
+.coming-soon {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.card-placeholder {
+  margin-bottom: var(--spacing-xl);
+}
+
+.card {
+  width: 150px;
+  height: 200px;
+  background: var(--color-white);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-3xl);
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+.coming-soon p {
+  color: var(--color-gray-600);
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .app-container {
+    padding: var(--spacing-xl);
+  }
+
+  .app-header h1 {
+    font-size: var(--font-size-2xl);
+  }
+
+  .card {
+    width: 180px;
+    height: 240px;
+  }
+}
