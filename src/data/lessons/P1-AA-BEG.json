@@ -1,0 +1,98 @@
+{
+  "lessonId": "P1-AA-BEG",
+  "phase": 1,
+  "sound": {
+    "combination": "aa",
+    "ipa": "[a\u02D0]",
+    "descriptionES": "Similar a la 'a' en espa\u00F1ol pero m\u00E1s larga y abierta, como en 'pap\u00E1'",
+    "descriptionEN": "Like 'a' in 'father' but longer"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "aa-001",
+      "word": "naam",
+      "prefix": "n",
+      "suffix": "m",
+      "translation": { "es": "nombre", "en": "name" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-002",
+      "word": "jaar",
+      "prefix": "j",
+      "suffix": "r",
+      "translation": { "es": "a\u00F1o", "en": "year" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-003",
+      "word": "straat",
+      "prefix": "str",
+      "suffix": "t",
+      "translation": { "es": "calle", "en": "street" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-004",
+      "word": "maat",
+      "prefix": "m",
+      "suffix": "t",
+      "translation": { "es": "medida/talla", "en": "size/measure" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-005",
+      "word": "paar",
+      "prefix": "p",
+      "suffix": "r",
+      "translation": { "es": "par/pareja", "en": "pair/couple" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-006",
+      "word": "kaas",
+      "prefix": "k",
+      "suffix": "s",
+      "translation": { "es": "queso", "en": "cheese" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-007",
+      "word": "vaak",
+      "prefix": "v",
+      "suffix": "k",
+      "translation": { "es": "a menudo", "en": "often" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-008",
+      "word": "waar",
+      "prefix": "w",
+      "suffix": "r",
+      "translation": { "es": "d\u00F3nde/verdadero", "en": "where/true" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-000",
+      "word": "aa",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "perfectBonus": 50
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "naam", "maan", "naar", "raam", "taak", "laat", "praat", "vraag",
+    "meer", "zee", "groot", "rood", "duur", "uur", "been", "twee"
+  ]
+}

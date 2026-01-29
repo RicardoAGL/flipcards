@@ -1,0 +1,99 @@
+{
+  "lessonId": "P1-UU-ADV",
+  "phase": 1,
+  "sound": {
+    "combination": "uu",
+    "ipa": "[y\u02D0]",
+    "descriptionES": "Similar a la 'u' francesa o alemana. Redondea los labios y di 'i'",
+    "descriptionEN": "Like French 'u' in 'tu' or German '\u00FC' - rounded lips saying 'ee'"
+  },
+  "level": "advanced",
+  "unlockRequires": "P1-UU-BEG",
+  "words": [
+    {
+      "wordId": "uu-101",
+      "word": "natuurlijk",
+      "prefix": "nat",
+      "suffix": "rlijk",
+      "translation": { "es": "naturalmente/por supuesto", "en": "naturally/of course" },
+      "syllables": 3
+    },
+    {
+      "wordId": "uu-102",
+      "word": "cultuur",
+      "prefix": "cult",
+      "suffix": "r",
+      "translation": { "es": "cultura", "en": "culture" },
+      "syllables": 2
+    },
+    {
+      "wordId": "uu-103",
+      "word": "avontuur",
+      "prefix": "avont",
+      "suffix": "r",
+      "translation": { "es": "aventura", "en": "adventure" },
+      "syllables": 3
+    },
+    {
+      "wordId": "uu-104",
+      "word": "schuur",
+      "prefix": "sch",
+      "suffix": "r",
+      "translation": { "es": "granero/cobertizo", "en": "barn/shed" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-105",
+      "word": "duurzaam",
+      "prefix": "d",
+      "suffix": "rzaam",
+      "translation": { "es": "sostenible/duradero", "en": "sustainable/durable" },
+      "syllables": 2
+    },
+    {
+      "wordId": "uu-106",
+      "word": "huur",
+      "prefix": "h",
+      "suffix": "r",
+      "translation": { "es": "alquiler", "en": "rent" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-107",
+      "word": "minuut",
+      "prefix": "min",
+      "suffix": "t",
+      "translation": { "es": "minuto", "en": "minute" },
+      "syllables": 2
+    },
+    {
+      "wordId": "uu-108",
+      "word": "uur",
+      "prefix": "",
+      "suffix": "r",
+      "translation": { "es": "hora", "en": "hour" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-000",
+      "word": "uu",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "perfectBonus": 50
+  },
+  "estimatedMinutes": 15,
+  "distractorPool": [
+    "natuurlijk", "cultuur", "avontuur", "schuur", "duurzaam", "huur",
+    "minuut", "uur", "duur", "muur", "vuur", "puur", "buur", "zuur",
+    "stuur", "naam", "jaar", "groot", "school", "meer", "veel"
+  ]
+}

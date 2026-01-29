@@ -1,0 +1,98 @@
+{
+  "lessonId": "P1-OO-BEG",
+  "phase": 1,
+  "sound": {
+    "combination": "oo",
+    "ipa": "[o\u02D0]",
+    "descriptionES": "Similar a la 'o' en espa\u00F1ol pero m\u00E1s larga y redondeada, como en 'solo'",
+    "descriptionEN": "Like 'o' in 'go' but without the 'w' glide"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "oo-001",
+      "word": "groot",
+      "prefix": "gr",
+      "suffix": "t",
+      "translation": { "es": "grande", "en": "big/large" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-002",
+      "word": "rood",
+      "prefix": "r",
+      "suffix": "d",
+      "translation": { "es": "rojo", "en": "red" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-003",
+      "word": "boot",
+      "prefix": "b",
+      "suffix": "t",
+      "translation": { "es": "barco", "en": "boat" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-004",
+      "word": "dood",
+      "prefix": "d",
+      "suffix": "d",
+      "translation": { "es": "muerto", "en": "dead" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-005",
+      "word": "zoon",
+      "prefix": "z",
+      "suffix": "n",
+      "translation": { "es": "hijo", "en": "son" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-006",
+      "word": "voor",
+      "prefix": "v",
+      "suffix": "r",
+      "translation": { "es": "para/antes", "en": "for/before" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-007",
+      "word": "loop",
+      "prefix": "l",
+      "suffix": "p",
+      "translation": { "es": "camina/camino", "en": "walk" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-008",
+      "word": "boom",
+      "prefix": "b",
+      "suffix": "m",
+      "translation": { "es": "\u00E1rbol", "en": "tree" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-000",
+      "word": "oo",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "perfectBonus": 50
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "groot", "rood", "boot", "dood", "zoon", "voor", "loop", "boom",
+    "school", "hoog", "brood", "naam", "jaar", "meer", "zee", "duur", "uur"
+  ]
+}

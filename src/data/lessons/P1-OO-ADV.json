@@ -1,0 +1,115 @@
+{
+  "lessonId": "P1-OO-ADV",
+  "phase": 1,
+  "sound": {
+    "combination": "oo",
+    "ipa": "[o\u02D0]",
+    "descriptionES": "Similar a la 'o' en espa\u00F1ol pero m\u00E1s larga y redondeada, como en 'solo'",
+    "descriptionEN": "Like 'o' in 'go' but without the 'w' glide"
+  },
+  "level": "advanced",
+  "unlockRequires": "P1-OO-BEG",
+  "words": [
+    {
+      "wordId": "oo-101",
+      "word": "grootmoeder",
+      "prefix": "gr",
+      "suffix": "tmoeder",
+      "translation": { "es": "abuela", "en": "grandmother" },
+      "syllables": 3
+    },
+    {
+      "wordId": "oo-102",
+      "word": "school",
+      "prefix": "sch",
+      "suffix": "l",
+      "translation": { "es": "escuela", "en": "school" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-103",
+      "word": "hoog",
+      "prefix": "h",
+      "suffix": "g",
+      "translation": { "es": "alto", "en": "high" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-104",
+      "word": "koop",
+      "prefix": "k",
+      "suffix": "p",
+      "translation": { "es": "compra", "en": "buy" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-105",
+      "word": "stroom",
+      "prefix": "str",
+      "suffix": "m",
+      "translation": { "es": "corriente/electricidad", "en": "current/stream" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-106",
+      "word": "kroon",
+      "prefix": "kr",
+      "suffix": "n",
+      "translation": { "es": "corona", "en": "crown" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-107",
+      "word": "oor",
+      "prefix": "",
+      "suffix": "r",
+      "translation": { "es": "oreja/o\u00EDdo", "en": "ear" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-108",
+      "word": "droom",
+      "prefix": "dr",
+      "suffix": "m",
+      "translation": { "es": "sue\u00F1o", "en": "dream" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-109",
+      "word": "brood",
+      "prefix": "br",
+      "suffix": "d",
+      "translation": { "es": "pan", "en": "bread" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-110",
+      "word": "troon",
+      "prefix": "tr",
+      "suffix": "n",
+      "translation": { "es": "trono", "en": "throne" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oo-000",
+      "word": "oo",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "perfectBonus": 50
+  },
+  "estimatedMinutes": 18,
+  "distractorPool": [
+    "grootmoeder", "school", "hoog", "koop", "stroom", "kroon", "oor",
+    "droom", "brood", "troon", "groot", "rood", "boot", "dood", "zoon",
+    "voor", "loop", "boom", "naam", "jaar", "meer", "duur", "muur"
+  ]
+}

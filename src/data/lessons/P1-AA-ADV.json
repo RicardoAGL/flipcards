@@ -1,0 +1,147 @@
+{
+  "lessonId": "P1-AA-ADV",
+  "phase": 1,
+  "sound": {
+    "combination": "aa",
+    "ipa": "[a\u02D0]",
+    "descriptionES": "Similar a la 'a' en espa\u00F1ol pero m\u00E1s larga y abierta, como en 'pap\u00E1'",
+    "descriptionEN": "Like 'a' in 'father' but longer"
+  },
+  "level": "advanced",
+  "unlockRequires": "P1-AA-BEG",
+  "words": [
+    {
+      "wordId": "aa-101",
+      "word": "aardappel",
+      "prefix": "",
+      "suffix": "rdappel",
+      "translation": { "es": "papa/patata", "en": "potato" },
+      "syllables": 3
+    },
+    {
+      "wordId": "aa-102",
+      "word": "maandag",
+      "prefix": "m",
+      "suffix": "ndag",
+      "translation": { "es": "lunes", "en": "Monday" },
+      "syllables": 2
+    },
+    {
+      "wordId": "aa-103",
+      "word": "vraag",
+      "prefix": "vr",
+      "suffix": "g",
+      "translation": { "es": "pregunta", "en": "question" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-104",
+      "word": "graag",
+      "prefix": "gr",
+      "suffix": "g",
+      "translation": { "es": "con gusto/de buena gana", "en": "gladly" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-105",
+      "word": "maand",
+      "prefix": "m",
+      "suffix": "nd",
+      "translation": { "es": "mes", "en": "month" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-106",
+      "word": "zaal",
+      "prefix": "z",
+      "suffix": "l",
+      "translation": { "es": "sala/sal\u00F3n", "en": "hall" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-107",
+      "word": "verhaal",
+      "prefix": "verh",
+      "suffix": "l",
+      "translation": { "es": "historia/cuento", "en": "story" },
+      "syllables": 2
+    },
+    {
+      "wordId": "aa-108",
+      "word": "aantal",
+      "prefix": "",
+      "suffix": "ntal",
+      "translation": { "es": "n\u00FAmero/cantidad", "en": "number/amount" },
+      "syllables": 2
+    },
+    {
+      "wordId": "aa-109",
+      "word": "baan",
+      "prefix": "b",
+      "suffix": "n",
+      "translation": { "es": "trabajo/carril", "en": "job/lane" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-110",
+      "word": "schaap",
+      "prefix": "sch",
+      "suffix": "p",
+      "translation": { "es": "oveja", "en": "sheep" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-111",
+      "word": "staat",
+      "prefix": "st",
+      "suffix": "t",
+      "translation": { "es": "estado", "en": "state" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-112",
+      "word": "zaak",
+      "prefix": "z",
+      "suffix": "k",
+      "translation": { "es": "asunto/tienda", "en": "matter/shop" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-113",
+      "word": "klaar",
+      "prefix": "kl",
+      "suffix": "r",
+      "translation": { "es": "listo/preparado", "en": "ready" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-114",
+      "word": "straat",
+      "prefix": "str",
+      "suffix": "t",
+      "translation": { "es": "calle", "en": "street" },
+      "syllables": 1
+    },
+    {
+      "wordId": "aa-000",
+      "word": "aa",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "perfectBonus": 50
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "aardappel", "maandag", "vraag", "graag", "maand", "zaal", "verhaal",
+    "aantal", "baan", "schaap", "staat", "zaak", "klaar", "praat", "laat",
+    "taak", "raam", "maan", "naar", "zee", "groot", "duur", "school", "veel"
+  ]
+}

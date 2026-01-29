@@ -1,0 +1,98 @@
+{
+  "lessonId": "P1-EE-BEG",
+  "phase": 1,
+  "sound": {
+    "combination": "ee",
+    "ipa": "[e\u02D0]",
+    "descriptionES": "Similar a la 'e' en espa\u00F1ol pero m\u00E1s larga y cerrada, como en 'beb\u00E9'",
+    "descriptionEN": "Like 'ay' in 'day' but without the glide"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "ee-001",
+      "word": "meer",
+      "prefix": "m",
+      "suffix": "r",
+      "translation": { "es": "m\u00E1s/lago", "en": "more/lake" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-002",
+      "word": "zee",
+      "prefix": "z",
+      "suffix": "",
+      "translation": { "es": "mar", "en": "sea" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-003",
+      "word": "nee",
+      "prefix": "n",
+      "suffix": "",
+      "translation": { "es": "no", "en": "no" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-004",
+      "word": "twee",
+      "prefix": "tw",
+      "suffix": "",
+      "translation": { "es": "dos", "en": "two" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-005",
+      "word": "keer",
+      "prefix": "k",
+      "suffix": "r",
+      "translation": { "es": "vez", "en": "time/turn" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-006",
+      "word": "leer",
+      "prefix": "l",
+      "suffix": "r",
+      "translation": { "es": "cuero/aprender", "en": "leather/learn" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-007",
+      "word": "weer",
+      "prefix": "w",
+      "suffix": "r",
+      "translation": { "es": "clima/otra vez", "en": "weather/again" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-008",
+      "word": "beer",
+      "prefix": "b",
+      "suffix": "r",
+      "translation": { "es": "oso", "en": "bear" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-000",
+      "word": "ee",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "perfectBonus": 50
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "meer", "zee", "nee", "twee", "keer", "leer", "weer", "beer",
+    "been", "veel", "geef", "naam", "jaar", "groot", "rood", "duur", "uur"
+  ]
+}

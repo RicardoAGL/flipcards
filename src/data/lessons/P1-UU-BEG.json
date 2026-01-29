@@ -1,0 +1,98 @@
+{
+  "lessonId": "P1-UU-BEG",
+  "phase": 1,
+  "sound": {
+    "combination": "uu",
+    "ipa": "[y\u02D0]",
+    "descriptionES": "Similar a la 'u' francesa o alemana. Redondea los labios y di 'i'",
+    "descriptionEN": "Like French 'u' in 'tu' or German '\u00FC' - rounded lips saying 'ee'"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "uu-001",
+      "word": "duur",
+      "prefix": "d",
+      "suffix": "r",
+      "translation": { "es": "caro", "en": "expensive" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-002",
+      "word": "uur",
+      "prefix": "",
+      "suffix": "r",
+      "translation": { "es": "hora", "en": "hour" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-003",
+      "word": "muur",
+      "prefix": "m",
+      "suffix": "r",
+      "translation": { "es": "muro/pared", "en": "wall" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-004",
+      "word": "vuur",
+      "prefix": "v",
+      "suffix": "r",
+      "translation": { "es": "fuego", "en": "fire" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-005",
+      "word": "puur",
+      "prefix": "p",
+      "suffix": "r",
+      "translation": { "es": "puro", "en": "pure" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-006",
+      "word": "buur",
+      "prefix": "b",
+      "suffix": "r",
+      "translation": { "es": "vecino", "en": "neighbor" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-007",
+      "word": "zuur",
+      "prefix": "z",
+      "suffix": "r",
+      "translation": { "es": "\u00E1cido/agrio", "en": "sour" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-008",
+      "word": "stuur",
+      "prefix": "st",
+      "suffix": "r",
+      "translation": { "es": "volante/env\u00EDa", "en": "steering wheel/send" },
+      "syllables": 1
+    },
+    {
+      "wordId": "uu-000",
+      "word": "uu",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "perfectBonus": 50
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "duur", "uur", "muur", "vuur", "puur", "buur", "zuur", "stuur",
+    "huur", "schuur", "naam", "jaar", "meer", "zee", "groot", "rood"
+  ]
+}

@@ -1,0 +1,131 @@
+{
+  "lessonId": "P1-EE-ADV",
+  "phase": 1,
+  "sound": {
+    "combination": "ee",
+    "ipa": "[e\u02D0]",
+    "descriptionES": "Similar a la 'e' en espa\u00F1ol pero m\u00E1s larga y cerrada, como en 'beb\u00E9'",
+    "descriptionEN": "Like 'ay' in 'day' but without the glide"
+  },
+  "level": "advanced",
+  "unlockRequires": "P1-EE-BEG",
+  "words": [
+    {
+      "wordId": "ee-101",
+      "word": "alleen",
+      "prefix": "all",
+      "suffix": "n",
+      "translation": { "es": "solo/solamente", "en": "alone/only" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ee-102",
+      "word": "been",
+      "prefix": "b",
+      "suffix": "n",
+      "translation": { "es": "pierna", "en": "leg" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-103",
+      "word": "geef",
+      "prefix": "g",
+      "suffix": "f",
+      "translation": { "es": "da/dame", "en": "give" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-104",
+      "word": "meeste",
+      "prefix": "m",
+      "suffix": "ste",
+      "translation": { "es": "la mayor\u00EDa", "en": "most" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ee-105",
+      "word": "veel",
+      "prefix": "v",
+      "suffix": "l",
+      "translation": { "es": "mucho/muchos", "en": "much/many" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-106",
+      "word": "beet",
+      "prefix": "b",
+      "suffix": "t",
+      "translation": { "es": "mordisco", "en": "bite" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-107",
+      "word": "teen",
+      "prefix": "t",
+      "suffix": "n",
+      "translation": { "es": "dedo del pie", "en": "toe" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-108",
+      "word": "spreek",
+      "prefix": "spr",
+      "suffix": "k",
+      "translation": { "es": "habla/hablo", "en": "speak" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-109",
+      "word": "sneeuw",
+      "prefix": "sn",
+      "suffix": "uw",
+      "translation": { "es": "nieve", "en": "snow" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-110",
+      "word": "leeg",
+      "prefix": "l",
+      "suffix": "g",
+      "translation": { "es": "vac\u00EDo", "en": "empty" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-111",
+      "word": "neef",
+      "prefix": "n",
+      "suffix": "f",
+      "translation": { "es": "primo/sobrino", "en": "cousin/nephew" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-112",
+      "word": "sleep",
+      "prefix": "sl",
+      "suffix": "p",
+      "translation": { "es": "arrastra", "en": "drag" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ee-000",
+      "word": "ee",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "perfectBonus": 50
+  },
+  "estimatedMinutes": 18,
+  "distractorPool": [
+    "alleen", "been", "geef", "meeste", "veel", "beet", "teen", "spreek",
+    "sneeuw", "leeg", "neef", "sleep", "zee", "nee", "twee", "keer", "meer",
+    "naam", "jaar", "groot", "school", "duur", "muur", "boom"
+  ]
+}
