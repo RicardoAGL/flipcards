@@ -80,7 +80,7 @@ export function getDistractors(word, lesson, count = 3) {
   // Priority 1: Use lesson's distractor pool if available
   if (lesson.distractorPool && lesson.distractorPool.length > 0) {
     const poolDistractors = lesson.distractorPool.filter(
-      w => w.toLowerCase() !== targetWord
+      w => w.toLowerCase() !== targetWord,
     );
     shuffleArray(poolDistractors).forEach(d => {
       if (distractors.size < count) {
@@ -137,9 +137,9 @@ export function getDistractors(word, lesson, count = 3) {
           }
         });
 
-        if (distractors.size >= count) break;
+        if (distractors.size >= count) {break;}
       }
-      if (distractors.size >= count) break;
+      if (distractors.size >= count) {break;}
     }
   }
 
@@ -195,7 +195,7 @@ export function generateQuiz(lesson, questionCount) {
 
   // Filter out standalone sound entries for quiz
   const availableWords = lesson.words.filter(
-    w => w.word !== lesson.sound.combination
+    w => w.word !== lesson.sound.combination,
   );
 
   // Select random words for questions

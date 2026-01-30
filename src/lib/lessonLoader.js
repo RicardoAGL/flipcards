@@ -130,7 +130,7 @@ export function isLessonUnlocked(lessonId, completedLessonIds = []) {
  */
 export function getAvailableLessons(completedLessonIds = []) {
   return lessonMenu.filter(entry =>
-    isLessonUnlocked(entry.lessonId, completedLessonIds)
+    isLessonUnlocked(entry.lessonId, completedLessonIds),
   );
 }
 
