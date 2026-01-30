@@ -24,24 +24,28 @@ const TEXT = {
   es: {
     title: 'Quiz',
     questionPrefix: 'P',
-    prompt: 'Cual palabra tiene este sonido?',
-    correct: 'Correcto!',
+    instruction: 'Escucha la palabra y selecciona la correcta',
+    prompt: '¿Qué palabra escuchaste?',
+    correct: '¡Correcto!',
     incorrect: 'No exactamente',
     theAnswerWas: 'La respuesta era:',
     playing: 'Reproduciendo...',
     next: 'Siguiente',
-    previewSound: 'Escuchar sonido',
+    listenAgain: 'Escuchar de nuevo',
+    autoPlaying: 'Escuchando...',
   },
   en: {
     title: 'Quiz',
     questionPrefix: 'Q',
-    prompt: 'Which word has this sound?',
+    instruction: 'Listen to the word and select the correct one',
+    prompt: 'Which word did you hear?',
     correct: 'Correct!',
     incorrect: 'Not quite',
     theAnswerWas: 'The answer was:',
     playing: 'Playing...',
     next: 'Next',
-    previewSound: 'Preview sound',
+    listenAgain: 'Listen again',
+    autoPlaying: 'Listening...',
   },
 };
 
@@ -137,25 +141,40 @@ export function createQuiz(lesson, options = {}) {
           ${renderProgressDots()}
         </div>
 
+        <!-- Main Instruction Banner -->
+        <div class="quiz-instruction-banner">
+          <svg class="quiz-instruction-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+          </svg>
+          <span class="quiz-instruction-text">${text.instruction}</span>
+        </div>
+
         <!-- Question Card -->
         <div class="quiz-question-card">
           <p class="quiz-prompt">${text.prompt}</p>
-          <div class="quiz-ipa-display" aria-label="IPA notation: ${question.ipa}">${question.ipa}</div>
-          <p class="quiz-description">${description}</p>
+
+          <!-- Listen Button (Primary Action) -->
           ${ttsAvailable ? `
           <button
-            class="quiz-sound-btn"
+            class="quiz-listen-btn ${isSpeaking ? 'is-playing' : ''}"
             type="button"
-            aria-label="${text.previewSound}"
+            aria-label="${text.listenAgain}"
             data-action="preview-sound"
             ${isSpeaking ? 'disabled' : ''}
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <svg class="quiz-listen-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
             </svg>
-            <span>${text.previewSound}</span>
+            <span class="quiz-listen-text">${isSpeaking ? text.autoPlaying : text.listenAgain}</span>
           </button>
           ` : ''}
+
+          <!-- IPA Reference (Secondary) -->
+          <div class="quiz-reference">
+            <span class="quiz-reference-label">Sound reference:</span>
+            <span class="quiz-ipa-small" aria-label="IPA notation: ${question.ipa}">${question.ipa}</span>
+            <span class="quiz-description-small">${description}</span>
+          </div>
         </div>
 
         <!-- Answer Options -->
@@ -183,6 +202,60 @@ export function createQuiz(lesson, options = {}) {
     container.innerHTML = html;
     cacheElements();
     bindEvents();
+
+    // Auto-play the word when question renders
+    if (ttsAvailable && !isAnswered) {
+      setTimeout(() => autoPlayWord(), 300);
+    }
+  };
+
+  /**
+   * Auto-play the correct word pronunciation
+   */
+  const autoPlayWord = async () => {
+    if (isSpeaking || isAnswered) {
+      return;
+    }
+
+    const question = getCurrentQuestion();
+    isSpeaking = true;
+    updateListenButtonState();
+
+    try {
+      await speakDutch(question.correctAnswer, {
+        rate: 0.8,
+        onEnd: () => {
+          isSpeaking = false;
+          updateListenButtonState();
+        },
+        onError: () => {
+          isSpeaking = false;
+          updateListenButtonState();
+        },
+      });
+    } catch (error) {
+      console.error('TTS error:', error);
+      isSpeaking = false;
+      updateListenButtonState();
+    }
+  };
+
+  /**
+   * Update listen button visual state
+   */
+  const updateListenButtonState = () => {
+    const listenBtn = container?.querySelector('[data-action="preview-sound"]');
+    if (listenBtn) {
+      if (isSpeaking) {
+        listenBtn.classList.add('is-playing');
+        listenBtn.disabled = true;
+        listenBtn.querySelector('.quiz-listen-text').textContent = text.autoPlaying;
+      } else {
+        listenBtn.classList.remove('is-playing');
+        listenBtn.disabled = false;
+        listenBtn.querySelector('.quiz-listen-text').textContent = text.listenAgain;
+      }
+    }
   };
 
   /**
@@ -288,7 +361,7 @@ export function createQuiz(lesson, options = {}) {
   };
 
   /**
-   * Handle preview sound button click
+   * Handle preview sound button click (listen again)
    */
   const handlePreviewSound = async () => {
     if (isSpeaking || !ttsAvailable) {
@@ -297,37 +370,24 @@ export function createQuiz(lesson, options = {}) {
 
     const question = getCurrentQuestion();
     isSpeaking = true;
-
-    if (elements.soundBtn) {
-      elements.soundBtn.classList.add('is-playing');
-      elements.soundBtn.disabled = true;
-    }
+    updateListenButtonState();
 
     try {
       await speakDutch(question.correctAnswer, {
         rate: 0.8,
         onEnd: () => {
           isSpeaking = false;
-          if (elements.soundBtn) {
-            elements.soundBtn.classList.remove('is-playing');
-            elements.soundBtn.disabled = false;
-          }
+          updateListenButtonState();
         },
         onError: () => {
           isSpeaking = false;
-          if (elements.soundBtn) {
-            elements.soundBtn.classList.remove('is-playing');
-            elements.soundBtn.disabled = false;
-          }
+          updateListenButtonState();
         },
       });
     } catch (error) {
       console.error('TTS error:', error);
       isSpeaking = false;
-      if (elements.soundBtn) {
-        elements.soundBtn.classList.remove('is-playing');
-        elements.soundBtn.disabled = false;
-      }
+      updateListenButtonState();
     }
   };
 

@@ -116,6 +116,49 @@
 }
 
 /* ============================================
+   INSTRUCTION BANNER
+   ============================================ */
+
+.quiz-instruction-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: linear-gradient(135deg, var(--color-primary-500), var(--color-primary-600));
+  color: var(--color-white);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--rounded-xl);
+  margin-bottom: var(--space-5);
+  box-shadow: var(--shadow-md);
+}
+
+.quiz-instruction-icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+  animation: pulseIcon 2s ease-in-out infinite;
+}
+
+.quiz-instruction-text {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.3;
+}
+
+@media (min-width: 768px) {
+  .quiz-instruction-text {
+    font-size: 20px;
+  }
+}
+
+@keyframes pulseIcon {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+/* ============================================
    QUESTION CARD
    ============================================ */
 
@@ -123,19 +166,120 @@
   background: var(--color-white);
   border-radius: var(--rounded-xl);
   box-shadow: var(--shadow-card);
-  padding: var(--space-6);
-  margin-bottom: var(--space-6);
+  padding: var(--space-5);
+  margin-bottom: var(--space-5);
   text-align: center;
 }
 
 .quiz-prompt {
-  font-family: var(--font-primary);
-  font-size: 16px;
-  font-weight: 500;
-  color: var(--color-gray-600);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--color-gray-700);
   margin-bottom: var(--space-4);
 }
 
+@media (min-width: 768px) {
+  .quiz-prompt {
+    font-size: 20px;
+  }
+}
+
+/* Large Listen Button (Primary Action) */
+.quiz-listen-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3);
+  background: linear-gradient(135deg, var(--color-info-500), var(--color-info-600));
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--rounded-xl);
+  padding: var(--space-4) var(--space-6);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 56px;
+  min-width: 200px;
+  box-shadow: var(--shadow-md);
+  transition: all var(--duration-fast) var(--ease-out);
+  margin-bottom: var(--space-4);
+}
+
+.quiz-listen-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, var(--color-info-400), var(--color-info-500));
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-2px);
+}
+
+.quiz-listen-btn:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
+}
+
+.quiz-listen-btn:focus-visible {
+  outline: 3px solid var(--color-info-300);
+  outline-offset: 2px;
+}
+
+.quiz-listen-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.quiz-listen-icon {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.quiz-listen-btn.is-playing .quiz-listen-icon {
+  animation: soundWave 0.8s ease-in-out infinite;
+}
+
+@keyframes soundWave {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+}
+
+/* IPA Reference (Secondary/Smaller) */
+.quiz-reference {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  background: var(--color-gray-50);
+  border-radius: var(--rounded-lg);
+  border: 1px solid var(--color-gray-200);
+}
+
+.quiz-reference-label {
+  font-family: var(--font-primary);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-gray-500);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.quiz-ipa-small {
+  font-family: var(--font-mono);
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-primary-600);
+}
+
+.quiz-description-small {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-gray-600);
+  line-height: 1.4;
+  text-align: center;
+}
+
+/* Old IPA display (keeping for backward compatibility) */
 .quiz-ipa-display {
   font-family: var(--font-mono);
   font-size: 36px;
@@ -165,6 +309,7 @@
   }
 }
 
+/* Old sound button (keeping for backward compatibility) */
 .quiz-sound-btn {
   display: inline-flex;
   align-items: center;
