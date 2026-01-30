@@ -6,23 +6,15 @@
 import './styles/main.css';
 import { createFlipCard } from './components/FlipCard.js';
 import { createQuiz } from './components/Quiz.js';
+import { getLessonForFlipCard } from './lib/lessonLoader.js';
 import { lessonsById } from './data/lessons/index.js';
 
-/**
- * Sample lesson data for the "ui" sound
- * This demonstrates the data structure expected by the FlipCard component
- */
-const uiLessonData = {
-  sound: 'ui',
-  ipa: '[oey]',
-  description: 'Redondea los labios y di "ei"',
-  words: [
-    { prefix: 'h', suffix: 's' },      // huis
-    { prefix: 'b', suffix: 'ten' },    // buiten
-    { prefix: 't', suffix: 'n' },      // tuin
-    { prefix: '', suffix: '' },          // ui (standalone)
-  ],
-};
+// Current demo lesson - using AA Beginner for both FlipCard and Quiz
+const DEMO_LESSON_ID = 'P1-AA-BEG';
+
+// Get lesson data in different formats
+const currentLesson = lessonsById[DEMO_LESSON_ID];
+const flipCardData = getLessonForFlipCard(DEMO_LESSON_ID);
 
 // Application state
 let currentView = 'flipcard'; // 'flipcard' or 'quiz'
@@ -52,7 +44,7 @@ function renderLayout(app) {
     <main class="app-container">
       <header class="app-header">
         <h1>Dutch Pronunciation</h1>
-        <p class="app-subtitle" id="view-subtitle">Practice the "${uiLessonData.sound}" sound</p>
+        <p class="app-subtitle" id="view-subtitle">Practice the "${currentLesson.sound.combination}" sound</p>
       </header>
 
       <section class="app-main" id="main-container" aria-label="Practice area">
@@ -102,8 +94,8 @@ function mountFlipCard() {
     quiz = null;
   }
 
-  // Create and mount flip card
-  flipCard = createFlipCard(uiLessonData, container);
+  // Create and mount flip card with current lesson data
+  flipCard = createFlipCard(flipCardData, container);
   currentView = 'flipcard';
 
   // Update UI
@@ -128,11 +120,8 @@ async function mountQuiz() {
     flipCard = null;
   }
 
-  // Get the AA Beginner lesson for the quiz demo
-  const lesson = lessonsById['P1-AA-BEG'];
-
-  // Create and mount quiz
-  quiz = createQuiz(lesson, {
+  // Create and mount quiz with same lesson as FlipCard
+  quiz = createQuiz(currentLesson, {
     questionCount: 5,
     language: 'es',
     onComplete: handleQuizComplete,
@@ -190,7 +179,7 @@ function updateViewUI() {
 
   if (currentView === 'flipcard') {
     if (subtitle) {
-      subtitle.textContent = `Practice the "${uiLessonData.sound}" sound`;
+      subtitle.textContent = `Practice the "${currentLesson.sound.combination}" sound`;
     }
     if (toggleBtn) {
       toggleBtn.textContent = 'Start Quiz';
