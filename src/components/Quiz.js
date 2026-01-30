@@ -182,12 +182,7 @@ export function createQuiz(lesson, options = {}) {
           ${renderOptions(question)}
         </div>
 
-        <!-- Feedback Area (hidden initially) -->
-        <div class="quiz-feedback-container" data-feedback-container aria-live="polite">
-          <!-- Feedback will be inserted here -->
-        </div>
-
-        <!-- Next Button -->
+        <!-- Next Button (fixed position) -->
         <button
           class="quiz-next-btn ${!isAnswered ? 'quiz-next-btn--hidden' : ''}"
           type="button"
@@ -196,6 +191,11 @@ export function createQuiz(lesson, options = {}) {
         >
           ${text.next}
         </button>
+
+        <!-- Feedback Area (appears below button) -->
+        <div class="quiz-feedback-container" data-feedback-container aria-live="polite">
+          <!-- Feedback will be inserted here -->
+        </div>
       </div>
     `;
 

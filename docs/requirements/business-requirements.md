@@ -1,8 +1,8 @@
 # Business Requirements Document
 ## Dutch Pronunciation Learning App - Flip Cards
 
-**Document Version:** 1.0
-**Date:** 2026-01-29
+**Document Version:** 1.2
+**Date:** 2026-01-30
 **Status:** Approved for MVP Development
 
 ---
@@ -33,11 +33,28 @@ Three-section flip card interface where users practice Dutch pronunciation:
 
 **Example:** h-**ui**-s, b-**ui**-ten, standalone **ui**
 
-### 2.2 MVP Scope (Phase 1)
-**Sounds Covered:**
-- Same vowel combinations: **aa, ee, oo, uu**
-- Lesson count: 8 lessons (4 sounds × 2 difficulty levels each)
-- Word count per lesson:
+### 2.2 Tiered Level System
+
+The app organizes content into progressive levels, each with its own set of lessons and star progression.
+
+**Level Structure:**
+| Level | Theme | Sounds/Topics | Lessons |
+|-------|-------|---------------|---------|
+| 1 | Misma Vocal (Same Vowel) | aa, ee, oo, uu | 8 (4 sounds × 2 difficulties) |
+| 2 | Vocales Diferentes (Different Vowels) | ui, oe, eu, au/ou | 8-10 |
+| 3 | Consonantes (Consonants) | g, ch, sch, r | TBD |
+| 4 | Gramática (Grammar) | de/het, plurals | TBD |
+
+**Star Progression (per level):**
+- Each level has its own Bronze → Silver → Gold star progression
+- Stars are earned based on points accumulated within that level
+- Completing a level unlocks the next level
+
+### 2.3 MVP Scope (Level 1)
+**Theme:** Misma Vocal (Same Vowel Combinations)
+**Sounds Covered:** aa, ee, oo, uu
+**Lesson count:** 8 lessons (4 sounds × 2 difficulty levels each)
+**Word count per lesson:**
   - Beginner: 8-10 common words
   - Advanced: 15-20 more complex words
 
@@ -46,22 +63,33 @@ Three-section flip card interface where users practice Dutch pronunciation:
 - Bilingual UI (Spanish/English toggle)
 - Quiz mode with pronunciation playback
 - Points, badges, and visual rewards system
+- 3-star progression (Bronze, Silver, Gold) per level
 - Text-to-speech using Web Speech Synthesis API
 - Progress tracking via browser localStorage
 
-### 2.3 Phase 2 Scope (Post-MVP)
-**Sounds to Add:**
-- Different vowel combinations: **ui, ij, oe, eu, au/ou**
-- Lesson count: +10 lessons (5 sounds × 2 difficulty levels)
+### 2.4 Phase 2 Scope (Level 2)
+**Theme:** Vocales Diferentes (Different Vowel Combinations)
+**Sounds to Add:** ui, oe, eu, au/ou
+**Lesson count:** 8-10 lessons (4-5 sounds × 2 difficulty levels)
 
-### 2.4 Future Enhancements
+### 2.4 Phase 1.5 Enhancements (Post-MVP Polish)
+- **Word Translations:** Display Spanish/English translations below flip cards
+- **Example Sentences:** Show Dutch sentences using practiced words (on tap)
+- **TTS Voice Selection:** Allow users to choose from available Dutch voices
+- **Badge Gallery:** Dedicated view for earned and available badges
+- **Point Milestones:** Unlock stars/rewards at point thresholds
+- **Encouragement Badges:** Motivational badges for persistence (e.g., "I won't give up!")
+- **Quiz UI Polish:** Improved feedback positioning for better UX
+
+### 2.5 Future Enhancements
 - Consonant sounds (Dutch "g", Scheveningen exceptions)
 - Cloud-based progress sync
 - Advanced analytics and learning insights
 - User-generated content lessons
 - Social features (sharing, collaborative learning)
+- Full internationalization (i18n) support for additional languages
 
-### 2.5 Explicit Out of Scope (MVP)
+### 2.6 Explicit Out of Scope (MVP)
 - Audio recording/speech recognition input
 - Native mobile apps (iOS/Android)
 - Offline PWA functionality
@@ -162,6 +190,28 @@ Each lesson includes:
 - **Perfection Badges:**
   - "Perfect Score" (100% on any quiz)
   - "Flawless" (100% on 5 consecutive quizzes)
+- **Encouragement Badges (Persistence):**
+  - "¡No me rendiré!" / "I won't give up!" (0/5 on a quiz, then retry)
+  - "La práctica hace al maestro" / "Practice makes perfect" (complete 10 quizzes regardless of score)
+  - "Perseverance" (retry a failed quiz and pass)
+
+#### 3.3.3 Point Milestones & Rewards (Per Level)
+**Star System:**
+Each level has its own 3-star progression based on points earned within that level:
+- **Bronze Star:** 300 points (~3 perfect quizzes)
+- **Silver Star:** 800 points (~8 quizzes)
+- **Gold Star:** 1,500 points (~15 quizzes)
+
+**Star Display:**
+- Stars shown per level in the level selection screen
+- Current level stars displayed prominently during practice
+- All earned stars visible in profile/achievements section
+
+**Rewards:**
+- Visual star indicators (Bronze, Silver, Gold colors)
+- Celebratory animation when star is earned
+- Level completion unlocks next level
+- Unlockable themes tied to total stars earned (future)
 
 #### 3.3.3 Visual Rewards
 - **Unlockable Themes:** Color schemes/visual themes earned through progression
@@ -178,6 +228,23 @@ Each lesson includes:
   - Dutch words (unchanging)
   - Spanish approximation descriptions (Spanish only)
   - English approximation descriptions (English only)
+
+#### 3.4.2 Internationalization (i18n) Architecture
+**Design Principles:**
+- All user-facing strings stored in language JSON files
+- No hardcoded text in component code
+- Language file structure: `src/i18n/{lang}.json` (e.g., `es.json`, `en.json`)
+- Dynamic language switching without page reload
+
+**Future Language Expansion:**
+- Portuguese (high affinity with Spanish speakers)
+- German (large Dutch-learning community)
+- French (neighboring country)
+
+**Translation Workflow:**
+- Primary development in Spanish
+- English as secondary (developer-maintained)
+- Future languages: external translation service or community contributions
 
 #### 3.4.2 Responsive Design
 **Device Priorities:**
@@ -203,13 +270,26 @@ Each lesson includes:
 #### 3.5.1 Technology
 - **API:** Native Web Speech Synthesis API
 - **Language:** Dutch (nl-NL - Netherlands Dutch)
-- **Voice Selection:** Default device Dutch voice (iOS Siri voices)
+- **Voice Selection:** User-configurable from available Dutch voices
 
-#### 3.5.2 TTS Trigger Points
+#### 3.5.2 Voice Selection Feature
+**Functionality:**
+- Detect all available Dutch voices on device
+- Present voice options in settings (if multiple available)
+- Allow user to preview each voice before selecting
+- Persist voice preference in localStorage
+- Fallback to default if selected voice becomes unavailable
+
+**Voice Variety Benefits:**
+- Different accents/styles for learning exposure
+- User preference for voice characteristics (pitch, speed)
+- Male/female voice options where available
+
+#### 3.5.3 TTS Trigger Points
 1. **Center Card "Pronounce" Button:** User-initiated pronunciation of isolated sound
 2. **Quiz Answer Reveal:** Automatic pronunciation after user selects answer (correct or incorrect)
 
-#### 3.5.3 Implementation Constraints
+#### 3.5.4 Implementation Constraints
 - **User Action Required:** TTS must be triggered by user interaction (iOS Safari requirement)
 - **Fallback:** Graceful degradation if Dutch voices not installed (display message: "Dutch voice not available on this device")
 - **Online/Offline:** Works offline once voices loaded (native API)
@@ -314,6 +394,26 @@ For each sound, provide:
 - Spanish: "Similar a 'ui' en español pero con labios más redondeados"
 - English: "Like 'ow' in 'how' but rounder, closer to French 'eu'"
 
+#### 5.1.4 Word Translation & Context Content
+For each word in a lesson, provide:
+- **Translation (Spanish):** Direct translation to Spanish
+- **Translation (English):** Direct translation to English
+- **Example Sentence (Dutch):** Simple sentence using the word in context
+- **Example Sentence Translation:** Translation of example sentence
+
+**Example for "huis":**
+- Dutch: huis
+- Spanish: casa
+- English: house
+- Example (Dutch): "Ik woon in een groot huis."
+- Example (Spanish): "Vivo en una casa grande."
+- Example (English): "I live in a big house."
+
+**Display Behavior:**
+- Translation visible below flip cards during practice
+- Example sentence appears on tap/click of translation
+- Helps reinforce vocabulary alongside pronunciation
+
 ### 5.2 Quiz Content
 - **Question Pool:** All words from lesson (8-10 or 15-20)
 - **Quiz Size:** 5 random words per quiz attempt
@@ -389,6 +489,8 @@ For each sound, provide:
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-01-29 | Business Requirements Analyst | Initial requirements documentation approved for MVP development |
+| 1.1 | 2026-01-30 | Business Requirements Analyst | Added Phase 1.5 features: word translations, example sentences, TTS voice selection, point milestones, encouragement badges, i18n architecture |
+| 1.2 | 2026-01-30 | Business Requirements Analyst | Restructured to tiered level system (Level 1: Misma Vocal, Level 2: Vocales Diferentes, etc.). Changed to 3-star progression (Bronze, Silver, Gold) per level. |
 
 **Related Documents:**
 - `/docs/requirements/user-stories.md` - User story specifications

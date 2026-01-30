@@ -6,20 +6,27 @@
 import './styles/main.css';
 import { createFlipCard } from './components/FlipCard.js';
 import { createQuiz } from './components/Quiz.js';
+import { createLessonMenu } from './components/LessonMenu.js';
 import { getLessonForFlipCard } from './lib/lessonLoader.js';
 import { lessonsById } from './data/lessons/index.js';
-
-// Current demo lesson - using AA Beginner for both FlipCard and Quiz
-const DEMO_LESSON_ID = 'P1-AA-BEG';
-
-// Get lesson data in different formats
-const currentLesson = lessonsById[DEMO_LESSON_ID];
-const flipCardData = getLessonForFlipCard(DEMO_LESSON_ID);
+import {
+  markLessonComplete,
+  addPoints,
+  getTotalPoints,
+  checkNewMilestone,
+  recordQuizAttempt,
+  checkAndAwardBadges,
+} from './lib/progressStorage.js';
+import { showMilestoneCelebration, showBadgeCelebrations } from './components/StarIndicator.js';
 
 // Application state
-let currentView = 'flipcard'; // 'flipcard' or 'quiz'
+let currentView = 'menu'; // 'menu' | 'flipcard' | 'quiz'
+let selectedLessonId = null;
+let currentLesson = null;
+let flipCardData = null;
 let flipCard = null;
 let quiz = null;
+let lessonMenu = null;
 
 /**
  * Initialize the application
@@ -33,7 +40,7 @@ function init() {
   }
 
   renderLayout(app);
-  mountFlipCard();
+  mountLessonMenu();
 }
 
 /**
@@ -43,15 +50,34 @@ function renderLayout(app) {
   app.innerHTML = `
     <main class="app-container">
       <header class="app-header">
-        <h1>Dutch Pronunciation</h1>
-        <p class="app-subtitle" id="view-subtitle">Practice the "${currentLesson.sound.combination}" sound</p>
+        <div class="app-header-row">
+          <button
+            class="app-back-btn"
+            type="button"
+            id="back-btn"
+            aria-label="Back to lessons"
+            style="visibility: hidden;"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+          <h1>Dutch Pronunciation</h1>
+          <div class="app-header-points" id="header-points">
+            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+            </svg>
+            <span id="points-value">${getTotalPoints()}</span>
+          </div>
+        </div>
+        <p class="app-subtitle" id="view-subtitle"></p>
       </header>
 
-      <section class="app-main" id="main-container" aria-label="Practice area">
+      <section class="app-main" id="main-container" aria-label="Main content">
         <!-- Components will be mounted here -->
       </section>
 
-      <footer class="app-footer">
+      <footer class="app-footer" id="app-footer" style="display: none;">
         <div class="app-actions" id="app-actions">
           <button
             class="app-btn app-btn--primary"
@@ -70,13 +96,75 @@ function renderLayout(app) {
     </main>
   `;
 
-  // Bind toggle button event
+  // Bind button events
   const toggleBtn = document.getElementById('toggle-view-btn');
   if (toggleBtn) {
     toggleBtn.addEventListener('click', handleToggleView);
   }
 
+  const backBtn = document.getElementById('back-btn');
+  if (backBtn) {
+    backBtn.addEventListener('click', handleBackToMenu);
+  }
+
   addLayoutStyles();
+}
+
+/**
+ * Mount the Lesson Menu component
+ */
+function mountLessonMenu() {
+  const container = document.getElementById('main-container');
+  if (!container) {
+    return;
+  }
+
+  // Destroy existing components
+  destroyCurrentComponent();
+
+  // Hide footer and show header in menu mode
+  const footer = document.getElementById('app-footer');
+  const backBtn = document.getElementById('back-btn');
+  const subtitle = document.getElementById('view-subtitle');
+  const headerPoints = document.getElementById('header-points');
+
+  if (footer) {
+    footer.style.display = 'none';
+  }
+  if (backBtn) {
+    backBtn.style.visibility = 'hidden';
+  }
+  if (subtitle) {
+    subtitle.textContent = '';
+  }
+  if (headerPoints) {
+    headerPoints.style.display = 'none';
+  }
+
+  // Create and mount lesson menu
+  lessonMenu = createLessonMenu(container, {
+    language: 'es',
+    onSelectLesson: handleSelectLesson,
+  });
+
+  currentView = 'menu';
+  selectedLessonId = null;
+  currentLesson = null;
+  flipCardData = null;
+
+  // Update points display
+  updatePointsDisplay();
+}
+
+/**
+ * Handle lesson selection from menu
+ */
+function handleSelectLesson(lessonId) {
+  selectedLessonId = lessonId;
+  currentLesson = lessonsById[lessonId];
+  flipCardData = getLessonForFlipCard(lessonId);
+
+  mountFlipCard();
 }
 
 /**
@@ -88,10 +176,22 @@ function mountFlipCard() {
     return;
   }
 
-  // Destroy existing quiz if any
-  if (quiz) {
-    quiz.destroy();
-    quiz = null;
+  // Destroy existing components
+  destroyCurrentComponent();
+
+  // Show footer and back button in practice mode
+  const footer = document.getElementById('app-footer');
+  const backBtn = document.getElementById('back-btn');
+  const headerPoints = document.getElementById('header-points');
+
+  if (footer) {
+    footer.style.display = 'block';
+  }
+  if (backBtn) {
+    backBtn.style.visibility = 'visible';
+  }
+  if (headerPoints) {
+    headerPoints.style.display = 'flex';
   }
 
   // Create and mount flip card with current lesson data
@@ -100,6 +200,7 @@ function mountFlipCard() {
 
   // Update UI
   updateViewUI();
+  updatePointsDisplay();
 
   // Store reference for debugging/development
   window.__flipCard = flipCard;
@@ -114,11 +215,8 @@ async function mountQuiz() {
     return;
   }
 
-  // Destroy existing flip card if any
-  if (flipCard) {
-    flipCard.destroy();
-    flipCard = null;
-  }
+  // Destroy existing components
+  destroyCurrentComponent();
 
   // Create and mount quiz with same lesson as FlipCard
   quiz = createQuiz(currentLesson, {
@@ -139,27 +237,76 @@ async function mountQuiz() {
 }
 
 /**
+ * Destroy the current component
+ */
+function destroyCurrentComponent() {
+  if (flipCard) {
+    flipCard.destroy();
+    flipCard = null;
+  }
+  if (quiz) {
+    quiz.destroy();
+    quiz = null;
+  }
+  if (lessonMenu) {
+    lessonMenu.destroy();
+    lessonMenu = null;
+  }
+}
+
+/**
  * Handle view toggle button click
  */
 function handleToggleView() {
   if (currentView === 'flipcard') {
     mountQuiz();
-  } else {
+  } else if (currentView === 'quiz') {
     mountFlipCard();
   }
+}
+
+/**
+ * Handle back button click - return to menu
+ */
+function handleBackToMenu() {
+  mountLessonMenu();
 }
 
 /**
  * Handle quiz completion
  */
 function handleQuizComplete(result) {
-  // Quiz completed - result contains score, passed, pointsEarned, answers
-  void result; // Mark as intentionally unused for now
+  // Check for new milestone BEFORE adding points
+  let newMilestone = null;
+  if (result.passed && result.pointsEarned > 0) {
+    newMilestone = checkNewMilestone(result.pointsEarned);
+  }
 
-  // Show completion message and return to flip card
-  setTimeout(() => {
-    mountFlipCard();
-  }, 500);
+  // If passed, mark lesson complete and add points
+  if (result.passed) {
+    markLessonComplete(selectedLessonId);
+    if (result.pointsEarned > 0) {
+      addPoints(result.pointsEarned);
+    }
+  }
+
+  // Show milestone celebration or return to menu
+  if (newMilestone) {
+    // Show celebration first, then return to menu
+    setTimeout(() => {
+      showMilestoneCelebration(newMilestone, {
+        language: 'es',
+        onDismiss: () => {
+          mountLessonMenu();
+        },
+      });
+    }, 600);
+  } else {
+    // Return to menu after a short delay
+    setTimeout(() => {
+      mountLessonMenu();
+    }, 500);
+  }
 }
 
 /**
@@ -177,7 +324,7 @@ function updateViewUI() {
   const toggleBtn = document.getElementById('toggle-view-btn');
   const instructions = document.getElementById('instructions');
 
-  if (currentView === 'flipcard') {
+  if (currentView === 'flipcard' && currentLesson) {
     if (subtitle) {
       subtitle.textContent = `Practice the "${currentLesson.sound.combination}" sound`;
     }
@@ -191,7 +338,7 @@ function updateViewUI() {
         Tap the center card to see the pronunciation guide.
       `;
     }
-  } else {
+  } else if (currentView === 'quiz') {
     if (subtitle) {
       subtitle.textContent = 'Test your knowledge';
     }
@@ -209,11 +356,73 @@ function updateViewUI() {
 }
 
 /**
+ * Update points display in header
+ */
+function updatePointsDisplay() {
+  const pointsValue = document.getElementById('points-value');
+  if (pointsValue) {
+    pointsValue.textContent = getTotalPoints();
+  }
+}
+
+/**
  * Add styles for the layout
  */
 function addLayoutStyles() {
   const style = document.createElement('style');
   style.textContent = `
+    .app-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+    }
+
+    .app-header-row h1 {
+      flex: 1;
+      text-align: center;
+    }
+
+    .app-back-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: var(--rounded-full);
+      color: var(--text-secondary);
+      transition: color var(--duration-fast) var(--ease-out),
+                  background-color var(--duration-fast) var(--ease-out);
+    }
+
+    .app-back-btn:hover {
+      color: var(--text-primary);
+      background-color: var(--color-gray-100);
+    }
+
+    .app-back-btn svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .app-header-points {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-2) var(--space-3);
+      background: var(--color-primary-50);
+      border-radius: var(--rounded-full);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--color-primary-700);
+    }
+
+    .app-header-points svg {
+      width: 16px;
+      height: 16px;
+      color: var(--color-primary-500);
+    }
+
     .app-subtitle {
       font-size: var(--font-size-sm);
       color: var(--text-tertiary);

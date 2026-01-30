@@ -1,8 +1,8 @@
 # User Stories
 ## Dutch Pronunciation Learning App - Flip Cards
 
-**Document Version:** 1.0
-**Date:** 2026-01-29
+**Document Version:** 1.1
+**Date:** 2026-01-30
 **Status:** Approved for MVP Development
 
 ---
@@ -490,6 +490,159 @@ All user stories follow this structure:
 
 ---
 
+## Epic 10: Phase 1.5 Enhancements
+
+### US-1001: View Word Translations
+**As a** Dutch learner
+**I want** to see the translation of Dutch words during practice
+**So that** I understand what the words mean while learning pronunciation
+
+**Acceptance Criteria:**
+- Translation displayed below the flip cards during practice
+- Translation matches selected UI language (Spanish/English)
+- Translation updates when word combination changes
+- Clear visual hierarchy (Dutch word prominent, translation secondary)
+- Tap/click on translation reveals example sentence
+
+**Priority:** Should Have (Phase 1.5)
+
+---
+
+### US-1002: View Example Sentences
+**As a** Dutch learner
+**I want** to see example sentences using the practiced words
+**So that** I understand how words are used in context
+
+**Acceptance Criteria:**
+- Example sentence appears when tapping the translation
+- Sentence displayed in Dutch with translation below
+- Sentence uses the current word in natural context
+- Modal/tooltip dismissible by tapping outside
+- Each word has at least one example sentence
+
+**Priority:** Should Have (Phase 1.5)
+
+---
+
+### US-1003: Select TTS Voice
+**As a** Dutch learner
+**I want** to choose from different Dutch voices
+**So that** I can hear varied pronunciations and find a voice I prefer
+
+**Acceptance Criteria:**
+- Voice selector in settings menu
+- Lists all available Dutch voices on device
+- Preview button to hear each voice before selecting
+- Selected voice persists across sessions
+- Graceful handling if voice becomes unavailable
+- Shows "No Dutch voices" message if none installed
+
+**Priority:** Should Have (Phase 1.5)
+
+---
+
+### US-1004: View Badge Gallery
+**As a** Dutch learner
+**I want** to see all available badges and my progress toward each
+**So that** I know what achievements I can work toward
+
+**Acceptance Criteria:**
+- Dedicated badge gallery accessible from menu
+- All badges displayed (earned in color, unearned grayed out)
+- Each badge shows name, icon, description, and how to earn
+- Progress indicators for multi-step badges (e.g., "2/4 sounds mastered")
+- Earned badges show unlock date
+- Celebratory animation when viewing newly earned badge
+
+**Priority:** Should Have (Phase 1.5)
+
+---
+
+### US-1005: Earn Point Milestone Stars
+**As a** Dutch learner
+**I want** to unlock stars when reaching point milestones
+**So that** I feel rewarded for accumulated effort
+
+**Acceptance Criteria:**
+- Point milestones: Bronze (500), Silver (1500), Gold (3000), Diamond (5000)
+- Star indicator displayed in header/profile
+- Celebration animation when milestone reached
+- Stars persist in localStorage
+- Progress bar shows distance to next milestone
+- All earned stars visible in profile
+
+**Priority:** Should Have (Phase 1.5)
+
+---
+
+### US-1006: Earn Encouragement Badges
+**As a** Dutch learner
+**I want** to earn badges for persistence even when struggling
+**So that** I stay motivated despite making mistakes
+
+**Acceptance Criteria:**
+- "¡No me rendiré!" badge: Awarded when scoring 0/5 on quiz, then retrying
+- "La práctica hace al maestro" badge: Complete 10 quizzes (any score)
+- "Perseverance" badge: Fail a quiz, then retry and pass
+- Badge names localized (Spanish/English)
+- Encouraging message when these badges are earned
+- Badges appear in gallery with others
+
+**Priority:** Should Have (Phase 1.5)
+
+---
+
+### US-1007: Improved Quiz Feedback Layout
+**As a** Dutch learner
+**I want** quiz feedback to appear without shifting buttons
+**So that** the interface feels stable and predictable
+
+**Acceptance Criteria:**
+- Feedback message appears below the "Next" button (not above)
+- Button position remains fixed during feedback display
+- Smooth fade-in animation for feedback
+- Feedback does not cause layout shift
+- Works correctly on all screen sizes
+
+**Priority:** Should Have (Phase 1.5)
+
+---
+
+## Epic 11: Internationalization
+
+### US-1101: Externalized UI Strings
+**As a** developer
+**I want** all UI text stored in language files
+**So that** the app can be easily translated to new languages
+
+**Acceptance Criteria:**
+- All user-facing strings in JSON language files
+- File structure: `src/i18n/{lang}.json`
+- No hardcoded text in component code
+- Language files for Spanish (es) and English (en)
+- Missing translation falls back to English
+- Build-time validation of translation completeness
+
+**Priority:** Should Have (Phase 1.5)
+
+---
+
+### US-1102: Add New Languages
+**As a** product owner
+**I want** the ability to add new UI languages easily
+**So that** the app can reach broader audiences
+
+**Acceptance Criteria:**
+- Adding language requires only new JSON file
+- Language selector shows all available languages
+- Flag/icon for each language option
+- RTL language support consideration (future)
+- Translation guide documentation for contributors
+
+**Priority:** Could Have (Future)
+
+---
+
 ## Epic 8: Error Handling & Edge Cases
 
 ### US-801: Handle Missing Dutch Voice
@@ -609,6 +762,10 @@ Epic 5: US-501
 Epic 6: US-601, US-602, US-603
 Epic 8: US-801, US-803
 
+### Should Have (Phase 1.5) - 8 Stories
+Epic 10: US-1001, US-1002, US-1003, US-1004, US-1005, US-1006, US-1007
+Epic 11: US-1101
+
 ### Should Have (Phase 2) - 9 Stories
 Epic 3: US-304
 Epic 4: US-403
@@ -618,10 +775,11 @@ Epic 7: US-701
 Epic 8: US-802
 Epic 9: US-901, US-902
 
-### Could Have (Future) - 4 Stories
+### Could Have (Future) - 5 Stories
 Epic 5: US-504
 Epic 7: US-702, US-703
 Epic 9: US-903
+Epic 11: US-1102
 
 ---
 
@@ -659,6 +817,7 @@ All user stories must pass:
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-01-29 | Business Requirements Analyst | Initial user story specifications approved for MVP development |
+| 1.1 | 2026-01-30 | Business Requirements Analyst | Added Epic 10 (Phase 1.5 Enhancements) and Epic 11 (Internationalization) with 9 new user stories |
 
 **Related Documents:**
 - `/docs/requirements/business-requirements.md` - Complete functional requirements

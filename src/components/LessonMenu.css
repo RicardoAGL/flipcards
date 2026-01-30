@@ -1,0 +1,365 @@
+/**
+ * Lesson Menu Styles
+ * Styles for the lesson selection menu component
+ */
+
+/* ============================================
+   LESSON MENU CONTAINER
+   ============================================ */
+
+.lesson-menu {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: var(--space-4);
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+/* ============================================
+   HEADER WITH POINTS
+   ============================================ */
+
+.lesson-menu-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.lesson-menu-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.lesson-menu-header-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.lesson-menu-points {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-primary-50);
+  border-radius: var(--rounded-full);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-primary-700);
+}
+
+.lesson-menu-star-progress {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-gray-100);
+}
+
+/* ============================================
+   PROGRESS CARD
+   ============================================ */
+
+.lesson-menu-progress {
+  background: var(--color-white);
+  border-radius: var(--rounded-xl);
+  padding: var(--space-5);
+  margin-bottom: var(--space-6);
+  box-shadow: var(--shadow-card);
+}
+
+.lesson-menu-progress-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.lesson-menu-progress-icon {
+  width: 24px;
+  height: 24px;
+  color: var(--color-primary-500);
+}
+
+.lesson-menu-progress-title {
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.lesson-menu-progress-bar-container {
+  position: relative;
+  height: 12px;
+  background: var(--color-gray-100);
+  border-radius: var(--rounded-full);
+  overflow: hidden;
+  margin-bottom: var(--space-2);
+}
+
+.lesson-menu-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--color-primary-400), var(--color-primary-500));
+  border-radius: var(--rounded-full);
+  transition: width var(--duration-slow) var(--ease-out);
+  min-width: 0;
+}
+
+.lesson-menu-progress-text {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.lesson-menu-progress-percent {
+  font-weight: 600;
+  color: var(--color-primary-600);
+}
+
+/* ============================================
+   SOUND GRID
+   ============================================ */
+
+.lesson-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-4);
+}
+
+@media (max-width: 360px) {
+  .lesson-menu-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================
+   SOUND CARD
+   ============================================ */
+
+.sound-card {
+  background: var(--color-white);
+  border-radius: var(--rounded-xl);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-card);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: box-shadow var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.sound-card:hover {
+  box-shadow: var(--shadow-card-hover);
+}
+
+.sound-card-sound {
+  font-family: var(--font-display);
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.sound-card-ipa {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-base);
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-4);
+}
+
+.sound-card-levels {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+/* ============================================
+   LEVEL BUTTONS
+   ============================================ */
+
+.level-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--rounded-lg);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  min-height: var(--touch-target-min);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+/* Unlocked/default state */
+.level-btn--unlocked {
+  background: var(--color-primary-50);
+  color: var(--color-primary-700);
+  border: 2px solid transparent;
+}
+
+.level-btn--unlocked:hover {
+  background: var(--color-primary-100);
+  transform: scale(1.02);
+}
+
+.level-btn--unlocked:active {
+  background: var(--color-primary-200);
+  transform: scale(0.98);
+}
+
+.level-btn--unlocked:focus-visible {
+  outline: 3px solid var(--color-primary-300);
+  outline-offset: 2px;
+}
+
+/* Completed state */
+.level-btn--completed {
+  background: var(--color-success-50);
+  color: var(--color-success-700);
+  border: 2px solid var(--color-success-200);
+}
+
+.level-btn--completed:hover {
+  background: var(--color-success-100);
+}
+
+.level-btn--completed:active {
+  background: var(--color-success-200);
+  transform: scale(0.98);
+}
+
+/* Locked state */
+.level-btn--locked {
+  background: var(--color-gray-100);
+  color: var(--color-gray-400);
+  cursor: not-allowed;
+  border: 2px solid transparent;
+}
+
+.level-btn--locked:hover {
+  background: var(--color-gray-100);
+  transform: none;
+}
+
+.level-btn--locked:focus-visible {
+  outline: 3px solid var(--color-gray-300);
+  outline-offset: 2px;
+}
+
+/* Button icons */
+.level-btn-icon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.level-btn-icon--check {
+  color: var(--color-success-500);
+}
+
+.level-btn-icon--lock {
+  color: var(--color-gray-400);
+}
+
+/* ============================================
+   LOCKED MESSAGE
+   ============================================ */
+
+.lesson-menu-locked-message {
+  position: fixed;
+  bottom: var(--space-6);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-gray-800);
+  color: var(--color-white);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--rounded-lg);
+  font-size: var(--font-size-sm);
+  box-shadow: var(--shadow-lg);
+  z-index: 1000;
+  animation: slideUp var(--duration-normal) var(--ease-out);
+  max-width: calc(100% - var(--space-8));
+  text-align: center;
+}
+
+/* ============================================
+   BACK BUTTON (for navigation)
+   ============================================ */
+
+.lesson-menu-back-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  margin-bottom: var(--space-4);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border-radius: var(--rounded-md);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.lesson-menu-back-btn:hover {
+  color: var(--text-primary);
+}
+
+.lesson-menu-back-btn-icon {
+  width: 16px;
+  height: 16px;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (min-width: 640px) {
+  .lesson-menu {
+    padding: var(--space-6);
+  }
+
+  .lesson-menu-title {
+    font-size: var(--font-size-2xl);
+  }
+
+  .lesson-menu-progress {
+    padding: var(--space-6);
+  }
+
+  .sound-card {
+    padding: var(--space-6);
+  }
+
+  .sound-card-sound {
+    font-size: var(--font-size-4xl);
+  }
+
+  .level-btn {
+    padding: var(--space-3) var(--space-5);
+    font-size: var(--font-size-base);
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .lesson-menu,
+  .lesson-menu-locked-message {
+    animation: none;
+  }
+
+  .level-btn,
+  .sound-card {
+    transition: none;
+  }
+
+  .lesson-menu-progress-bar {
+    transition: none;
+  }
+}

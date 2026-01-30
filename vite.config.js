@@ -40,4 +40,9 @@ export default defineConfig({
       '@': resolve(__dirname, 'src'),
     },
   },
+
+  // Vitest configuration
+  test: {
+    environment: 'jsdom',
+  },
 });

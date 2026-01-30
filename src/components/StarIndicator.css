@@ -1,0 +1,235 @@
+/**
+ * Star Indicator Styles
+ * Visual star display for point milestones
+ */
+
+/* ============================================
+   STAR INDICATOR CONTAINER
+   ============================================ */
+
+.star-indicator {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+/* ============================================
+   INDIVIDUAL STAR
+   ============================================ */
+
+.star-indicator-star {
+  width: 20px;
+  height: 20px;
+  transition: transform var(--duration-normal) var(--ease-bounce),
+              opacity var(--duration-normal) var(--ease-out);
+}
+
+.star-indicator-star--earned {
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.star-indicator-star--unearned {
+  opacity: 0.25;
+  filter: grayscale(100%);
+}
+
+/* Size variants */
+.star-indicator--sm .star-indicator-star {
+  width: 16px;
+  height: 16px;
+}
+
+.star-indicator--lg .star-indicator-star {
+  width: 28px;
+  height: 28px;
+}
+
+/* ============================================
+   MILESTONE CELEBRATION
+   ============================================ */
+
+.milestone-celebration {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+.milestone-celebration-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-8);
+  background: var(--color-white);
+  border-radius: var(--rounded-2xl);
+  box-shadow: var(--shadow-2xl);
+  text-align: center;
+  animation: scalePop var(--duration-slow) var(--ease-bounce);
+  max-width: 320px;
+}
+
+.milestone-celebration-star {
+  width: 80px;
+  height: 80px;
+  animation: starSpin 1s ease-out;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.15));
+}
+
+.milestone-celebration-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.milestone-celebration-level {
+  font-family: var(--font-display);
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+}
+
+.milestone-celebration-message {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+}
+
+.milestone-celebration-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: var(--space-3) var(--space-6);
+  background: var(--color-primary-500);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--rounded-xl);
+  font-family: var(--font-primary);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.milestone-celebration-btn:hover {
+  background: var(--color-primary-400);
+}
+
+.milestone-celebration-btn:active {
+  background: var(--color-primary-600);
+}
+
+@keyframes starSpin {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   BADGE CELEBRATION
+   ============================================ */
+
+.badge-celebration-icon {
+  font-size: 64px;
+  line-height: 1;
+  animation: badgeBounce 0.6s ease-out;
+}
+
+.badge-celebration-name {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--color-primary-500);
+}
+
+.badge-celebration-description {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  max-width: 240px;
+}
+
+@keyframes badgeBounce {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   PROGRESS TO NEXT MILESTONE
+   ============================================ */
+
+.star-progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  width: 100%;
+}
+
+.star-progress-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: var(--font-size-sm);
+}
+
+.star-progress-label {
+  color: var(--text-secondary);
+}
+
+.star-progress-points {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.star-progress-bar-container {
+  height: 8px;
+  background: var(--color-gray-100);
+  border-radius: var(--rounded-full);
+  overflow: hidden;
+}
+
+.star-progress-bar {
+  height: 100%;
+  border-radius: var(--rounded-full);
+  transition: width var(--duration-slow) var(--ease-out);
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .milestone-celebration,
+  .milestone-celebration-content,
+  .milestone-celebration-star,
+  .star-indicator-star {
+    animation: none;
+    transition: none;
+  }
+}
