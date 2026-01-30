@@ -14,6 +14,13 @@ export default [
         localStorage: 'readonly',
         speechSynthesis: 'readonly',
         SpeechSynthesisUtterance: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        requestAnimationFrame: 'readonly',
+        cancelAnimationFrame: 'readonly',
+        performance: 'readonly',
         // Node.js globals for config files
         process: 'readonly',
         __dirname: 'readonly',
