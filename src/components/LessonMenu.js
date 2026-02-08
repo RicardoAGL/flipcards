@@ -14,7 +14,10 @@ import {
   getCompletedLessons,
   isLessonUnlocked,
   isLessonCompleted,
+  getReviewDates,
+  getReviewCounts,
 } from '../lib/progressStorage.js';
+import { getLessonsDueForReview } from '../lib/reviewScheduler.js';
 import { lessonsBySound, lessonsByPhase, soundInfo } from '../data/lessons/index.js';
 import { createStarIndicatorHTML, createStarProgressHTML } from './StarIndicator.js';
 import './LessonMenu.css';
@@ -39,6 +42,8 @@ const TEXT = {
     lockedMessage: 'Completa Principiante para desbloquear',
     viewBadges: 'Ver Insignias',
     phase: 'Fase',
+    startReview: 'Repasar',
+    reviewCount: 'lecciones para repasar',
   },
   en: {
     title: 'Lessons',
@@ -50,6 +55,8 @@ const TEXT = {
     lockedMessage: 'Complete Beginner to unlock',
     viewBadges: 'View Badges',
     phase: 'Phase',
+    startReview: 'Review',
+    reviewCount: 'lessons to review',
   },
 };
 
@@ -62,7 +69,7 @@ const TEXT = {
  * @returns {Object} Component API
  */
 export function createLessonMenu(container, options = {}) {
-  const { language = 'es', onSelectLesson, onViewBadges } = options;
+  const { language = 'es', onSelectLesson, onViewBadges, onStartReview } = options;
   const text = TEXT[language] || TEXT.es;
 
   // State
@@ -77,6 +84,18 @@ export function createLessonMenu(container, options = {}) {
    * Render the component
    */
   const render = () => {
+    // Compute due review lessons
+    const reviewDates = getReviewDates();
+    const reviewCounts = getReviewCounts();
+    const dueLessons = getLessonsDueForReview(completedLessons, reviewDates, reviewCounts);
+    const dueLessonIds = new Set(dueLessons.map((l) => l.lessonId));
+
+    const reviewButtonHtml = dueLessons.length > 0 ? `
+      <button class="lesson-menu-review-btn" type="button" data-action="start-review">
+        ${text.startReview} (${dueLessons.length} ${text.reviewCount})
+      </button>
+    ` : '';
+
     const html = `
       <div class="lesson-menu" role="main" aria-label="Lesson selection menu">
         <!-- Header with Stars and Points -->
@@ -119,6 +138,7 @@ export function createLessonMenu(container, options = {}) {
           <div class="lesson-menu-star-progress">
             ${createStarProgressHTML({ language })}
           </div>
+          ${reviewButtonHtml}
           <button class="lesson-menu-badges-btn" type="button" data-action="view-badges">
             🏆 ${text.viewBadges}
           </button>
@@ -126,7 +146,7 @@ export function createLessonMenu(container, options = {}) {
 
         <!-- Sound Grid -->
         <section class="lesson-menu-grid" aria-label="Sound lessons">
-          ${renderSoundCards()}
+          ${renderSoundCards(dueLessonIds)}
         </section>
 
         <!-- Locked Message (hidden by default) -->
@@ -144,8 +164,9 @@ export function createLessonMenu(container, options = {}) {
   /**
    * Render a single sound card
    * @param {string} sound - Sound combination key
+   * @param {Set<string>} dueLessonIds - Set of lesson IDs due for review
    */
-  const renderSoundCard = (sound) => {
+  const renderSoundCard = (sound, dueLessonIds) => {
     const info = soundInfo[sound];
     const lessons = lessonsBySound[sound];
     const beginnerLesson = lessons.find(l => l.level === 'beginner');
@@ -156,8 +177,8 @@ export function createLessonMenu(container, options = {}) {
         <span class="sound-card-sound" id="sound-${sound}-label">${sound}</span>
         <span class="sound-card-ipa">${info.ipa}</span>
         <div class="sound-card-levels">
-          ${renderLevelButton(beginnerLesson, text.beginner)}
-          ${renderLevelButton(advancedLesson, text.advanced)}
+          ${renderLevelButton(beginnerLesson, text.beginner, dueLessonIds)}
+          ${renderLevelButton(advancedLesson, text.advanced, dueLessonIds)}
         </div>
       </div>
     `;
@@ -165,8 +186,9 @@ export function createLessonMenu(container, options = {}) {
 
   /**
    * Render all sound cards grouped by phase
+   * @param {Set<string>} dueLessonIds - Set of lesson IDs due for review
    */
-  const renderSoundCards = () => {
+  const renderSoundCards = (dueLessonIds) => {
     const phases = Object.keys(lessonsByPhase).map(Number).sort();
 
     return phases.map(phase => {
@@ -179,7 +201,7 @@ export function createLessonMenu(container, options = {}) {
         <div class="lesson-menu-phase" data-phase="${phase}">
           <h3 class="lesson-menu-phase-title">${text.phase} ${phase}: ${phaseLabel}</h3>
           <div class="lesson-menu-phase-grid">
-            ${phaseSounds.map(sound => renderSoundCard(sound)).join('')}
+            ${phaseSounds.map(sound => renderSoundCard(sound, dueLessonIds)).join('')}
           </div>
         </div>
       `;
@@ -190,10 +212,12 @@ export function createLessonMenu(container, options = {}) {
    * Render a level button
    * @param {Object} lesson - The lesson data
    * @param {string} levelLabel - Display label for the level
+   * @param {Set<string>} dueLessonIds - Set of lesson IDs due for review
    */
-  const renderLevelButton = (lesson, levelLabel) => {
+  const renderLevelButton = (lesson, levelLabel, dueLessonIds) => {
     const isCompleted = isLessonCompleted(lesson.lessonId);
     const isUnlocked = isLessonUnlocked(lesson.lessonId);
+    const isReviewDue = isCompleted && dueLessonIds.has(lesson.lessonId);
 
     let stateClass = '';
     let icon = '';
@@ -201,6 +225,9 @@ export function createLessonMenu(container, options = {}) {
 
     if (isCompleted) {
       stateClass = 'level-btn--completed';
+      if (isReviewDue) {
+        stateClass += ' level-btn--review-due';
+      }
       icon = `
         <svg class="level-btn-icon level-btn-icon--check" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
@@ -256,6 +283,13 @@ export function createLessonMenu(container, options = {}) {
     if (badgesBtn) {
       badgesBtn.addEventListener('click', () => {
         if (onViewBadges) {onViewBadges();}
+      });
+    }
+
+    const reviewBtn = container.querySelector('[data-action="start-review"]');
+    if (reviewBtn) {
+      reviewBtn.addEventListener('click', () => {
+        if (onStartReview) {onStartReview();}
       });
     }
   };

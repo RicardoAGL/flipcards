@@ -15,6 +15,7 @@ import {
   validateAnswer,
   getWordSound,
   generateFeedbackExplanation,
+  generateReviewQuiz,
 } from '../src/lib/quizHelpers.js';
 import { createMockLesson } from './setup.js';
 
@@ -508,6 +509,63 @@ describe('Quiz Helpers', () => {
       const result = generateFeedbackExplanation(aaQuestion, 'unknownword');
 
       expect(result).toContain('Recuerda');
+    });
+  });
+
+  // ==========================================
+  // generateReviewQuiz
+  // ==========================================
+  describe('generateReviewQuiz', () => {
+    it('should generate the requested number of questions', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG'], 3);
+
+      expect(questions).toHaveLength(3);
+    });
+
+    it('should draw from multiple lessons', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG', 'P1-EE-BEG'], 5);
+
+      expect(questions.length).toBeGreaterThan(0);
+      expect(questions.length).toBeLessThanOrEqual(5);
+    });
+
+    it('should include required question fields', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG'], 2);
+
+      questions.forEach((q) => {
+        expect(q).toHaveProperty('questionId');
+        expect(q).toHaveProperty('correctAnswer');
+        expect(q).toHaveProperty('options');
+        expect(q).toHaveProperty('sound');
+        expect(q).toHaveProperty('ipa');
+      });
+    });
+
+    it('should return empty array for invalid lesson IDs', () => {
+      const questions = generateReviewQuiz(['NONEXISTENT'], 3);
+
+      expect(questions).toEqual([]);
+    });
+
+    it('should return empty array for empty lesson IDs', () => {
+      const questions = generateReviewQuiz([], 3);
+
+      expect(questions).toEqual([]);
+    });
+
+    it('should default to 5 questions', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG', 'P1-EE-BEG']);
+
+      expect(questions).toHaveLength(5);
+    });
+
+    it('should have 4 options per question', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG'], 2);
+
+      questions.forEach((q) => {
+        expect(q.options).toHaveLength(4);
+        expect(q.options).toContain(q.correctAnswer);
+      });
     });
   });
 });

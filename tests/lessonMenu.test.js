@@ -26,9 +26,15 @@ Object.defineProperty(global, 'localStorage', {
   value: localStorageMock,
 });
 
+// Mock reviewScheduler to control due lessons
+vi.mock('../src/lib/reviewScheduler.js', () => ({
+  getLessonsDueForReview: vi.fn(() => []),
+}));
+
 // Import after localStorage mock is set up
 import { createLessonMenu } from '../src/components/LessonMenu.js';
 import { STORAGE_KEYS } from '../src/lib/progressStorage.js';
+import { getLessonsDueForReview } from '../src/lib/reviewScheduler.js';
 
 describe('LessonMenu Component', () => {
   let container;
@@ -337,6 +343,75 @@ describe('LessonMenu Component', () => {
 
       const title = container.querySelector('.lesson-menu-title');
       expect(title.textContent).toBe('Lessons');
+    });
+  });
+
+  describe('Review Indicators', () => {
+    it('should not render review button when no lessons are due', () => {
+      getLessonsDueForReview.mockReturnValue([]);
+
+      createLessonMenu(container, {});
+
+      const reviewBtn = container.querySelector('[data-action="start-review"]');
+      expect(reviewBtn).toBeNull();
+    });
+
+    it('should render review button when lessons are due', () => {
+      getLessonsDueForReview.mockReturnValue([
+        { lessonId: 'P1-AA-BEG', urgency: 100, lastReview: 0, reviewCount: 0 },
+      ]);
+
+      createLessonMenu(container, {});
+
+      const reviewBtn = container.querySelector('[data-action="start-review"]');
+      expect(reviewBtn).not.toBeNull();
+      expect(reviewBtn.textContent).toContain('1');
+    });
+
+    it('should add review-due class to completed+due lesson buttons', () => {
+      localStorageMock.setItem(
+        STORAGE_KEYS.COMPLETED_LESSONS,
+        JSON.stringify(['P1-AA-BEG'])
+      );
+
+      getLessonsDueForReview.mockReturnValue([
+        { lessonId: 'P1-AA-BEG', urgency: 100, lastReview: 0, reviewCount: 0 },
+      ]);
+
+      createLessonMenu(container, {});
+
+      const aaBeg = container.querySelector('[data-lesson-id="P1-AA-BEG"]');
+      expect(aaBeg.classList.contains('level-btn--review-due')).toBe(true);
+    });
+
+    it('should not add review-due class to non-due lessons', () => {
+      localStorageMock.setItem(
+        STORAGE_KEYS.COMPLETED_LESSONS,
+        JSON.stringify(['P1-AA-BEG', 'P1-EE-BEG'])
+      );
+
+      getLessonsDueForReview.mockReturnValue([
+        { lessonId: 'P1-AA-BEG', urgency: 100, lastReview: 0, reviewCount: 0 },
+      ]);
+
+      createLessonMenu(container, {});
+
+      const eeBeg = container.querySelector('[data-lesson-id="P1-EE-BEG"]');
+      expect(eeBeg.classList.contains('level-btn--review-due')).toBe(false);
+    });
+
+    it('should call onStartReview when review button is clicked', () => {
+      getLessonsDueForReview.mockReturnValue([
+        { lessonId: 'P1-AA-BEG', urgency: 100, lastReview: 0, reviewCount: 0 },
+      ]);
+
+      const onStartReview = vi.fn();
+      createLessonMenu(container, { onStartReview });
+
+      const reviewBtn = container.querySelector('[data-action="start-review"]');
+      reviewBtn.click();
+
+      expect(onStartReview).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -319,6 +319,60 @@
 }
 
 /* ============================================
+   REVIEW INDICATORS
+   ============================================ */
+
+.level-btn--review-due {
+  position: relative;
+}
+
+.level-btn--review-due::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 8px;
+  height: 8px;
+  background: var(--color-warning-500, #f59e0b);
+  border-radius: var(--rounded-full);
+  animation: reviewPulse 2s ease-in-out infinite;
+}
+
+@keyframes reviewPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.2); }
+}
+
+.lesson-menu-review-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border: 2px solid var(--color-warning-300, #fcd34d);
+  border-radius: var(--radius-md);
+  background: var(--color-warning-50, #fffbeb);
+  color: var(--color-warning-700, #b45309);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out),
+              border-color var(--duration-fast) var(--ease-out);
+}
+
+.lesson-menu-review-btn:hover {
+  background: var(--color-warning-100, #fef3c7);
+  border-color: var(--color-warning-400, #fbbf24);
+}
+
+.lesson-menu-review-btn:focus-visible {
+  outline: 3px solid var(--color-warning-300, #fcd34d);
+  outline-offset: 2px;
+}
+
+/* ============================================
    LOCKED MESSAGE
    ============================================ */
 

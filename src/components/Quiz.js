@@ -64,6 +64,7 @@ const POINTS_PER_CORRECT = 20;
  * @param {string} [options.language='es'] - Display language ('es' or 'en')
  * @param {Function} options.onComplete - Callback when quiz is completed
  * @param {Function} [options.onClose] - Callback when quiz is closed
+ * @param {import('../lib/quizHelpers.js').QuizQuestion[]} [options.questions] - Pre-supplied questions (overrides generateQuiz)
  * @returns {Object} Component API with mount and destroy methods
  */
 export function createQuiz(lesson, options = {}) {
@@ -93,8 +94,8 @@ export function createQuiz(lesson, options = {}) {
    * Initialize the quiz
    */
   const init = async () => {
-    // Generate quiz questions
-    questions = generateQuiz(lesson, questionCount);
+    // Use pre-supplied questions or generate from lesson
+    questions = options.questions || generateQuiz(lesson, questionCount);
 
     // Check TTS availability
     ttsAvailable = await isDutchVoiceAvailable();
@@ -639,7 +640,7 @@ export function createQuiz(lesson, options = {}) {
         currentQuestionIndex = 0;
         answers = [];
         isAnswered = false;
-        questions = generateQuiz(lesson, questionCount);
+        questions = options.questions || generateQuiz(lesson, questionCount);
         render();
       },
       onClose: handleClose,

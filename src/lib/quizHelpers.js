@@ -430,6 +430,53 @@ export function generateFeedbackExplanation(question, selectedWord, language = '
   return t.sameSound();
 }
 
+/**
+ * Generate a review quiz drawing words from multiple lessons
+ * @param {string[]} lessonIds - Lesson IDs to draw words from
+ * @param {number} [questionCount=5] - Number of questions to generate
+ * @returns {QuizQuestion[]} Array of quiz questions
+ */
+export function generateReviewQuiz(lessonIds, questionCount = 5) {
+  // Collect all words with their lesson context
+  const wordPool = [];
+  for (const lessonId of lessonIds) {
+    const lesson = lessonsById[lessonId];
+    if (!lesson) { continue; }
+
+    const availableWords = lesson.words.filter(
+      (w) => w.word !== lesson.sound.combination,
+    );
+
+    for (const word of availableWords) {
+      wordPool.push({ word, lesson });
+    }
+  }
+
+  if (wordPool.length === 0) {
+    return [];
+  }
+
+  // Shuffle and pick N words
+  const selected = shuffleArray(wordPool).slice(0, questionCount);
+
+  return selected.map(({ word, lesson }) => {
+    const distractors = getDistractors(word, lesson, 3);
+    const options = shuffleArray([word.word, ...distractors]);
+
+    return {
+      questionId: `review-${word.wordId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      wordId: word.wordId,
+      correctAnswer: word.word,
+      options,
+      sound: lesson.sound.combination,
+      ipa: lesson.sound.ipa,
+      descriptionES: lesson.sound.descriptionES,
+      descriptionEN: lesson.sound.descriptionEN,
+      translation: word.translation,
+    };
+  });
+}
+
 export default {
   generateQuiz,
   getDistractors,
@@ -441,4 +488,5 @@ export default {
   validateAnswer,
   getWordSound,
   generateFeedbackExplanation,
+  generateReviewQuiz,
 };

@@ -543,6 +543,44 @@ describe('Quiz Component', () => {
     });
   });
 
+  describe('Pre-supplied Questions', () => {
+    it('should use pre-supplied questions instead of generating', async () => {
+      const customQuestions = [
+        {
+          questionId: 'custom-q1',
+          wordId: 'custom-001',
+          correctAnswer: 'test',
+          options: ['test', 'a', 'b', 'c'],
+          sound: 'aa',
+          ipa: '[aː]',
+          translation: { es: 'prueba', en: 'test' },
+          descriptionES: 'Test',
+          descriptionEN: 'Test',
+        },
+      ];
+
+      const quiz = createQuiz(mockLesson, {
+        questionCount: 3,
+        questions: customQuestions,
+      });
+      await quiz.mount(container);
+
+      // generateQuiz should NOT have been called (we provided questions)
+      expect(generateQuiz).not.toHaveBeenCalled();
+
+      // Should render our custom question's options
+      const state = quiz.getState();
+      expect(state.totalQuestions).toBe(1);
+    });
+
+    it('should fall back to generateQuiz when no questions provided', async () => {
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      expect(generateQuiz).toHaveBeenCalled();
+    });
+  });
+
   describe('Language Support', () => {
     it('should render Spanish text by default', async () => {
       const quiz = createQuiz(mockLesson, { questionCount: 3 });
