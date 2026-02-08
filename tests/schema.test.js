@@ -23,7 +23,7 @@ describe('Schema Constants', () => {
   });
 
   it('should export correct PHASE_2_SOUNDS', () => {
-    expect(PHASE_2_SOUNDS).toEqual(['ui', 'ij', 'ei', 'oe', 'eu', 'au', 'ou']);
+    expect(PHASE_2_SOUNDS).toEqual(['ui', 'ij', 'ei', 'oe', 'eu', 'au', 'ou', 'ie']);
   });
 
   it('should export LESSON_ID_PATTERN regex', () => {

@@ -527,7 +527,7 @@ export function checkAndAwardBadges(quizResult) {
       newBadges.push('level-1-complete');
     }
   }
-  if (willHaveCompleted >= 16) {
+  if (willHaveCompleted >= 24) {
     if (awardBadge('level-2-complete')) {
       newBadges.push('level-2-complete');
     }

@@ -110,13 +110,13 @@ describe('BadgeGallery Component', () => {
       expect(cards.length).toBe(3);
     });
 
-    it('should have 9 mastery badges', () => {
+    it('should have 13 mastery badges', () => {
       const gallery = createBadgeGallery(container, {});
 
       const masteryGroup = container.querySelector('[data-category="mastery"]');
       expect(masteryGroup).not.toBeNull();
       const cards = masteryGroup.querySelectorAll('.badge-card');
-      expect(cards.length).toBe(9);
+      expect(cards.length).toBe(13);
     });
 
     it('should have 3 milestone badges', () => {

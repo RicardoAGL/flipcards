@@ -9,9 +9,9 @@
 
 | Metric | Value |
 |--------|-------|
-| Sounds covered | 8 (aa, ee, oo, uu, oe, ie, ei, ij) |
-| Lessons | 16 (BEG + ADV per sound) |
-| Words | 252 |
+| Sounds covered | 12 (aa, ee, oo, uu, oe, ie, ei, ij, ou, au, eu, ui) |
+| Lessons | 24 (BEG + ADV per sound) |
+| Words | 260 |
 | Tests | 523 (17 test files) |
 | Components | 8 (FlipCard, Quiz, QuizResults, LessonMenu, BadgeGallery, StarIndicator, SplashScreen, SoundIntro) |
 | Languages | 2 (ES, EN) — user-selectable via header toggle + splash screen |
@@ -95,6 +95,15 @@
 - [x] **BL-007** Spaced repetition review mode: `reviewScheduler.js` with urgency-based scheduling (1/3/7/14/30 day intervals), review storage in localStorage, `generateReviewQuiz()` for multi-lesson sessions, review-due indicators on menu buttons, full review flow
 - [x] 523 tests across 17 files (added tts, reviewScheduler, expanded quiz/quizHelpers/lessonMenu/progressStorage)
 
+### Sprint 5 — Content Expansion (Second Batch)
+- [x] **BL-003** Phase 2 second batch: 8 lessons for ou, au, eu, ui (BEG + ADV each)
+- [x] **BL-018** 4 new badges: sound-master-ou, sound-master-au, sound-master-eu, sound-master-ui
+- [x] ou/au cross-distractors for spelling discrimination (same [ʌu] sound)
+- [x] eu/ui cross-distractors for sound discrimination
+- [x] level-2-complete threshold updated (16 → 24 lessons)
+- [x] Added `'ie'` to PHASE_2_SOUNDS in schema.js
+- [x] 523 tests across 17 files
+
 ---
 
 ## Backlog
@@ -140,7 +149,7 @@ Currently the UI language is hardcoded to `'es'` in main.js. All components alre
 ---
 
 ### BL-003: Add Phase 2 Vowel Pair Lessons
-**Priority:** P0 | **Effort:** Large | **Status:** Partial (first batch complete)
+**Priority:** P0 | **Effort:** Large | **Status:** Complete
 
 Add lessons for Dutch diphthongs and vowel pairs. Currently only "same vowel" sounds (aa, ee, oo, uu). Need to add vowel combinations.
 
@@ -390,7 +399,7 @@ uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
 ---
 
 ### BL-018: Add Phase 2 Badges
-**Priority:** P2 | **Effort:** Small | **Status:** Partial (first batch complete)
+**Priority:** P2 | **Effort:** Small | **Status:** Complete
 
 **Depends on:** BL-003
 
@@ -498,8 +507,8 @@ Add PWA manifest and service worker for:
 15. ~~BL-010: Quiz explanatory feedback (medium)~~
 16. ~~BL-007: Spaced repetition / review mode (medium)~~
 
-### Sprint 5 — Content Expansion (continued)
-17. BL-003: Phase 2 remaining sounds: ou, au, eu, ui (large)
+### Sprint 5 — Content Expansion (Second Batch) ✅
+17. ~~BL-003: Phase 2 remaining sounds: ou, au, eu, ui (large)~~
 
 ### Future — Server-Side Features
 18. BL-009: Login / registration (large)

@@ -25,6 +25,14 @@ import P2_EI_BEG from './P2-EI-BEG.json';
 import P2_EI_ADV from './P2-EI-ADV.json';
 import P2_IJ_BEG from './P2-IJ-BEG.json';
 import P2_IJ_ADV from './P2-IJ-ADV.json';
+import P2_OU_BEG from './P2-OU-BEG.json';
+import P2_OU_ADV from './P2-OU-ADV.json';
+import P2_AU_BEG from './P2-AU-BEG.json';
+import P2_AU_ADV from './P2-AU-ADV.json';
+import P2_EU_BEG from './P2-EU-BEG.json';
+import P2_EU_ADV from './P2-EU-ADV.json';
+import P2_UI_BEG from './P2-UI-BEG.json';
+import P2_UI_ADV from './P2-UI-ADV.json';
 
 /**
  * All lessons indexed by their ID
@@ -49,6 +57,14 @@ export const lessonsById = {
   'P2-EI-ADV': P2_EI_ADV,
   'P2-IJ-BEG': P2_IJ_BEG,
   'P2-IJ-ADV': P2_IJ_ADV,
+  'P2-OU-BEG': P2_OU_BEG,
+  'P2-OU-ADV': P2_OU_ADV,
+  'P2-AU-BEG': P2_AU_BEG,
+  'P2-AU-ADV': P2_AU_ADV,
+  'P2-EU-BEG': P2_EU_BEG,
+  'P2-EU-ADV': P2_EU_ADV,
+  'P2-UI-BEG': P2_UI_BEG,
+  'P2-UI-ADV': P2_UI_ADV,
 };
 
 /**
@@ -74,6 +90,14 @@ export const lessonOrder = [
   'P2-EI-ADV',
   'P2-IJ-BEG',
   'P2-IJ-ADV',
+  'P2-OU-BEG',
+  'P2-OU-ADV',
+  'P2-AU-BEG',
+  'P2-AU-ADV',
+  'P2-EU-BEG',
+  'P2-EU-ADV',
+  'P2-UI-BEG',
+  'P2-UI-ADV',
 ];
 
 /**
@@ -139,6 +163,10 @@ export const lessonsBySound = {
   ie: [P2_IE_BEG, P2_IE_ADV],
   ei: [P2_EI_BEG, P2_EI_ADV],
   ij: [P2_IJ_BEG, P2_IJ_ADV],
+  ou: [P2_OU_BEG, P2_OU_ADV],
+  au: [P2_AU_BEG, P2_AU_ADV],
+  eu: [P2_EU_BEG, P2_EU_ADV],
+  ui: [P2_UI_BEG, P2_UI_ADV],
 };
 
 /**
@@ -157,6 +185,10 @@ export const lessonsByPhase = {
     P2_IE_BEG, P2_IE_ADV,
     P2_EI_BEG, P2_EI_ADV,
     P2_IJ_BEG, P2_IJ_ADV,
+    P2_OU_BEG, P2_OU_ADV,
+    P2_AU_BEG, P2_AU_ADV,
+    P2_EU_BEG, P2_EU_ADV,
+    P2_UI_BEG, P2_UI_ADV,
   ],
 };
 
@@ -206,6 +238,26 @@ export const soundInfo = {
     ipa: '[\u025Bi]',
     descriptionES: "Mismo sonido que 'ei', diferente escritura",
     descriptionEN: "Same sound as 'ei', different spelling",
+  },
+  ou: {
+    ipa: '[ʌu]',
+    descriptionES: "Similar al diptongo 'au' en español como en 'cauto', pero más corto",
+    descriptionEN: "Like 'ow' in 'now' but shorter",
+  },
+  au: {
+    ipa: '[ʌu]',
+    descriptionES: "Mismo sonido que 'ou', diferente escritura",
+    descriptionEN: "Same sound as 'ou', different spelling",
+  },
+  eu: {
+    ipa: '[ø]',
+    descriptionES: "Sin equivalente en español. Redondea los labios como para 'o' y di 'e'",
+    descriptionEN: "No English equivalent. Round lips as for 'o' and say 'ay'",
+  },
+  ui: {
+    ipa: '[œy]',
+    descriptionES: "El sonido más difícil. Similar a 'eu' pero deslizando hacia 'i'",
+    descriptionEN: "Most difficult Dutch sound. Start with 'eu' and glide toward 'ee'",
   },
 };
 

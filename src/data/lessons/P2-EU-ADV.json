@@ -1,0 +1,132 @@
+{
+  "lessonId": "P2-EU-ADV",
+  "phase": 2,
+  "sound": {
+    "combination": "eu",
+    "ipa": "[ø]",
+    "descriptionES": "Sin equivalente en español. Redondea los labios como para 'o' y di 'e'",
+    "descriptionEN": "No English equivalent. Round lips as for 'o' and say 'ay'"
+  },
+  "level": "advanced",
+  "unlockRequires": "P2-EU-BEG",
+  "words": [
+    {
+      "wordId": "eu-101",
+      "word": "keuze",
+      "prefix": "k",
+      "suffix": "ze",
+      "translation": { "es": "elección", "en": "choice" },
+      "syllables": 2
+    },
+    {
+      "wordId": "eu-102",
+      "word": "steun",
+      "prefix": "st",
+      "suffix": "n",
+      "translation": { "es": "apoyo", "en": "support" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-103",
+      "word": "sleutel",
+      "prefix": "sl",
+      "suffix": "tel",
+      "translation": { "es": "llave", "en": "key" },
+      "syllables": 2
+    },
+    {
+      "wordId": "eu-104",
+      "word": "heuvel",
+      "prefix": "h",
+      "suffix": "vel",
+      "translation": { "es": "colina", "en": "hill" },
+      "syllables": 2
+    },
+    {
+      "wordId": "eu-105",
+      "word": "meubel",
+      "prefix": "m",
+      "suffix": "bel",
+      "translation": { "es": "mueble", "en": "furniture piece" },
+      "syllables": 2
+    },
+    {
+      "wordId": "eu-106",
+      "word": "leugen",
+      "prefix": "l",
+      "suffix": "gen",
+      "translation": { "es": "mentira", "en": "lie" },
+      "syllables": 2
+    },
+    {
+      "wordId": "eu-107",
+      "word": "vleugel",
+      "prefix": "vl",
+      "suffix": "gel",
+      "translation": { "es": "ala", "en": "wing" },
+      "syllables": 2
+    },
+    {
+      "wordId": "eu-108",
+      "word": "keurig",
+      "prefix": "k",
+      "suffix": "rig",
+      "translation": { "es": "pulcro/impecable", "en": "neat/tidy" },
+      "syllables": 2
+    },
+    {
+      "wordId": "eu-109",
+      "word": "beurs",
+      "prefix": "b",
+      "suffix": "rs",
+      "translation": { "es": "bolsa/beca", "en": "stock exchange/scholarship" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-110",
+      "word": "kreuk",
+      "prefix": "kr",
+      "suffix": "k",
+      "translation": { "es": "arruga", "en": "wrinkle/crease" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-111",
+      "word": "leus",
+      "prefix": "l",
+      "suffix": "s",
+      "translation": { "es": "lema", "en": "motto/slogan" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-112",
+      "word": "peuk",
+      "prefix": "p",
+      "suffix": "k",
+      "translation": { "es": "colilla", "en": "cigarette butt" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-000",
+      "word": "eu",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "keuze", "steun", "sleutel", "heuvel", "meubel", "leugen",
+    "vleugel", "keurig", "beurs", "kreuk", "leus", "peuk",
+    "neus", "deur", "kleur", "leuk",
+    "duim", "vuist", "kruik", "buiten", "sluiten"
+  ]
+}

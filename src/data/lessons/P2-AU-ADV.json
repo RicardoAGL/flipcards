@@ -1,0 +1,132 @@
+{
+  "lessonId": "P2-AU-ADV",
+  "phase": 2,
+  "sound": {
+    "combination": "au",
+    "ipa": "[ʌu]",
+    "descriptionES": "Mismo sonido que 'ou', diferente escritura",
+    "descriptionEN": "Same sound as 'ou', different spelling"
+  },
+  "level": "advanced",
+  "unlockRequires": "P2-AU-BEG",
+  "words": [
+    {
+      "wordId": "au-101",
+      "word": "pauw",
+      "prefix": "p",
+      "suffix": "w",
+      "translation": { "es": "pavo real", "en": "peacock" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-102",
+      "word": "flauw",
+      "prefix": "fl",
+      "suffix": "w",
+      "translation": { "es": "soso/desmayarse", "en": "bland/to faint" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-103",
+      "word": "grauw",
+      "prefix": "gr",
+      "suffix": "w",
+      "translation": { "es": "gris/gruñido", "en": "grey/snarl" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-104",
+      "word": "lauw",
+      "prefix": "l",
+      "suffix": "w",
+      "translation": { "es": "tibio", "en": "lukewarm" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-105",
+      "word": "pauze",
+      "prefix": "p",
+      "suffix": "ze",
+      "translation": { "es": "pausa", "en": "pause" },
+      "syllables": 2
+    },
+    {
+      "wordId": "au-106",
+      "word": "miauw",
+      "prefix": "mi",
+      "suffix": "w",
+      "translation": { "es": "miau", "en": "meow" },
+      "syllables": 2
+    },
+    {
+      "wordId": "au-107",
+      "word": "rauwe",
+      "prefix": "r",
+      "suffix": "we",
+      "translation": { "es": "crudo (adj.)", "en": "raw (adj.)" },
+      "syllables": 2
+    },
+    {
+      "wordId": "au-108",
+      "word": "nauwelijks",
+      "prefix": "n",
+      "suffix": "welijks",
+      "translation": { "es": "apenas", "en": "barely/hardly" },
+      "syllables": 3
+    },
+    {
+      "wordId": "au-109",
+      "word": "applaus",
+      "prefix": "appl",
+      "suffix": "s",
+      "translation": { "es": "aplauso", "en": "applause" },
+      "syllables": 2
+    },
+    {
+      "wordId": "au-110",
+      "word": "sausje",
+      "prefix": "s",
+      "suffix": "sje",
+      "translation": { "es": "salsita", "en": "little sauce" },
+      "syllables": 2
+    },
+    {
+      "wordId": "au-111",
+      "word": "taugé",
+      "prefix": "t",
+      "suffix": "gé",
+      "translation": { "es": "brotes de soja", "en": "bean sprouts" },
+      "syllables": 2
+    },
+    {
+      "wordId": "au-112",
+      "word": "blauwer",
+      "prefix": "bl",
+      "suffix": "wer",
+      "translation": { "es": "más azul", "en": "more blue" },
+      "syllables": 2
+    },
+    {
+      "wordId": "au-000",
+      "word": "au",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "pauw", "flauw", "grauw", "lauw", "pauze", "miauw",
+    "rauwe", "nauwelijks", "applaus", "sausje", "taugé", "blauwer",
+    "blauw", "nauw", "gauw", "rauw", "saus", "dauw",
+    "vrouw", "trouw", "houden", "gebouw", "touw", "schouder"
+  ]
+}

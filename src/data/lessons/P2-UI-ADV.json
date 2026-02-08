@@ -1,0 +1,132 @@
+{
+  "lessonId": "P2-UI-ADV",
+  "phase": 2,
+  "sound": {
+    "combination": "ui",
+    "ipa": "[œy]",
+    "descriptionES": "El sonido más difícil. Similar a 'eu' pero deslizando hacia 'i'",
+    "descriptionEN": "Most difficult Dutch sound. Start with 'eu' and glide toward 'ee'"
+  },
+  "level": "advanced",
+  "unlockRequires": "P2-UI-BEG",
+  "words": [
+    {
+      "wordId": "ui-101",
+      "word": "kruik",
+      "prefix": "kr",
+      "suffix": "k",
+      "translation": { "es": "jarra/botella", "en": "jug/hot water bottle" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-102",
+      "word": "buit",
+      "prefix": "b",
+      "suffix": "t",
+      "translation": { "es": "botín", "en": "loot/booty" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-103",
+      "word": "huilen",
+      "prefix": "h",
+      "suffix": "len",
+      "translation": { "es": "llorar", "en": "to cry" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ui-104",
+      "word": "ruilen",
+      "prefix": "r",
+      "suffix": "len",
+      "translation": { "es": "intercambiar", "en": "to exchange" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ui-105",
+      "word": "buiten",
+      "prefix": "b",
+      "suffix": "ten",
+      "translation": { "es": "afuera", "en": "outside" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ui-106",
+      "word": "sluiten",
+      "prefix": "sl",
+      "suffix": "ten",
+      "translation": { "es": "cerrar", "en": "to close" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ui-107",
+      "word": "kruipen",
+      "prefix": "kr",
+      "suffix": "pen",
+      "translation": { "es": "gatear/arrastrarse", "en": "to crawl" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ui-108",
+      "word": "druif",
+      "prefix": "dr",
+      "suffix": "f",
+      "translation": { "es": "uva", "en": "grape" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-109",
+      "word": "fluiten",
+      "prefix": "fl",
+      "suffix": "ten",
+      "translation": { "es": "silbar", "en": "to whistle" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ui-110",
+      "word": "duister",
+      "prefix": "d",
+      "suffix": "ster",
+      "translation": { "es": "oscuro", "en": "dark/gloomy" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ui-111",
+      "word": "zuil",
+      "prefix": "z",
+      "suffix": "l",
+      "translation": { "es": "columna/pilar", "en": "pillar/column" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-112",
+      "word": "spuit",
+      "prefix": "sp",
+      "suffix": "t",
+      "translation": { "es": "jeringa/boquilla", "en": "syringe/nozzle" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-000",
+      "word": "ui",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "kruik", "buit", "huilen", "ruilen", "buiten", "sluiten",
+    "kruipen", "druif", "fluiten", "duister", "zuil", "spuit",
+    "huis", "muis", "tuin", "bruin", "fruit", "buik",
+    "keuze", "steun", "sleutel", "heuvel", "meubel", "leugen"
+  ]
+}

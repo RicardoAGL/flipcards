@@ -1,0 +1,99 @@
+{
+  "lessonId": "P2-AU-BEG",
+  "phase": 2,
+  "sound": {
+    "combination": "au",
+    "ipa": "[ʌu]",
+    "descriptionES": "Mismo sonido que 'ou', diferente escritura",
+    "descriptionEN": "Same sound as 'ou', different spelling"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "au-001",
+      "word": "blauw",
+      "prefix": "bl",
+      "suffix": "w",
+      "translation": { "es": "azul", "en": "blue" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-002",
+      "word": "nauw",
+      "prefix": "n",
+      "suffix": "w",
+      "translation": { "es": "estrecho", "en": "narrow" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-003",
+      "word": "gauw",
+      "prefix": "g",
+      "suffix": "w",
+      "translation": { "es": "pronto", "en": "soon/quickly" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-004",
+      "word": "rauw",
+      "prefix": "r",
+      "suffix": "w",
+      "translation": { "es": "crudo", "en": "raw" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-005",
+      "word": "saus",
+      "prefix": "s",
+      "suffix": "s",
+      "translation": { "es": "salsa", "en": "sauce" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-006",
+      "word": "dauw",
+      "prefix": "d",
+      "suffix": "w",
+      "translation": { "es": "rocío", "en": "dew" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-007",
+      "word": "kauw",
+      "prefix": "k",
+      "suffix": "w",
+      "translation": { "es": "grajilla/mastica", "en": "jackdaw/chew" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-008",
+      "word": "paus",
+      "prefix": "p",
+      "suffix": "s",
+      "translation": { "es": "papa", "en": "pope" },
+      "syllables": 1
+    },
+    {
+      "wordId": "au-000",
+      "word": "au",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "blauw", "nauw", "gauw", "rauw", "saus", "dauw", "kauw", "paus",
+    "oud", "koud", "goud", "hout", "zout", "fout", "bouw",
+    "naam", "boek", "niet", "goed"
+  ]
+}

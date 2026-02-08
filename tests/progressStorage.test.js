@@ -193,8 +193,8 @@ describe('Progress Storage', () => {
       const progress = getProgress();
 
       expect(progress.completed).toBe(2);
-      expect(progress.total).toBe(16); // 16 lessons total (8 Phase 1 + 8 Phase 2)
-      expect(progress.percentage).toBe(13);
+      expect(progress.total).toBe(24); // 24 lessons total (8 Phase 1 + 16 Phase 2)
+      expect(progress.percentage).toBe(8);
       expect(progress.points).toBe(200);
     });
 
@@ -202,7 +202,7 @@ describe('Progress Storage', () => {
       const progress = getProgress();
 
       expect(progress.completed).toBe(0);
-      expect(progress.total).toBe(16);
+      expect(progress.total).toBe(24);
       expect(progress.percentage).toBe(0);
       expect(progress.points).toBe(0);
     });
@@ -613,19 +613,21 @@ describe('Progress Storage', () => {
       expect(result).toContain('sound-master-oe');
     });
 
-    it('should award level-2-complete when 16 lessons are completed', () => {
+    it('should award level-2-complete when 24 lessons are completed', () => {
       localStorageMock.setItem(
         STORAGE_KEYS.COMPLETED_LESSONS,
         JSON.stringify([
           'P1-AA-BEG', 'P1-AA-ADV', 'P1-EE-BEG', 'P1-EE-ADV',
           'P1-OO-BEG', 'P1-OO-ADV', 'P1-UU-BEG', 'P1-UU-ADV',
           'P2-OE-BEG', 'P2-OE-ADV', 'P2-IE-BEG', 'P2-IE-ADV',
-          'P2-EI-BEG', 'P2-EI-ADV', 'P2-IJ-BEG',
+          'P2-EI-BEG', 'P2-EI-ADV', 'P2-IJ-BEG', 'P2-IJ-ADV',
+          'P2-OU-BEG', 'P2-OU-ADV', 'P2-AU-BEG', 'P2-AU-ADV',
+          'P2-EU-BEG', 'P2-EU-ADV', 'P2-UI-BEG',
         ])
       );
 
       const result = checkAndAwardBadges({
-        lessonId: 'P2-IJ-ADV',
+        lessonId: 'P2-UI-ADV',
         score: 4,
         total: 5,
         passed: true,
@@ -634,19 +636,21 @@ describe('Progress Storage', () => {
       expect(result).toContain('level-2-complete');
     });
 
-    it('should NOT award level-2-complete with only 15 completed', () => {
+    it('should NOT award level-2-complete with only 23 completed', () => {
       localStorageMock.setItem(
         STORAGE_KEYS.COMPLETED_LESSONS,
         JSON.stringify([
           'P1-AA-BEG', 'P1-AA-ADV', 'P1-EE-BEG', 'P1-EE-ADV',
           'P1-OO-BEG', 'P1-OO-ADV', 'P1-UU-BEG', 'P1-UU-ADV',
           'P2-OE-BEG', 'P2-OE-ADV', 'P2-IE-BEG', 'P2-IE-ADV',
-          'P2-EI-BEG', 'P2-EI-ADV',
+          'P2-EI-BEG', 'P2-EI-ADV', 'P2-IJ-BEG', 'P2-IJ-ADV',
+          'P2-OU-BEG', 'P2-OU-ADV', 'P2-AU-BEG', 'P2-AU-ADV',
+          'P2-EU-BEG', 'P2-EU-ADV',
         ])
       );
 
       const result = checkAndAwardBadges({
-        lessonId: 'P2-IJ-BEG',
+        lessonId: 'P2-UI-BEG',
         score: 4,
         total: 5,
         passed: true,
