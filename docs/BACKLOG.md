@@ -12,10 +12,10 @@
 | Sounds covered | 8 (aa, ee, oo, uu, oe, ie, ei, ij) |
 | Lessons | 16 (BEG + ADV per sound) |
 | Words | 252 |
-| Tests | 443 (14 test files) |
+| Tests | 523 (17 test files) |
 | Components | 8 (FlipCard, Quiz, QuizResults, LessonMenu, BadgeGallery, StarIndicator, SplashScreen, SoundIntro) |
 | Languages | 2 (ES, EN) — user-selectable via header toggle + splash screen |
-| Storage | localStorage only (5 keys) |
+| Storage | localStorage only (6 keys) |
 | Deployment | GitHub Pages (static SPA) |
 | Backend | None |
 | PWA | No |
@@ -88,6 +88,12 @@
 - [x] Dynamic badge logic (iterates `lessonsBySound` instead of hardcoded array)
 - [x] Phase-grouped LessonMenu rendering (Phase 1: Same Vowel, Phase 2: Vowel Pairs)
 - [x] 443 tests across 14 files
+
+### Sprint 4 — Learning Mechanics
+- [x] **BL-006** TTS Dutch voice selection: `scoreVoice()` ranking (nl-NL > nl-BE, cloud preferred), `getDutchVoices()` timeout, TTS unavailable warning in Quiz
+- [x] **BL-010** Explanatory quiz feedback: dynamic explanations for incorrect answers comparing sound differences via `getWordSound()` and `generateFeedbackExplanation()`
+- [x] **BL-007** Spaced repetition review mode: `reviewScheduler.js` with urgency-based scheduling (1/3/7/14/30 day intervals), review storage in localStorage, `generateReviewQuiz()` for multi-lesson sessions, review-due indicators on menu buttons, full review flow
+- [x] 523 tests across 17 files (added tts, reviewScheduler, expanded quiz/quizHelpers/lessonMenu/progressStorage)
 
 ---
 
@@ -199,7 +205,7 @@ Phase 2 (18 lessons): Bronze 360 | Silver 1152 | Gold 2304
 ---
 
 ### BL-006: Fix TTS Dutch Pronunciation
-**Priority:** P1 | **Effort:** Medium | **Status:** Not Started
+**Priority:** P1 | **Effort:** Medium | **Status:** Complete
 
 **Problem:** Web Speech API often defaults to English pronunciation for words that exist in both languages. The `nl-NL` voice must be available on the device.
 
@@ -216,7 +222,7 @@ Phase 2 (18 lessons): Bronze 360 | Silver 1152 | Gold 2304
 ---
 
 ### BL-007: Spaced Repetition / Review Mode
-**Priority:** P0 | **Effort:** Medium | **Status:** Not Started
+**Priority:** P0 | **Effort:** Medium | **Status:** Complete
 
 **Identified as critical by both pedagogical AND gamification reviews.**
 
@@ -286,7 +292,7 @@ Without review mechanics, learners complete lessons and forget most content (Ebb
 ---
 
 ### BL-010: Quiz Explanatory Feedback
-**Priority:** P1 | **Effort:** Medium | **Status:** Not Started
+**Priority:** P1 | **Effort:** Medium | **Status:** Complete
 
 **Identified by both pedagogical and gamification reviews.**
 
@@ -487,10 +493,10 @@ Add PWA manifest and service worker for:
 12. ~~BL-018: Phase 2 badges — first batch: 4 sound-master + level-2-complete (small)~~
 13. ~~BL-019: Minimal pair cross-distractors for ei/ij (medium)~~
 
-### Sprint 4 — Learning Mechanics
-14. BL-007: Spaced repetition / review mode (medium)
-15. BL-010: Quiz explanatory feedback (medium)
-16. BL-006: Fix TTS Dutch pronunciation (medium)
+### Sprint 4 — Learning Mechanics ✅
+14. ~~BL-006: Fix TTS Dutch pronunciation (medium)~~
+15. ~~BL-010: Quiz explanatory feedback (medium)~~
+16. ~~BL-007: Spaced repetition / review mode (medium)~~
 
 ### Sprint 5 — Content Expansion (continued)
 17. BL-003: Phase 2 remaining sounds: ou, au, eu, ui (large)
@@ -525,4 +531,4 @@ Add PWA manifest and service worker for:
 - **Positive findings:** localStorage stores only non-sensitive data, proper error handling, CI uses `npm ci`, least-privilege workflow permissions
 
 ### Architecture Clarification
-- **No DuckDB** is used anywhere in the project. Progress is stored in browser localStorage only (4 keys: completed_lessons, total_points, earned_badges, quiz_history). For server-side persistence, PostgreSQL (via Supabase or custom API) is recommended.
+- **No DuckDB** is used anywhere in the project. Progress is stored in browser localStorage only (6 keys: completed_lessons, total_points, earned_badges, quiz_history, language, lesson_review_dates). For server-side persistence, PostgreSQL (via Supabase or custom API) is recommended.

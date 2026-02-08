@@ -12,28 +12,74 @@ export function isSpeechSynthesisSupported() {
 }
 
 /**
- * Get available Dutch voices
+ * Score a voice for quality ranking
+ * Higher scores indicate better voices for Dutch pronunciation
+ * @param {SpeechSynthesisVoice} voice - The voice to score
+ * @returns {number} Quality score
+ */
+export function scoreVoice(voice) {
+  let score = 0;
+
+  // Region preference: nl-NL > nl-BE > other nl
+  if (voice.lang === 'nl-NL') {
+    score += 10;
+  } else if (voice.lang === 'nl-BE') {
+    score += 5;
+  } else {
+    score += 1;
+  }
+
+  // Cloud/remote voices tend to be higher quality
+  if (!voice.localService) {
+    score += 3;
+  }
+
+  // Named premium engines
+  const name = voice.name.toLowerCase();
+  if (name.includes('google') || name.includes('microsoft') || name.includes('apple')) {
+    score += 2;
+  }
+
+  return score;
+}
+
+/**
+ * Get available Dutch voices, sorted by quality score
+ * @param {number} [timeout=3000] - Max ms to wait for voices to load
  * @returns {Promise<SpeechSynthesisVoice[]>}
  */
-export function getDutchVoices() {
+export function getDutchVoices(timeout = 3000) {
   return new Promise((resolve) => {
+    const filterAndSort = (voices) => {
+      return voices
+        .filter((voice) => voice.lang.startsWith('nl'))
+        .sort((a, b) => scoreVoice(b) - scoreVoice(a));
+    };
+
     const voices = speechSynthesis.getVoices();
 
     if (voices.length > 0) {
-      const dutchVoices = voices.filter(
-        (voice) => voice.lang.startsWith('nl'),
-      );
-      resolve(dutchVoices);
+      resolve(filterAndSort(voices));
       return;
     }
 
+    let settled = false;
+
+    const timeoutId = setTimeout(() => {
+      if (!settled) {
+        settled = true;
+        resolve([]);
+      }
+    }, timeout);
+
     // Voices may not be loaded yet, wait for them
     speechSynthesis.onvoiceschanged = () => {
-      const allVoices = speechSynthesis.getVoices();
-      const dutchVoices = allVoices.filter(
-        (voice) => voice.lang.startsWith('nl'),
-      );
-      resolve(dutchVoices);
+      if (!settled) {
+        settled = true;
+        clearTimeout(timeoutId);
+        const allVoices = speechSynthesis.getVoices();
+        resolve(filterAndSort(allVoices));
+      }
     };
   });
 }
@@ -91,9 +137,8 @@ export async function speakDutch(text, options = {}) {
   return new Promise((resolve, reject) => {
     const utterance = new SpeechSynthesisUtterance(text);
 
-    // Prefer nl-NL voice, fallback to any Dutch voice
-    const nlNLVoice = dutchVoices.find((v) => v.lang === 'nl-NL');
-    utterance.voice = nlNLVoice || dutchVoices[0];
+    // Use highest-scored voice (already sorted by getDutchVoices)
+    utterance.voice = dutchVoices[0];
     utterance.lang = 'nl-NL';
     utterance.rate = rate;
     utterance.pitch = pitch;

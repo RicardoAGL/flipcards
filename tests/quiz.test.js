@@ -71,13 +71,14 @@ vi.mock('../src/lib/quizHelpers.js', () => ({
     correctAnswer: question.correctAnswer,
     isCorrect: selected === question.correctAnswer,
   })),
+  generateFeedbackExplanation: vi.fn(() => 'Test explanation text'),
 }));
 
 // Import after mocks are set up
 import { createQuiz } from '../src/components/Quiz.js';
 import { speakDutch, isDutchVoiceAvailable } from '../src/lib/tts.js';
 import { createQuizResults } from '../src/components/QuizResults.js';
-import { generateQuiz, calculateScore, createUserAnswer } from '../src/lib/quizHelpers.js';
+import { generateQuiz, calculateScore, createUserAnswer, generateFeedbackExplanation } from '../src/lib/quizHelpers.js';
 
 describe('Quiz Component', () => {
   let container;
@@ -248,6 +249,31 @@ describe('Quiz Component', () => {
       });
     });
 
+    it('should show explanation in feedback for incorrect answer', async () => {
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      // Click incorrect answer
+      const incorrectOption = container.querySelector('[data-option="jaar"]');
+      incorrectOption.click();
+
+      const explanation = container.querySelector('.quiz-feedback-explanation');
+      expect(explanation).not.toBeNull();
+      expect(explanation.querySelector('.quiz-feedback-tip').textContent).toBe('Test explanation text');
+    });
+
+    it('should NOT show explanation in feedback for correct answer', async () => {
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      // Click correct answer
+      const correctOption = container.querySelector('[data-option="naam"]');
+      correctOption.click();
+
+      const explanation = container.querySelector('.quiz-feedback-explanation');
+      expect(explanation).toBeNull();
+    });
+
     it('should show next button after answering', async () => {
       const quiz = createQuiz(mockLesson, { questionCount: 3 });
       await quiz.mount(container);
@@ -416,6 +442,24 @@ describe('Quiz Component', () => {
   });
 
   describe('TTS Integration', () => {
+    it('should not show TTS warning when TTS is available', async () => {
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      const warning = container.querySelector('.quiz-tts-warning');
+      expect(warning).toBeNull();
+    });
+
+    it('should show TTS warning when TTS is unavailable', async () => {
+      isDutchVoiceAvailable.mockResolvedValueOnce(false);
+
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      const warning = container.querySelector('.quiz-tts-warning');
+      expect(warning).not.toBeNull();
+    });
+
     it('should check TTS availability on mount', async () => {
       const quiz = createQuiz(mockLesson, { questionCount: 3 });
       await quiz.mount(container);
@@ -496,6 +540,44 @@ describe('Quiz Component', () => {
 
       const stateAfter = quiz.getState();
       expect(stateAfter.answers.length).toBe(answerCountBefore);
+    });
+  });
+
+  describe('Pre-supplied Questions', () => {
+    it('should use pre-supplied questions instead of generating', async () => {
+      const customQuestions = [
+        {
+          questionId: 'custom-q1',
+          wordId: 'custom-001',
+          correctAnswer: 'test',
+          options: ['test', 'a', 'b', 'c'],
+          sound: 'aa',
+          ipa: '[aː]',
+          translation: { es: 'prueba', en: 'test' },
+          descriptionES: 'Test',
+          descriptionEN: 'Test',
+        },
+      ];
+
+      const quiz = createQuiz(mockLesson, {
+        questionCount: 3,
+        questions: customQuestions,
+      });
+      await quiz.mount(container);
+
+      // generateQuiz should NOT have been called (we provided questions)
+      expect(generateQuiz).not.toHaveBeenCalled();
+
+      // Should render our custom question's options
+      const state = quiz.getState();
+      expect(state.totalQuestions).toBe(1);
+    });
+
+    it('should fall back to generateQuiz when no questions provided', async () => {
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      expect(generateQuiz).toHaveBeenCalled();
     });
   });
 

@@ -18,7 +18,13 @@ import {
   checkAndAwardBadges,
   getLanguage,
   setLanguage,
+  getCompletedLessons,
+  getReviewDates,
+  getReviewCounts,
+  updateReviewDate,
 } from './lib/progressStorage.js';
+import { getLessonsDueForReview, selectReviewLessons } from './lib/reviewScheduler.js';
+import { generateReviewQuiz } from './lib/quizHelpers.js';
 import { showMilestoneCelebration, showBadgeCelebrations } from './components/StarIndicator.js';
 import { createBadgeGallery } from './components/BadgeGallery.js';
 import { createSplashScreen } from './components/SplashScreen.js';
@@ -36,6 +42,7 @@ let lessonMenu = null;
 let badgeGallery = null;
 let splashScreen = null;
 let soundIntro = null;
+let reviewedLessonIds = null;
 
 /**
  * Initialize the application
@@ -208,12 +215,14 @@ function mountLessonMenu() {
     language: currentLanguage,
     onSelectLesson: handleSelectLesson,
     onViewBadges: mountBadgeGallery,
+    onStartReview: handleStartReview,
   });
 
   currentView = 'menu';
   selectedLessonId = null;
   currentLesson = null;
   flipCardData = null;
+  reviewedLessonIds = null;
 
   // Update points display
   updatePointsDisplay();
@@ -393,6 +402,88 @@ function mountBadgeGallery() {
 }
 
 /**
+ * Handle start review from lesson menu
+ */
+async function handleStartReview() {
+  const completed = getCompletedLessons();
+  const reviewDates = getReviewDates();
+  const reviewCounts = getReviewCounts();
+  const dueLessons = getLessonsDueForReview(completed, reviewDates, reviewCounts);
+  const selected = selectReviewLessons(dueLessons);
+
+  if (selected.length === 0) {
+    return;
+  }
+
+  const selectedIds = selected.map((l) => l.lessonId);
+  const questions = generateReviewQuiz(selectedIds, 5);
+
+  if (questions.length === 0) {
+    return;
+  }
+
+  // Use first lesson's data as base for the quiz chrome (title display)
+  reviewedLessonIds = selectedIds;
+  const firstLessonId = selectedIds[0];
+  currentLesson = lessonsById[firstLessonId];
+  selectedLessonId = null; // Not a single-lesson quiz
+
+  const container = document.getElementById('main-container');
+  if (!container) {
+    return;
+  }
+
+  destroyCurrentComponent();
+
+  // Synthetic review scoring config
+  const reviewLesson = {
+    ...currentLesson,
+    quiz: {
+      questionCount: questions.length,
+      passingScore: 0.6,
+      pointsPerCorrect: 10,
+      completionBonus: 5,
+      masteryBonus: 10,
+    },
+  };
+
+  quiz = createQuiz(reviewLesson, {
+    questionCount: questions.length,
+    language: currentLanguage,
+    questions,
+    onComplete: handleReviewComplete,
+    onClose: () => mountLessonMenu(),
+  });
+
+  await quiz.mount(container);
+  currentView = 'quiz';
+  updateViewUI();
+}
+
+/**
+ * Handle review quiz completion
+ */
+function handleReviewComplete(result) {
+  // Only update review dates if the review was passed
+  if (result.passed && reviewedLessonIds) {
+    const now = Date.now();
+    for (const lessonId of reviewedLessonIds) {
+      updateReviewDate(lessonId, now);
+    }
+  }
+
+  // Add points (no badges, no lesson completion for reviews)
+  if (result.passed && result.pointsEarned > 0) {
+    addPoints(result.pointsEarned);
+  }
+
+  // Return to menu
+  setTimeout(() => {
+    mountLessonMenu();
+  }, 600);
+}
+
+/**
  * Handle view toggle button click
  */
 function handleToggleView() {
@@ -464,9 +555,10 @@ function handleQuizComplete(result) {
     newMilestone = checkNewMilestone(result.pointsEarned);
   }
 
-  // If passed, mark lesson complete and add points
+  // If passed, mark lesson complete, set review date, and add points
   if (result.passed) {
     markLessonComplete(selectedLessonId);
+    updateReviewDate(selectedLessonId);
     if (result.pointsEarned > 0) {
       addPoints(result.pointsEarned);
     }

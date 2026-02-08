@@ -12,7 +12,7 @@
  * - Results screen on completion
  */
 
-import { generateQuiz, calculateScore, createUserAnswer } from '../lib/quizHelpers.js';
+import { generateQuiz, calculateScore, createUserAnswer, generateFeedbackExplanation } from '../lib/quizHelpers.js';
 import { speakDutch, isDutchVoiceAvailable } from '../lib/tts.js';
 import { createQuizResults } from './QuizResults.js';
 import './Quiz.css';
@@ -33,6 +33,7 @@ const TEXT = {
     next: 'Siguiente',
     listenAgain: 'Escuchar de nuevo',
     autoPlaying: 'Escuchando...',
+    ttsUnavailable: 'Pronunciación no disponible en este navegador',
   },
   en: {
     title: 'Quiz',
@@ -46,6 +47,7 @@ const TEXT = {
     next: 'Next',
     listenAgain: 'Listen again',
     autoPlaying: 'Listening...',
+    ttsUnavailable: 'Pronunciation not available in this browser',
   },
 };
 
@@ -62,6 +64,7 @@ const POINTS_PER_CORRECT = 20;
  * @param {string} [options.language='es'] - Display language ('es' or 'en')
  * @param {Function} options.onComplete - Callback when quiz is completed
  * @param {Function} [options.onClose] - Callback when quiz is closed
+ * @param {import('../lib/quizHelpers.js').QuizQuestion[]} [options.questions] - Pre-supplied questions (overrides generateQuiz)
  * @returns {Object} Component API with mount and destroy methods
  */
 export function createQuiz(lesson, options = {}) {
@@ -91,8 +94,8 @@ export function createQuiz(lesson, options = {}) {
    * Initialize the quiz
    */
   const init = async () => {
-    // Generate quiz questions
-    questions = generateQuiz(lesson, questionCount);
+    // Use pre-supplied questions or generate from lesson
+    questions = options.questions || generateQuiz(lesson, questionCount);
 
     // Check TTS availability
     ttsAvailable = await isDutchVoiceAvailable();
@@ -167,7 +170,9 @@ export function createQuiz(lesson, options = {}) {
             </svg>
             <span class="quiz-listen-text">${isSpeaking ? text.autoPlaying : text.listenAgain}</span>
           </button>
-          ` : ''}
+          ` : `
+          <div class="quiz-tts-warning" role="status">${text.ttsUnavailable}</div>
+          `}
 
           <!-- IPA Reference (Secondary) -->
           <div class="quiz-reference">
@@ -412,7 +417,7 @@ export function createQuiz(lesson, options = {}) {
 
     // Update UI
     updateOptionsState(selected, question.correctAnswer, isCorrect);
-    showFeedback(isCorrect, question.correctAnswer);
+    showFeedback(isCorrect, question, selected);
     updateProgressDot(isCorrect);
     showNextButton();
 
@@ -456,26 +461,40 @@ export function createQuiz(lesson, options = {}) {
 
   /**
    * Show feedback message
+   * @param {boolean} isCorrect - Whether the answer was correct
+   * @param {import('../lib/quizHelpers.js').QuizQuestion} question - The quiz question
+   * @param {string} selectedWord - The word the user selected
    */
-  const showFeedback = (isCorrect, correctAnswer) => {
+  const showFeedback = (isCorrect, question, selectedWord) => {
     const feedbackClass = isCorrect ? 'quiz-feedback--correct' : 'quiz-feedback--incorrect';
     const title = isCorrect ? text.correct : text.incorrect;
     const icon = isCorrect
       ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>'
       : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>';
 
+    let explanationHtml = '';
+    if (!isCorrect) {
+      const explanation = generateFeedbackExplanation(question, selectedWord, language);
+      explanationHtml = `
+        <div class="quiz-feedback-explanation">
+          <p class="quiz-feedback-tip">${explanation}</p>
+        </div>
+      `;
+    }
+
     const html = `
       <div class="quiz-feedback ${feedbackClass}">
         <span class="quiz-feedback-icon">${icon}</span>
         <span class="quiz-feedback-title">${title}</span>
         ${!isCorrect ? `<span class="quiz-feedback-subtitle">${text.theAnswerWas}</span>` : ''}
-        <span class="quiz-feedback-word">${correctAnswer}</span>
+        <span class="quiz-feedback-word">${question.correctAnswer}</span>
         <span class="quiz-feedback-tts">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
           </svg>
           ${text.playing}
         </span>
+        ${explanationHtml}
       </div>
     `;
 
@@ -621,7 +640,7 @@ export function createQuiz(lesson, options = {}) {
         currentQuestionIndex = 0;
         answers = [];
         isAnswered = false;
-        questions = generateQuiz(lesson, questionCount);
+        questions = options.questions || generateQuiz(lesson, questionCount);
         render();
       },
       onClose: handleClose,

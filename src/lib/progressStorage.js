@@ -17,6 +17,7 @@ const STORAGE_KEYS = {
   EARNED_BADGES: 'flipcards_earned_badges',
   QUIZ_HISTORY: 'flipcards_quiz_history',
   LANGUAGE: 'flipcards_language',
+  REVIEW_DATES: 'flipcards_lesson_review_dates',
 };
 
 /**
@@ -135,6 +136,59 @@ export function isLessonUnlocked(lessonId) {
   return true;
 }
 
+// ==========================================
+// Review Date Functions
+// ==========================================
+
+/**
+ * Get the review dates map
+ * @returns {Object.<string, number>} Map of lessonId to last review timestamp
+ */
+export function getReviewDates() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEYS.REVIEW_DATES);
+    if (!stored) {
+      return {};
+    }
+    const parsed = JSON.parse(stored);
+    return (typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed)) ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+/**
+ * Update the review date for a lesson
+ * @param {string} lessonId - The lesson ID
+ * @param {number} [timestamp=Date.now()] - Review timestamp
+ */
+export function updateReviewDate(lessonId, timestamp = Date.now()) {
+  const dates = getReviewDates();
+  dates[lessonId] = timestamp;
+  try {
+    localStorage.setItem(STORAGE_KEYS.REVIEW_DATES, JSON.stringify(dates));
+  } catch {
+    console.warn('Failed to save review date to localStorage');
+  }
+}
+
+/**
+ * Get review counts derived from quiz history (count of passing attempts per lesson)
+ * @returns {Object.<string, number>} Map of lessonId to passing attempt count
+ */
+export function getReviewCounts() {
+  const history = getQuizHistory();
+  const counts = {};
+
+  for (const attempt of history) {
+    if (attempt.passed) {
+      counts[attempt.lessonId] = (counts[attempt.lessonId] || 0) + 1;
+    }
+  }
+
+  return counts;
+}
+
 /**
  * Reset all progress data
  * WARNING: This permanently deletes all progress
@@ -145,6 +199,7 @@ export function resetProgress() {
     localStorage.removeItem(STORAGE_KEYS.TOTAL_POINTS);
     localStorage.removeItem(STORAGE_KEYS.EARNED_BADGES);
     localStorage.removeItem(STORAGE_KEYS.QUIZ_HISTORY);
+    localStorage.removeItem(STORAGE_KEYS.REVIEW_DATES);
   } catch {
     console.warn('Failed to reset progress in localStorage');
   }

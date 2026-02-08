@@ -13,6 +13,9 @@ import {
   getPassingScore,
   getMaxPoints,
   validateAnswer,
+  getWordSound,
+  generateFeedbackExplanation,
+  generateReviewQuiz,
 } from '../src/lib/quizHelpers.js';
 import { createMockLesson } from './setup.js';
 
@@ -417,6 +420,152 @@ describe('Quiz Helpers', () => {
     it('should be case-sensitive', () => {
       const question = { correctAnswer: 'naam' };
       expect(validateAnswer('Naam', question)).toBe(false);
+    });
+  });
+
+  // ==========================================
+  // getWordSound
+  // ==========================================
+  describe('getWordSound', () => {
+    it('should return sound info for a known word', () => {
+      // 'naam' is in P1-AA-BEG
+      const result = getWordSound('naam');
+
+      expect(result).not.toBeNull();
+      expect(result.sound).toBe('aa');
+      expect(result.ipa).toBeTruthy();
+    });
+
+    it('should return null for an unknown word', () => {
+      const result = getWordSound('xyznonexistent');
+
+      expect(result).toBeNull();
+    });
+
+    it('should be case-insensitive', () => {
+      const result = getWordSound('Naam');
+
+      expect(result).not.toBeNull();
+      expect(result.sound).toBe('aa');
+    });
+
+    it('should return description fields', () => {
+      const result = getWordSound('naam');
+
+      expect(result).toHaveProperty('descriptionES');
+      expect(result).toHaveProperty('descriptionEN');
+      expect(typeof result.descriptionES).toBe('string');
+      expect(typeof result.descriptionEN).toBe('string');
+    });
+  });
+
+  // ==========================================
+  // generateFeedbackExplanation
+  // ==========================================
+  describe('generateFeedbackExplanation', () => {
+    const aaQuestion = {
+      questionId: 'q1',
+      correctAnswer: 'naam',
+      sound: 'aa',
+      ipa: '[aː]',
+    };
+
+    it('should mention different sounds when selected word is from a different sound', () => {
+      // 'boek' is in oe lesson (P2-OE-BEG)
+      const result = generateFeedbackExplanation(aaQuestion, 'boek', 'es');
+
+      expect(result).toContain('aa');
+      expect(result).toContain('oe');
+    });
+
+    it('should mention same sound when selected word is from the same sound', () => {
+      // 'jaar' is also in aa lessons
+      const result = generateFeedbackExplanation(aaQuestion, 'jaar', 'es');
+
+      expect(result).toContain('aa');
+      expect(result).not.toContain('diferente');
+    });
+
+    it('should return fallback when word is not found in any lesson', () => {
+      const result = generateFeedbackExplanation(aaQuestion, 'unknownword', 'es');
+
+      expect(result).toContain('aa');
+      expect(result).toContain('[aː]');
+    });
+
+    it('should support English language', () => {
+      const result = generateFeedbackExplanation(aaQuestion, 'boek', 'en');
+
+      expect(result).toContain('different');
+    });
+
+    it('should default to Spanish for unknown language', () => {
+      const result = generateFeedbackExplanation(aaQuestion, 'boek', 'fr');
+
+      expect(result).toContain('diferente');
+    });
+
+    it('should default to Spanish when language omitted', () => {
+      const result = generateFeedbackExplanation(aaQuestion, 'unknownword');
+
+      expect(result).toContain('Recuerda');
+    });
+  });
+
+  // ==========================================
+  // generateReviewQuiz
+  // ==========================================
+  describe('generateReviewQuiz', () => {
+    it('should generate the requested number of questions', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG'], 3);
+
+      expect(questions).toHaveLength(3);
+    });
+
+    it('should draw from multiple lessons', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG', 'P1-EE-BEG'], 5);
+
+      expect(questions.length).toBeGreaterThan(0);
+      expect(questions.length).toBeLessThanOrEqual(5);
+    });
+
+    it('should include required question fields', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG'], 2);
+
+      questions.forEach((q) => {
+        expect(q).toHaveProperty('questionId');
+        expect(q).toHaveProperty('correctAnswer');
+        expect(q).toHaveProperty('options');
+        expect(q).toHaveProperty('sound');
+        expect(q).toHaveProperty('ipa');
+      });
+    });
+
+    it('should return empty array for invalid lesson IDs', () => {
+      const questions = generateReviewQuiz(['NONEXISTENT'], 3);
+
+      expect(questions).toEqual([]);
+    });
+
+    it('should return empty array for empty lesson IDs', () => {
+      const questions = generateReviewQuiz([], 3);
+
+      expect(questions).toEqual([]);
+    });
+
+    it('should default to 5 questions', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG', 'P1-EE-BEG']);
+
+      expect(questions).toHaveLength(5);
+    });
+
+    it('should have 4 options per question', () => {
+      const questions = generateReviewQuiz(['P1-AA-BEG'], 2);
+
+      questions.forEach((q) => {
+        expect(q.options).toHaveLength(4);
+        expect(q.options).toContain(q.correctAnswer);
+      });
     });
   });
 });

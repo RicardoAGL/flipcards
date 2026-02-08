@@ -28,6 +28,9 @@ import {
   checkAndAwardBadges,
   getLanguage,
   setLanguage,
+  getReviewDates,
+  updateReviewDate,
+  getReviewCounts,
 } from '../src/lib/progressStorage.js';
 
 // Mock localStorage
@@ -682,6 +685,124 @@ describe('Progress Storage', () => {
 
       expect(localStorageMock.removeItem).toHaveBeenCalledWith(STORAGE_KEYS.EARNED_BADGES);
       expect(localStorageMock.removeItem).toHaveBeenCalledWith(STORAGE_KEYS.QUIZ_HISTORY);
+    });
+  });
+
+  // ==========================================
+  // Review Dates
+  // ==========================================
+  describe('getReviewDates', () => {
+    it('should return empty object when no review dates stored', () => {
+      expect(getReviewDates()).toEqual({});
+    });
+
+    it('should return stored review dates', () => {
+      const dates = { 'P1-AA-BEG': 1234567890 };
+      localStorageMock.setItem(STORAGE_KEYS.REVIEW_DATES, JSON.stringify(dates));
+
+      expect(getReviewDates()).toEqual(dates);
+    });
+
+    it('should handle invalid JSON gracefully', () => {
+      localStorageMock.setItem(STORAGE_KEYS.REVIEW_DATES, 'invalid');
+
+      expect(getReviewDates()).toEqual({});
+    });
+
+    it('should handle non-object stored values', () => {
+      localStorageMock.setItem(STORAGE_KEYS.REVIEW_DATES, JSON.stringify([1, 2]));
+
+      expect(getReviewDates()).toEqual({});
+    });
+  });
+
+  describe('updateReviewDate', () => {
+    it('should save a review date for a lesson', () => {
+      updateReviewDate('P1-AA-BEG', 1234567890);
+
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        STORAGE_KEYS.REVIEW_DATES,
+        JSON.stringify({ 'P1-AA-BEG': 1234567890 })
+      );
+    });
+
+    it('should upsert existing review dates', () => {
+      localStorageMock.setItem(
+        STORAGE_KEYS.REVIEW_DATES,
+        JSON.stringify({ 'P1-AA-BEG': 100 })
+      );
+
+      updateReviewDate('P1-EE-BEG', 200);
+
+      const calls = localStorageMock.setItem.mock.calls.filter(
+        (c) => c[0] === STORAGE_KEYS.REVIEW_DATES
+      );
+      const lastCall = calls[calls.length - 1];
+      const saved = JSON.parse(lastCall[1]);
+
+      expect(saved).toEqual({ 'P1-AA-BEG': 100, 'P1-EE-BEG': 200 });
+    });
+
+    it('should overwrite existing date for same lesson', () => {
+      localStorageMock.setItem(
+        STORAGE_KEYS.REVIEW_DATES,
+        JSON.stringify({ 'P1-AA-BEG': 100 })
+      );
+
+      updateReviewDate('P1-AA-BEG', 999);
+
+      const calls = localStorageMock.setItem.mock.calls.filter(
+        (c) => c[0] === STORAGE_KEYS.REVIEW_DATES
+      );
+      const lastCall = calls[calls.length - 1];
+      const saved = JSON.parse(lastCall[1]);
+
+      expect(saved['P1-AA-BEG']).toBe(999);
+    });
+  });
+
+  describe('getReviewCounts', () => {
+    it('should return empty object when no quiz history', () => {
+      expect(getReviewCounts()).toEqual({});
+    });
+
+    it('should count passing attempts per lesson', () => {
+      const history = [
+        { lessonId: 'P1-AA-BEG', score: 4, total: 5, passed: true, timestamp: 100 },
+        { lessonId: 'P1-AA-BEG', score: 2, total: 5, passed: false, timestamp: 200 },
+        { lessonId: 'P1-AA-BEG', score: 5, total: 5, passed: true, timestamp: 300 },
+        { lessonId: 'P1-EE-BEG', score: 4, total: 5, passed: true, timestamp: 400 },
+      ];
+      localStorageMock.setItem(STORAGE_KEYS.QUIZ_HISTORY, JSON.stringify(history));
+
+      const counts = getReviewCounts();
+
+      expect(counts['P1-AA-BEG']).toBe(2);
+      expect(counts['P1-EE-BEG']).toBe(1);
+    });
+
+    it('should not count failed attempts', () => {
+      const history = [
+        { lessonId: 'P1-AA-BEG', score: 1, total: 5, passed: false, timestamp: 100 },
+      ];
+      localStorageMock.setItem(STORAGE_KEYS.QUIZ_HISTORY, JSON.stringify(history));
+
+      const counts = getReviewCounts();
+
+      expect(counts['P1-AA-BEG']).toBeUndefined();
+    });
+  });
+
+  describe('resetProgress with review dates', () => {
+    it('should clear review dates', () => {
+      localStorageMock.setItem(
+        STORAGE_KEYS.REVIEW_DATES,
+        JSON.stringify({ 'P1-AA-BEG': 123 })
+      );
+
+      resetProgress();
+
+      expect(localStorageMock.removeItem).toHaveBeenCalledWith(STORAGE_KEYS.REVIEW_DATES);
     });
   });
 
