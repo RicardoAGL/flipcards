@@ -49,9 +49,9 @@ describe('Lesson Loader', () => {
       });
     });
 
-    it('should return 8 lessons for Phase 1', () => {
+    it('should return 16 lessons across Phase 1 and Phase 2', () => {
       const lessons = getAllLessons();
-      expect(lessons).toHaveLength(8);
+      expect(lessons).toHaveLength(16);
     });
   });
 
@@ -159,6 +159,12 @@ describe('Lesson Loader', () => {
       expect(lessons).toHaveLength(8);
     });
 
+    it('should return lessons for Phase 2', () => {
+      const lessons = getLessonsByPhase(2);
+
+      expect(lessons).toHaveLength(8);
+    });
+
     it('should return empty array for non-existent phase', () => {
       const lessons = getLessonsByPhase(99);
 
@@ -178,7 +184,7 @@ describe('Lesson Loader', () => {
     });
 
     it('should return null for last lesson', () => {
-      const next = getNextLesson('P1-UU-ADV');
+      const next = getNextLesson('P2-IJ-ADV');
 
       expect(next).toBeNull();
     });
@@ -279,7 +285,7 @@ describe('Lesson Loader', () => {
       const progress = getLessonProgress([]);
 
       expect(progress.completed).toBe(0);
-      expect(progress.total).toBe(8);
+      expect(progress.total).toBe(16);
       expect(progress.percentage).toBe(0);
     });
 
@@ -287,7 +293,7 @@ describe('Lesson Loader', () => {
       const progress = getLessonProgress(['P1-AA-BEG', 'P1-EE-BEG']);
 
       expect(progress.completed).toBe(2);
-      expect(progress.percentage).toBe(25); // 2/8 = 25%
+      expect(progress.percentage).toBe(13); // 2/16 = 12.5% → 13%
     });
 
     it('should ignore invalid lesson IDs', () => {
@@ -367,10 +373,10 @@ describe('Lesson Loader', () => {
     it('should return overall statistics', () => {
       const stats = getLessonStats();
 
-      expect(stats.totalLessons).toBe(8);
+      expect(stats.totalLessons).toBe(16);
       expect(stats.totalWords).toBeGreaterThan(0);
       expect(stats.totalMinutes).toBeGreaterThan(0);
-      expect(stats.phases).toBe(1);
+      expect(stats.phases).toBe(2);
     });
   });
 

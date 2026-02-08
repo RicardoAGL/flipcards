@@ -1,0 +1,132 @@
+{
+  "lessonId": "P2-IJ-ADV",
+  "phase": 2,
+  "sound": {
+    "combination": "ij",
+    "ipa": "[\u025bi]",
+    "descriptionES": "Mismo sonido que 'ei', diferente escritura",
+    "descriptionEN": "Same sound as 'ei', different spelling"
+  },
+  "level": "advanced",
+  "unlockRequires": "P2-IJ-BEG",
+  "words": [
+    {
+      "wordId": "ij-101",
+      "word": "schrijven",
+      "prefix": "schr",
+      "suffix": "ven",
+      "translation": { "es": "escribir", "en": "to write" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-102",
+      "word": "vrijdag",
+      "prefix": "vr",
+      "suffix": "dag",
+      "translation": { "es": "viernes", "en": "Friday" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-103",
+      "word": "rijden",
+      "prefix": "r",
+      "suffix": "den",
+      "translation": { "es": "conducir", "en": "to drive" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-104",
+      "word": "bedrijf",
+      "prefix": "bedr",
+      "suffix": "f",
+      "translation": { "es": "empresa", "en": "company" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-105",
+      "word": "krijgen",
+      "prefix": "kr",
+      "suffix": "gen",
+      "translation": { "es": "obtener/recibir", "en": "to get/receive" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-106",
+      "word": "bijzonder",
+      "prefix": "b",
+      "suffix": "zonder",
+      "translation": { "es": "especial", "en": "special" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ij-107",
+      "word": "wijzen",
+      "prefix": "w",
+      "suffix": "zen",
+      "translation": { "es": "se\u00f1alar", "en": "to point" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-108",
+      "word": "vergelijken",
+      "prefix": "vergel",
+      "suffix": "ken",
+      "translation": { "es": "comparar", "en": "to compare" },
+      "syllables": 4
+    },
+    {
+      "wordId": "ij-109",
+      "word": "blijven",
+      "prefix": "bl",
+      "suffix": "ven",
+      "translation": { "es": "quedarse", "en": "to stay" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-110",
+      "word": "prijzen",
+      "prefix": "pr",
+      "suffix": "zen",
+      "translation": { "es": "precios/elogiar", "en": "prices/to praise" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-111",
+      "word": "lijken",
+      "prefix": "l",
+      "suffix": "ken",
+      "translation": { "es": "parecer", "en": "to seem" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-112",
+      "word": "strijden",
+      "prefix": "str",
+      "suffix": "den",
+      "translation": { "es": "luchar", "en": "to fight" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ij-000",
+      "word": "ij",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "schrijven", "vrijdag", "rijden", "bedrijf", "krijgen", "bijzonder",
+    "wijzen", "vergelijken", "blijven", "prijzen", "lijken", "strijden",
+    "wijn", "vrij", "blij", "fijn", "eigenlijk", "veilig", "meisje",
+    "reizen", "bereiden", "geheim"
+  ]
+}

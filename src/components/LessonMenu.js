@@ -15,13 +15,19 @@ import {
   isLessonUnlocked,
   isLessonCompleted,
 } from '../lib/progressStorage.js';
-import { lessonsBySound, soundInfo } from '../data/lessons/index.js';
+import { lessonsBySound, lessonsByPhase, soundInfo } from '../data/lessons/index.js';
 import { createStarIndicatorHTML, createStarProgressHTML } from './StarIndicator.js';
 import './LessonMenu.css';
 
 /**
- * Text content for different languages
+ * Phase display names
+ * @type {Object.<number, { es: string, en: string }>}
  */
+const PHASE_NAMES = {
+  1: { es: 'Misma Vocal', en: 'Same Vowel' },
+  2: { es: 'Pares Voc\u00e1licos', en: 'Vowel Pairs' },
+};
+
 const TEXT = {
   es: {
     title: 'Lecciones',
@@ -32,6 +38,7 @@ const TEXT = {
     advanced: 'Avanzado',
     lockedMessage: 'Completa Principiante para desbloquear',
     viewBadges: 'Ver Insignias',
+    phase: 'Fase',
   },
   en: {
     title: 'Lessons',
@@ -42,6 +49,7 @@ const TEXT = {
     advanced: 'Advanced',
     lockedMessage: 'Complete Beginner to unlock',
     viewBadges: 'View Badges',
+    phase: 'Phase',
   },
 };
 
@@ -134,24 +142,44 @@ export function createLessonMenu(container, options = {}) {
   };
 
   /**
-   * Render all sound cards
+   * Render a single sound card
+   * @param {string} sound - Sound combination key
+   */
+  const renderSoundCard = (sound) => {
+    const info = soundInfo[sound];
+    const lessons = lessonsBySound[sound];
+    const beginnerLesson = lessons.find(l => l.level === 'beginner');
+    const advancedLesson = lessons.find(l => l.level === 'advanced');
+
+    return `
+      <div class="sound-card" role="group" aria-labelledby="sound-${sound}-label">
+        <span class="sound-card-sound" id="sound-${sound}-label">${sound}</span>
+        <span class="sound-card-ipa">${info.ipa}</span>
+        <div class="sound-card-levels">
+          ${renderLevelButton(beginnerLesson, text.beginner)}
+          ${renderLevelButton(advancedLesson, text.advanced)}
+        </div>
+      </div>
+    `;
+  };
+
+  /**
+   * Render all sound cards grouped by phase
    */
   const renderSoundCards = () => {
-    const sounds = ['aa', 'ee', 'oo', 'uu'];
+    const phases = Object.keys(lessonsByPhase).map(Number).sort();
 
-    return sounds.map(sound => {
-      const info = soundInfo[sound];
-      const lessons = lessonsBySound[sound];
-      const beginnerLesson = lessons.find(l => l.level === 'beginner');
-      const advancedLesson = lessons.find(l => l.level === 'advanced');
+    return phases.map(phase => {
+      const phaseLessons = lessonsByPhase[phase];
+      const phaseSounds = [...new Set(phaseLessons.map(l => l.sound.combination))];
+      const phaseName = PHASE_NAMES[phase] || { es: '', en: '' };
+      const phaseLabel = phaseName[language] || phaseName.es;
 
       return `
-        <div class="sound-card" role="group" aria-labelledby="sound-${sound}-label">
-          <span class="sound-card-sound" id="sound-${sound}-label">${sound}</span>
-          <span class="sound-card-ipa">${info.ipa}</span>
-          <div class="sound-card-levels">
-            ${renderLevelButton(beginnerLesson, text.beginner)}
-            ${renderLevelButton(advancedLesson, text.advanced)}
+        <div class="lesson-menu-phase" data-phase="${phase}">
+          <h3 class="lesson-menu-phase-title">${text.phase} ${phase}: ${phaseLabel}</h3>
+          <div class="lesson-menu-phase-grid">
+            ${phaseSounds.map(sound => renderSoundCard(sound)).join('')}
           </div>
         </div>
       `;

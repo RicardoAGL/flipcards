@@ -6,7 +6,7 @@
  * across browser sessions using localStorage.
  */
 
-import { lessonOrder } from '../data/lessons/index.js';
+import { lessonOrder, lessonsBySound } from '../data/lessons/index.js';
 
 /**
  * Storage keys for localStorage
@@ -447,12 +447,13 @@ export function checkAndAwardBadges(quizResult) {
   }
 
   // Check: sound mastery badges (complete both BEG and ADV for a sound)
-  const sounds = ['aa', 'ee', 'oo', 'uu'];
-  for (const sound of sounds) {
-    const begId = `P1-${sound.toUpperCase()}-BEG`;
-    const advId = `P1-${sound.toUpperCase()}-ADV`;
-    const begComplete = isLessonCompleted(begId) || (passed && lessonId === begId);
-    const advComplete = isLessonCompleted(advId) || (passed && lessonId === advId);
+  for (const [sound, lessons] of Object.entries(lessonsBySound)) {
+    const begLesson = lessons.find(l => l.level === 'beginner');
+    const advLesson = lessons.find(l => l.level === 'advanced');
+    if (!begLesson || !advLesson) { continue; }
+
+    const begComplete = isLessonCompleted(begLesson.lessonId) || (passed && lessonId === begLesson.lessonId);
+    const advComplete = isLessonCompleted(advLesson.lessonId) || (passed && lessonId === advLesson.lessonId);
 
     if (begComplete && advComplete) {
       const badgeId = `sound-master-${sound}`;
@@ -462,13 +463,18 @@ export function checkAndAwardBadges(quizResult) {
     }
   }
 
-  // Check: level-1-complete (complete all 8 lessons)
+  // Check: level completion badges
   const willHaveCompleted = passed && !completedLessons.includes(lessonId)
     ? completedLessons.length + 1
     : completedLessons.length;
   if (willHaveCompleted >= 8) {
     if (awardBadge('level-1-complete')) {
       newBadges.push('level-1-complete');
+    }
+  }
+  if (willHaveCompleted >= 16) {
+    if (awardBadge('level-2-complete')) {
+      newBadges.push('level-2-complete');
     }
   }
 

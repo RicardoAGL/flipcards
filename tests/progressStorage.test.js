@@ -190,8 +190,8 @@ describe('Progress Storage', () => {
       const progress = getProgress();
 
       expect(progress.completed).toBe(2);
-      expect(progress.total).toBe(8); // 8 lessons total
-      expect(progress.percentage).toBe(25);
+      expect(progress.total).toBe(16); // 16 lessons total (8 Phase 1 + 8 Phase 2)
+      expect(progress.percentage).toBe(13);
       expect(progress.points).toBe(200);
     });
 
@@ -199,7 +199,7 @@ describe('Progress Storage', () => {
       const progress = getProgress();
 
       expect(progress.completed).toBe(0);
-      expect(progress.total).toBe(8);
+      expect(progress.total).toBe(16);
       expect(progress.percentage).toBe(0);
       expect(progress.points).toBe(0);
     });
@@ -592,6 +592,64 @@ describe('Progress Storage', () => {
       });
 
       expect(result).toContain('level-1-complete');
+    });
+
+    it('should award sound-master-oe when both P2-OE-BEG and P2-OE-ADV complete', () => {
+      localStorageMock.setItem(
+        STORAGE_KEYS.COMPLETED_LESSONS,
+        JSON.stringify(['P2-OE-BEG'])
+      );
+
+      const result = checkAndAwardBadges({
+        lessonId: 'P2-OE-ADV',
+        score: 4,
+        total: 5,
+        passed: true,
+      });
+
+      expect(result).toContain('sound-master-oe');
+    });
+
+    it('should award level-2-complete when 16 lessons are completed', () => {
+      localStorageMock.setItem(
+        STORAGE_KEYS.COMPLETED_LESSONS,
+        JSON.stringify([
+          'P1-AA-BEG', 'P1-AA-ADV', 'P1-EE-BEG', 'P1-EE-ADV',
+          'P1-OO-BEG', 'P1-OO-ADV', 'P1-UU-BEG', 'P1-UU-ADV',
+          'P2-OE-BEG', 'P2-OE-ADV', 'P2-IE-BEG', 'P2-IE-ADV',
+          'P2-EI-BEG', 'P2-EI-ADV', 'P2-IJ-BEG',
+        ])
+      );
+
+      const result = checkAndAwardBadges({
+        lessonId: 'P2-IJ-ADV',
+        score: 4,
+        total: 5,
+        passed: true,
+      });
+
+      expect(result).toContain('level-2-complete');
+    });
+
+    it('should NOT award level-2-complete with only 15 completed', () => {
+      localStorageMock.setItem(
+        STORAGE_KEYS.COMPLETED_LESSONS,
+        JSON.stringify([
+          'P1-AA-BEG', 'P1-AA-ADV', 'P1-EE-BEG', 'P1-EE-ADV',
+          'P1-OO-BEG', 'P1-OO-ADV', 'P1-UU-BEG', 'P1-UU-ADV',
+          'P2-OE-BEG', 'P2-OE-ADV', 'P2-IE-BEG', 'P2-IE-ADV',
+          'P2-EI-BEG', 'P2-EI-ADV',
+        ])
+      );
+
+      const result = checkAndAwardBadges({
+        lessonId: 'P2-IJ-BEG',
+        score: 4,
+        total: 5,
+        passed: true,
+      });
+
+      expect(result).not.toContain('level-2-complete');
     });
 
     it('should not duplicate badges', () => {

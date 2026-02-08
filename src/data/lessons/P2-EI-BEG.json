@@ -1,0 +1,99 @@
+{
+  "lessonId": "P2-EI-BEG",
+  "phase": 2,
+  "sound": {
+    "combination": "ei",
+    "ipa": "[\u025bi]",
+    "descriptionES": "Similar a 'ei' como en 'reina'",
+    "descriptionEN": "Like 'ay' in 'say' or 'ei' in 'eight'"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "ei-001",
+      "word": "trein",
+      "prefix": "tr",
+      "suffix": "n",
+      "translation": { "es": "tren", "en": "train" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ei-002",
+      "word": "klein",
+      "prefix": "kl",
+      "suffix": "n",
+      "translation": { "es": "peque\u00f1o", "en": "small" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ei-003",
+      "word": "reis",
+      "prefix": "r",
+      "suffix": "s",
+      "translation": { "es": "viaje", "en": "trip/journey" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ei-004",
+      "word": "ei",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "huevo", "en": "egg" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ei-005",
+      "word": "teil",
+      "prefix": "t",
+      "suffix": "l",
+      "translation": { "es": "barrica/balde", "en": "tub/basin" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ei-006",
+      "word": "kei",
+      "prefix": "k",
+      "suffix": "",
+      "translation": { "es": "piedra/muy", "en": "boulder/very" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ei-007",
+      "word": "hei",
+      "prefix": "h",
+      "suffix": "",
+      "translation": { "es": "brezal", "en": "heather/heath" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ei-008",
+      "word": "leiden",
+      "prefix": "l",
+      "suffix": "den",
+      "translation": { "es": "sufrir/guiar", "en": "to suffer/to lead" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-000",
+      "word": "ei",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "trein", "klein", "reis", "ei", "teil", "kei", "hei", "leiden",
+    "wijn", "vrij", "rij", "bij", "ijs", "blij", "fijn",
+    "naam", "boek", "niet", "goed"
+  ]
+}

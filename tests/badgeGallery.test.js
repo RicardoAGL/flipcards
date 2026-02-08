@@ -110,16 +110,16 @@ describe('BadgeGallery Component', () => {
       expect(cards.length).toBe(3);
     });
 
-    it('should have 5 mastery badges', () => {
+    it('should have 9 mastery badges', () => {
       const gallery = createBadgeGallery(container, {});
 
       const masteryGroup = container.querySelector('[data-category="mastery"]');
       expect(masteryGroup).not.toBeNull();
       const cards = masteryGroup.querySelectorAll('.badge-card');
-      expect(cards.length).toBe(5);
+      expect(cards.length).toBe(9);
     });
 
-    it('should have 2 milestone badges', () => {
+    it('should have 3 milestone badges', () => {
       const gallery = createBadgeGallery(container, {});
 
       const milestoneGroup = container.querySelector(
@@ -127,7 +127,7 @@ describe('BadgeGallery Component', () => {
       );
       expect(milestoneGroup).not.toBeNull();
       const cards = milestoneGroup.querySelectorAll('.badge-card');
-      expect(cards.length).toBe(2);
+      expect(cards.length).toBe(3);
     });
   });
 

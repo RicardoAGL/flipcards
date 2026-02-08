@@ -1,0 +1,131 @@
+{
+  "lessonId": "P2-OE-ADV",
+  "phase": 2,
+  "sound": {
+    "combination": "oe",
+    "ipa": "[u]",
+    "descriptionES": "Similar a la 'u' en espa\u00f1ol como en 'su'",
+    "descriptionEN": "Like 'oo' in 'book' but shorter"
+  },
+  "level": "advanced",
+  "unlockRequires": "P2-OE-BEG",
+  "words": [
+    {
+      "wordId": "oe-101",
+      "word": "genoeg",
+      "prefix": "gen",
+      "suffix": "g",
+      "translation": { "es": "suficiente", "en": "enough" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-102",
+      "word": "gevoel",
+      "prefix": "gev",
+      "suffix": "l",
+      "translation": { "es": "sentimiento", "en": "feeling" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-103",
+      "word": "broer",
+      "prefix": "br",
+      "suffix": "r",
+      "translation": { "es": "hermano", "en": "brother" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-104",
+      "word": "moeite",
+      "prefix": "m",
+      "suffix": "ite",
+      "translation": { "es": "esfuerzo", "en": "effort" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-105",
+      "word": "roepen",
+      "prefix": "r",
+      "suffix": "pen",
+      "translation": { "es": "llamar/gritar", "en": "to call/shout" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-106",
+      "word": "zoeken",
+      "prefix": "z",
+      "suffix": "ken",
+      "translation": { "es": "buscar", "en": "to search" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-107",
+      "word": "stoep",
+      "prefix": "st",
+      "suffix": "p",
+      "translation": { "es": "acera", "en": "sidewalk" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-108",
+      "word": "bloem",
+      "prefix": "bl",
+      "suffix": "m",
+      "translation": { "es": "flor", "en": "flower" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-109",
+      "word": "proeven",
+      "prefix": "pr",
+      "suffix": "ven",
+      "translation": { "es": "probar/degustar", "en": "to taste" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-110",
+      "word": "droeg",
+      "prefix": "dr",
+      "suffix": "g",
+      "translation": { "es": "llev\u00f3/carg\u00f3", "en": "carried/wore" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-111",
+      "word": "beroep",
+      "prefix": "ber",
+      "suffix": "p",
+      "translation": { "es": "profesi\u00f3n", "en": "profession" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-112",
+      "word": "bezoek",
+      "prefix": "bez",
+      "suffix": "k",
+      "translation": { "es": "visita", "en": "visit" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-000",
+      "word": "oe",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "genoeg", "gevoel", "broer", "moeite", "roepen", "zoeken", "stoep",
+    "bloem", "proeven", "droeg", "beroep", "bezoek", "boek", "goed",
+    "groep", "doen", "voet", "moeder", "groot", "rood", "school", "veel"
+  ]
+}

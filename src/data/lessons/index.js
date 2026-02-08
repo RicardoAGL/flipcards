@@ -2,7 +2,7 @@
  * Lesson Index
  * Centralized export of all lesson data with metadata
  *
- * @fileoverview Exports all Phase 1 lessons and provides metadata
+ * @fileoverview Exports all lesson data and provides metadata
  * for the lesson menu and navigation.
  */
 
@@ -16,11 +16,22 @@ import P1_OO_ADV from './P1-OO-ADV.json';
 import P1_UU_BEG from './P1-UU-BEG.json';
 import P1_UU_ADV from './P1-UU-ADV.json';
 
+// Import all Phase 2 lessons
+import P2_OE_BEG from './P2-OE-BEG.json';
+import P2_OE_ADV from './P2-OE-ADV.json';
+import P2_IE_BEG from './P2-IE-BEG.json';
+import P2_IE_ADV from './P2-IE-ADV.json';
+import P2_EI_BEG from './P2-EI-BEG.json';
+import P2_EI_ADV from './P2-EI-ADV.json';
+import P2_IJ_BEG from './P2-IJ-BEG.json';
+import P2_IJ_ADV from './P2-IJ-ADV.json';
+
 /**
  * All lessons indexed by their ID
  * @type {Object.<string, import('../schema.js').Lesson>}
  */
 export const lessonsById = {
+  // Phase 1
   'P1-AA-BEG': P1_AA_BEG,
   'P1-AA-ADV': P1_AA_ADV,
   'P1-EE-BEG': P1_EE_BEG,
@@ -29,6 +40,15 @@ export const lessonsById = {
   'P1-OO-ADV': P1_OO_ADV,
   'P1-UU-BEG': P1_UU_BEG,
   'P1-UU-ADV': P1_UU_ADV,
+  // Phase 2
+  'P2-OE-BEG': P2_OE_BEG,
+  'P2-OE-ADV': P2_OE_ADV,
+  'P2-IE-BEG': P2_IE_BEG,
+  'P2-IE-ADV': P2_IE_ADV,
+  'P2-EI-BEG': P2_EI_BEG,
+  'P2-EI-ADV': P2_EI_ADV,
+  'P2-IJ-BEG': P2_IJ_BEG,
+  'P2-IJ-ADV': P2_IJ_ADV,
 };
 
 /**
@@ -36,6 +56,7 @@ export const lessonsById = {
  * @type {string[]}
  */
 export const lessonOrder = [
+  // Phase 1
   'P1-AA-BEG',
   'P1-AA-ADV',
   'P1-EE-BEG',
@@ -44,6 +65,15 @@ export const lessonOrder = [
   'P1-OO-ADV',
   'P1-UU-BEG',
   'P1-UU-ADV',
+  // Phase 2
+  'P2-OE-BEG',
+  'P2-OE-ADV',
+  'P2-IE-BEG',
+  'P2-IE-ADV',
+  'P2-EI-BEG',
+  'P2-EI-ADV',
+  'P2-IJ-BEG',
+  'P2-IJ-ADV',
 ];
 
 /**
@@ -99,10 +129,16 @@ export const lessonMenu = lessonOrder.map(id => generateMenuEntry(lessonsById[id
  * @type {Object.<string, import('../schema.js').Lesson[]>}
  */
 export const lessonsBySound = {
+  // Phase 1
   aa: [P1_AA_BEG, P1_AA_ADV],
   ee: [P1_EE_BEG, P1_EE_ADV],
   oo: [P1_OO_BEG, P1_OO_ADV],
   uu: [P1_UU_BEG, P1_UU_ADV],
+  // Phase 2
+  oe: [P2_OE_BEG, P2_OE_ADV],
+  ie: [P2_IE_BEG, P2_IE_ADV],
+  ei: [P2_EI_BEG, P2_EI_ADV],
+  ij: [P2_IJ_BEG, P2_IJ_ADV],
 };
 
 /**
@@ -116,13 +152,20 @@ export const lessonsByPhase = {
     P1_OO_BEG, P1_OO_ADV,
     P1_UU_BEG, P1_UU_ADV,
   ],
+  2: [
+    P2_OE_BEG, P2_OE_ADV,
+    P2_IE_BEG, P2_IE_ADV,
+    P2_EI_BEG, P2_EI_ADV,
+    P2_IJ_BEG, P2_IJ_ADV,
+  ],
 };
 
 /**
- * Sound information for Phase 1
+ * Sound information for all phases
  * @type {Object.<string, { ipa: string, descriptionES: string, descriptionEN: string }>}
  */
 export const soundInfo = {
+  // Phase 1
   aa: {
     ipa: '[a\u02D0]',
     descriptionES: "Similar a la 'a' en espa\u00F1ol pero m\u00E1s larga y abierta, como en 'pap\u00E1'",
@@ -143,6 +186,27 @@ export const soundInfo = {
     descriptionES: "Similar a la 'u' francesa o alemana. Redondea los labios y di 'i'",
     descriptionEN: "Like French 'u' in 'tu' or German '\u00FC' - rounded lips saying 'ee'",
   },
+  // Phase 2
+  oe: {
+    ipa: '[u]',
+    descriptionES: "Similar a la 'u' en espa\u00F1ol como en 'su'",
+    descriptionEN: "Like 'oo' in 'book' but shorter",
+  },
+  ie: {
+    ipa: '[i]',
+    descriptionES: "Similar a la 'i' en espa\u00F1ol como en 'si'",
+    descriptionEN: "Like 'ee' in 'see'",
+  },
+  ei: {
+    ipa: '[\u025Bi]',
+    descriptionES: "Similar a 'ei' como en 'reina'",
+    descriptionEN: "Like 'ay' in 'say' or 'ei' in 'eight'",
+  },
+  ij: {
+    ipa: '[\u025Bi]',
+    descriptionES: "Mismo sonido que 'ei', diferente escritura",
+    descriptionEN: "Same sound as 'ei', different spelling",
+  },
 };
 
 /**
@@ -153,7 +217,7 @@ export const lessonStats = {
   totalLessons: lessonOrder.length,
   totalWords: Object.values(lessonsById).reduce((sum, lesson) => sum + lesson.words.length, 0),
   totalMinutes: Object.values(lessonsById).reduce((sum, lesson) => sum + lesson.estimatedMinutes, 0),
-  phases: 1, // Currently only Phase 1
+  phases: 2,
 };
 
 // Default export with all data
