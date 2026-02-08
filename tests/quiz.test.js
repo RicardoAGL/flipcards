@@ -71,13 +71,14 @@ vi.mock('../src/lib/quizHelpers.js', () => ({
     correctAnswer: question.correctAnswer,
     isCorrect: selected === question.correctAnswer,
   })),
+  generateFeedbackExplanation: vi.fn(() => 'Test explanation text'),
 }));
 
 // Import after mocks are set up
 import { createQuiz } from '../src/components/Quiz.js';
 import { speakDutch, isDutchVoiceAvailable } from '../src/lib/tts.js';
 import { createQuizResults } from '../src/components/QuizResults.js';
-import { generateQuiz, calculateScore, createUserAnswer } from '../src/lib/quizHelpers.js';
+import { generateQuiz, calculateScore, createUserAnswer, generateFeedbackExplanation } from '../src/lib/quizHelpers.js';
 
 describe('Quiz Component', () => {
   let container;
@@ -246,6 +247,31 @@ describe('Quiz Component', () => {
       options.forEach((opt) => {
         expect(opt.disabled).toBe(true);
       });
+    });
+
+    it('should show explanation in feedback for incorrect answer', async () => {
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      // Click incorrect answer
+      const incorrectOption = container.querySelector('[data-option="jaar"]');
+      incorrectOption.click();
+
+      const explanation = container.querySelector('.quiz-feedback-explanation');
+      expect(explanation).not.toBeNull();
+      expect(explanation.querySelector('.quiz-feedback-tip').textContent).toBe('Test explanation text');
+    });
+
+    it('should NOT show explanation in feedback for correct answer', async () => {
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      // Click correct answer
+      const correctOption = container.querySelector('[data-option="naam"]');
+      correctOption.click();
+
+      const explanation = container.querySelector('.quiz-feedback-explanation');
+      expect(explanation).toBeNull();
     });
 
     it('should show next button after answering', async () => {

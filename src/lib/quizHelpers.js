@@ -360,6 +360,76 @@ export function validateAnswer(selectedAnswer, question) {
   return selectedAnswer === question.correctAnswer;
 }
 
+/**
+ * Look up the sound info for a given word across all lessons
+ * @param {string} word - The word to search for
+ * @returns {{ sound: string, ipa: string, descriptionES: string, descriptionEN: string } | null}
+ */
+export function getWordSound(word) {
+  const lowerWord = word.toLowerCase();
+
+  for (const lesson of Object.values(lessonsById)) {
+    const found = lesson.words.some(
+      (w) => w.word.toLowerCase() === lowerWord,
+    );
+    if (found) {
+      return {
+        sound: lesson.sound.combination,
+        ipa: lesson.sound.ipa,
+        descriptionES: lesson.sound.descriptionES,
+        descriptionEN: lesson.sound.descriptionEN,
+      };
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Generate an explanatory feedback string for an incorrect quiz answer
+ * @param {QuizQuestion} question - The quiz question
+ * @param {string} selectedWord - The word the user selected
+ * @param {string} [language='es'] - Language for feedback ('es' or 'en')
+ * @returns {string} Explanation text
+ */
+export function generateFeedbackExplanation(question, selectedWord, language = 'es') {
+  const correctSound = question.sound;
+  const correctIpa = question.ipa;
+
+  const selectedInfo = getWordSound(selectedWord);
+
+  const templates = {
+    es: {
+      differentSound: (selSound, selIpa) =>
+        `El sonido '${correctSound}' ${correctIpa} es diferente de '${selSound}' ${selIpa}. Escucha la diferencia con atención.`,
+      sameSound: () =>
+        `Ambas palabras contienen '${correctSound}'. Escucha con atención la pronunciación completa.`,
+      fallback: () =>
+        `Recuerda: '${correctSound}' se pronuncia ${correctIpa}.`,
+    },
+    en: {
+      differentSound: (selSound, selIpa) =>
+        `The '${correctSound}' sound ${correctIpa} is different from '${selSound}' ${selIpa}. Listen carefully to the difference.`,
+      sameSound: () =>
+        `Both words contain '${correctSound}'. Listen carefully to the full pronunciation.`,
+      fallback: () =>
+        `Remember: '${correctSound}' is pronounced ${correctIpa}.`,
+    },
+  };
+
+  const t = templates[language] || templates.es;
+
+  if (!selectedInfo) {
+    return t.fallback();
+  }
+
+  if (selectedInfo.sound !== correctSound) {
+    return t.differentSound(selectedInfo.sound, selectedInfo.ipa);
+  }
+
+  return t.sameSound();
+}
+
 export default {
   generateQuiz,
   getDistractors,
@@ -369,4 +439,6 @@ export default {
   getPassingScore,
   getMaxPoints,
   validateAnswer,
+  getWordSound,
+  generateFeedbackExplanation,
 };

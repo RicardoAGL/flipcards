@@ -13,6 +13,8 @@ import {
   getPassingScore,
   getMaxPoints,
   validateAnswer,
+  getWordSound,
+  generateFeedbackExplanation,
 } from '../src/lib/quizHelpers.js';
 import { createMockLesson } from './setup.js';
 
@@ -417,6 +419,95 @@ describe('Quiz Helpers', () => {
     it('should be case-sensitive', () => {
       const question = { correctAnswer: 'naam' };
       expect(validateAnswer('Naam', question)).toBe(false);
+    });
+  });
+
+  // ==========================================
+  // getWordSound
+  // ==========================================
+  describe('getWordSound', () => {
+    it('should return sound info for a known word', () => {
+      // 'naam' is in P1-AA-BEG
+      const result = getWordSound('naam');
+
+      expect(result).not.toBeNull();
+      expect(result.sound).toBe('aa');
+      expect(result.ipa).toBeTruthy();
+    });
+
+    it('should return null for an unknown word', () => {
+      const result = getWordSound('xyznonexistent');
+
+      expect(result).toBeNull();
+    });
+
+    it('should be case-insensitive', () => {
+      const result = getWordSound('Naam');
+
+      expect(result).not.toBeNull();
+      expect(result.sound).toBe('aa');
+    });
+
+    it('should return description fields', () => {
+      const result = getWordSound('naam');
+
+      expect(result).toHaveProperty('descriptionES');
+      expect(result).toHaveProperty('descriptionEN');
+      expect(typeof result.descriptionES).toBe('string');
+      expect(typeof result.descriptionEN).toBe('string');
+    });
+  });
+
+  // ==========================================
+  // generateFeedbackExplanation
+  // ==========================================
+  describe('generateFeedbackExplanation', () => {
+    const aaQuestion = {
+      questionId: 'q1',
+      correctAnswer: 'naam',
+      sound: 'aa',
+      ipa: '[aː]',
+    };
+
+    it('should mention different sounds when selected word is from a different sound', () => {
+      // 'boek' is in oe lesson (P2-OE-BEG)
+      const result = generateFeedbackExplanation(aaQuestion, 'boek', 'es');
+
+      expect(result).toContain('aa');
+      expect(result).toContain('oe');
+    });
+
+    it('should mention same sound when selected word is from the same sound', () => {
+      // 'jaar' is also in aa lessons
+      const result = generateFeedbackExplanation(aaQuestion, 'jaar', 'es');
+
+      expect(result).toContain('aa');
+      expect(result).not.toContain('diferente');
+    });
+
+    it('should return fallback when word is not found in any lesson', () => {
+      const result = generateFeedbackExplanation(aaQuestion, 'unknownword', 'es');
+
+      expect(result).toContain('aa');
+      expect(result).toContain('[aː]');
+    });
+
+    it('should support English language', () => {
+      const result = generateFeedbackExplanation(aaQuestion, 'boek', 'en');
+
+      expect(result).toContain('different');
+    });
+
+    it('should default to Spanish for unknown language', () => {
+      const result = generateFeedbackExplanation(aaQuestion, 'boek', 'fr');
+
+      expect(result).toContain('diferente');
+    });
+
+    it('should default to Spanish when language omitted', () => {
+      const result = generateFeedbackExplanation(aaQuestion, 'unknownword');
+
+      expect(result).toContain('Recuerda');
     });
   });
 });

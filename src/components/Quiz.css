@@ -639,6 +639,26 @@
   height: 16px;
 }
 
+/* Explanatory Feedback */
+.quiz-feedback-explanation {
+  width: 100%;
+  margin-top: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-white);
+  border-left: 3px solid var(--color-primary-400);
+  border-radius: 0 var(--rounded-md) var(--rounded-md) 0;
+  text-align: left;
+}
+
+.quiz-feedback-tip {
+  font-family: var(--font-primary);
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--color-gray-700);
+  line-height: 1.5;
+  margin: 0;
+}
+
 @keyframes slideUp {
   from {
     transform: translateY(10px);
