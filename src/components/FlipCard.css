@@ -388,6 +388,49 @@
 }
 
 /* ============================================
+   TRANSLATION
+   ============================================ */
+
+.flip-card-translation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  background: var(--color-info-50);
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.flip-card-translation--hidden .flip-card-translation__text {
+  visibility: hidden;
+}
+
+.flip-card-translation__text {
+  font-style: italic;
+}
+
+.flip-card-translation__toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  border-radius: var(--rounded-full);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.flip-card-translation__toggle:hover {
+  background: var(--color-info-100);
+}
+
+/* ============================================
    TTS ERROR STATE
    ============================================ */
 

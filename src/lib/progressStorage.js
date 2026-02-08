@@ -402,7 +402,7 @@ export function checkAndAwardBadges(quizResult) {
   // Look for a previous 0-score attempt on any lesson
   const history = getQuizHistory();
   const hasZeroScore = history.some(
-    attempt => attempt.score === 0 && attempt.timestamp < Date.now() - 1000
+    attempt => attempt.score === 0 && attempt.timestamp < Date.now() - 1000,
   );
   if (hasZeroScore && history.length > 1) {
     if (awardBadge('never-give-up')) {
@@ -413,7 +413,7 @@ export function checkAndAwardBadges(quizResult) {
   // Check: perseverance (fail then pass same lesson)
   const lessonAttempts = getQuizAttemptsForLesson(lessonId);
   const previousFail = lessonAttempts.some(
-    attempt => !attempt.passed && attempt.timestamp < Date.now() - 1000
+    attempt => !attempt.passed && attempt.timestamp < Date.now() - 1000,
   );
   if (passed && previousFail) {
     if (awardBadge('perseverance')) {

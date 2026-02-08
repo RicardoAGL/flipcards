@@ -31,14 +31,19 @@ const sampleLessonData = {
  * Create the FlipCard component
  * @param {Object} lessonData - Lesson data containing sound, IPA, description, and words
  * @param {HTMLElement} container - Container element to render into
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.language='es'] - Display language for translations ('es' or 'en')
  * @returns {Object} Component API
  */
-export function createFlipCard(lessonData = sampleLessonData, container) {
+export function createFlipCard(lessonData = sampleLessonData, container, options = {}) {
+  const language = options.language || 'es';
+
   // State
   let currentWordIndex = 0;
   let isCenterFlipped = false;
   let isPrefixFlipping = false;
   let isSuffixFlipping = false;
+  let isTranslationVisible = false;
   let ttsController = null;
   let ttsAvailable = false;
   let isSpeaking = false;
@@ -62,6 +67,15 @@ export function createFlipCard(lessonData = sampleLessonData, container) {
   const buildFullWord = () => {
     const word = getCurrentWord();
     return `${word.prefix}${lessonData.sound}${word.suffix}`;
+  };
+
+  /**
+   * Get the translation for the current word
+   */
+  const getCurrentTranslation = () => {
+    const word = getCurrentWord();
+    if (!word.translation) {return '';}
+    return word.translation[language] || '';
   };
 
   /**
@@ -162,6 +176,19 @@ export function createFlipCard(lessonData = sampleLessonData, container) {
           <span class="sr-only">Current word: ${fullWord}</span>
         </div>
 
+        <!-- Translation (hidden by default) -->
+        <div class="flip-card-translation flip-card-translation--hidden" data-translation>
+          <span class="flip-card-translation__text">${getCurrentTranslation()}</span>
+          <button
+            class="flip-card-translation__toggle"
+            type="button"
+            data-action="toggle-translation"
+            aria-label="Show meaning"
+          >
+            ${isTranslationVisible ? '🔽' : '💡'}
+          </button>
+        </div>
+
         <!-- TTS Error (hidden by default) -->
         <div class="flip-card-tts-error" style="display: none;" data-tts-error role="alert">
           <span class="flip-card-tts-error-text">
@@ -189,6 +216,9 @@ export function createFlipCard(lessonData = sampleLessonData, container) {
       wordPreview: container.querySelector('.flip-card-word-preview'),
       wordParts: container.querySelector('.flip-card-word-parts'),
       wordFull: container.querySelector('.flip-card-word-full'),
+      translationContainer: container.querySelector('[data-translation]'),
+      translationText: container.querySelector('.flip-card-translation__text'),
+      translationToggle: container.querySelector('[data-action="toggle-translation"]'),
     };
   };
 
@@ -210,6 +240,11 @@ export function createFlipCard(lessonData = sampleLessonData, container) {
 
     // Pronounce button
     elements.pronounceBtn.addEventListener('click', handlePronounce);
+
+    // Translation toggle
+    if (elements.translationToggle) {
+      elements.translationToggle.addEventListener('click', handleTranslationToggle);
+    }
   };
 
   /**
@@ -289,6 +324,16 @@ export function createFlipCard(lessonData = sampleLessonData, container) {
   };
 
   /**
+   * Handle translation toggle click
+   */
+  const handleTranslationToggle = () => {
+    isTranslationVisible = !isTranslationVisible;
+    elements.translationContainer.classList.toggle('flip-card-translation--hidden', !isTranslationVisible);
+    elements.translationToggle.textContent = isTranslationVisible ? '🔽' : '💡';
+    elements.translationToggle.setAttribute('aria-label', isTranslationVisible ? 'Hide meaning' : 'Show meaning');
+  };
+
+  /**
    * Handle pronounce button click
    */
   const handlePronounce = async (event) => {
@@ -345,6 +390,11 @@ export function createFlipCard(lessonData = sampleLessonData, container) {
     // Update word preview
     elements.wordParts.innerHTML = `${word.prefix}<span class="highlight">${lessonData.sound}</span>${word.suffix}`;
     elements.wordFull.textContent = fullWord;
+
+    // Update translation
+    if (elements.translationText) {
+      elements.translationText.textContent = getCurrentTranslation();
+    }
 
     // Update aria labels
     elements.prefixCard.setAttribute(
@@ -427,6 +477,7 @@ export function createFlipCard(lessonData = sampleLessonData, container) {
     currentWord: getCurrentWord(),
     fullWord: buildFullWord(),
     isCenterFlipped,
+    isTranslationVisible,
     ttsAvailable,
   });
 

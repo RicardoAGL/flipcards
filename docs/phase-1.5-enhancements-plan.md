@@ -18,8 +18,8 @@ Polish and enhancement features identified after MVP testing. These improvements
 | US-1004 | Badge Gallery | High | Medium | ⬜ Not Started |
 | US-1001 | Word Translations | High | Medium | ⬜ Not Started |
 | US-1002 | Example Sentences | Medium | Medium | ⬜ Not Started |
-| US-1005 | Point Milestone Stars (3-star per level) | Medium | Low | ✅ Complete |
-| US-1006 | Encouragement Badges | Medium | Low | ⬜ Not Started |
+| US-1005 | Point Milestone Stars (global, not per-level) | Medium | Low | ✅ Complete |
+| US-1006 | Encouragement Badges | Medium | Low | ✅ Complete |
 | US-1003 | TTS Voice Selection | Low | Medium | ⬜ Not Started |
 | US-1101 | Internationalization (i18n) | Low | High | ⬜ Not Started |
 

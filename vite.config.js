@@ -10,8 +10,8 @@ export default defineConfig({
     // Output directory for production build
     outDir: 'dist',
 
-    // Generate source maps for debugging
-    sourcemap: true,
+    // Source maps only in development
+    sourcemap: false,
 
     // Ensure assets are properly chunked
     rollupOptions: {
@@ -44,5 +44,10 @@ export default defineConfig({
   // Vitest configuration
   test: {
     environment: 'jsdom',
+    coverage: {
+      provider: 'v8',
+      include: ['src/**/*.js'],
+      exclude: ['src/data/lessons/*.json'],
+    },
   },
 });

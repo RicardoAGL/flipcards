@@ -31,6 +31,7 @@ const TEXT = {
     beginner: 'Principiante',
     advanced: 'Avanzado',
     lockedMessage: 'Completa Principiante para desbloquear',
+    viewBadges: 'Ver Insignias',
   },
   en: {
     title: 'Lessons',
@@ -40,6 +41,7 @@ const TEXT = {
     beginner: 'Beginner',
     advanced: 'Advanced',
     lockedMessage: 'Complete Beginner to unlock',
+    viewBadges: 'View Badges',
   },
 };
 
@@ -52,7 +54,7 @@ const TEXT = {
  * @returns {Object} Component API
  */
 export function createLessonMenu(container, options = {}) {
-  const { language = 'es', onSelectLesson } = options;
+  const { language = 'es', onSelectLesson, onViewBadges } = options;
   const text = TEXT[language] || TEXT.es;
 
   // State
@@ -109,6 +111,9 @@ export function createLessonMenu(container, options = {}) {
           <div class="lesson-menu-star-progress">
             ${createStarProgressHTML({ language })}
           </div>
+          <button class="lesson-menu-badges-btn" type="button" data-action="view-badges">
+            🏆 ${text.viewBadges}
+          </button>
         </section>
 
         <!-- Sound Grid -->
@@ -218,6 +223,13 @@ export function createLessonMenu(container, options = {}) {
     elements.levelButtons.forEach(btn => {
       btn.addEventListener('click', handleLevelClick);
     });
+
+    const badgesBtn = container.querySelector('[data-action="view-badges"]');
+    if (badgesBtn) {
+      badgesBtn.addEventListener('click', () => {
+        if (onViewBadges) {onViewBadges();}
+      });
+    }
   };
 
   /**

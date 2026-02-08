@@ -18,15 +18,17 @@ import {
   checkAndAwardBadges,
 } from './lib/progressStorage.js';
 import { showMilestoneCelebration, showBadgeCelebrations } from './components/StarIndicator.js';
+import { createBadgeGallery } from './components/BadgeGallery.js';
 
 // Application state
-let currentView = 'menu'; // 'menu' | 'flipcard' | 'quiz'
+let currentView = 'menu'; // 'menu' | 'flipcard' | 'quiz' | 'badges'
 let selectedLessonId = null;
 let currentLesson = null;
 let flipCardData = null;
 let flipCard = null;
 let quiz = null;
 let lessonMenu = null;
+let badgeGallery = null;
 
 /**
  * Initialize the application
@@ -145,6 +147,7 @@ function mountLessonMenu() {
   lessonMenu = createLessonMenu(container, {
     language: 'es',
     onSelectLesson: handleSelectLesson,
+    onViewBadges: mountBadgeGallery,
   });
 
   currentView = 'menu';
@@ -195,15 +198,13 @@ function mountFlipCard() {
   }
 
   // Create and mount flip card with current lesson data
-  flipCard = createFlipCard(flipCardData, container);
+  flipCard = createFlipCard(flipCardData, container, { language: 'es' });
   currentView = 'flipcard';
 
   // Update UI
   updateViewUI();
   updatePointsDisplay();
 
-  // Store reference for debugging/development
-  window.__flipCard = flipCard;
 }
 
 /**
@@ -232,8 +233,6 @@ async function mountQuiz() {
   // Update UI
   updateViewUI();
 
-  // Store reference for debugging/development
-  window.__quiz = quiz;
 }
 
 /**
@@ -252,6 +251,48 @@ function destroyCurrentComponent() {
     lessonMenu.destroy();
     lessonMenu = null;
   }
+  if (badgeGallery) {
+    badgeGallery.destroy();
+    badgeGallery = null;
+  }
+}
+
+/**
+ * Mount the Badge Gallery component
+ */
+function mountBadgeGallery() {
+  const container = document.getElementById('main-container');
+  if (!container) {
+    return;
+  }
+
+  destroyCurrentComponent();
+
+  // Hide footer and back button in gallery mode
+  const footer = document.getElementById('app-footer');
+  const backBtn = document.getElementById('back-btn');
+  const subtitle = document.getElementById('view-subtitle');
+  const headerPoints = document.getElementById('header-points');
+
+  if (footer) {
+    footer.style.display = 'none';
+  }
+  if (backBtn) {
+    backBtn.style.visibility = 'hidden';
+  }
+  if (subtitle) {
+    subtitle.textContent = '';
+  }
+  if (headerPoints) {
+    headerPoints.style.display = 'none';
+  }
+
+  badgeGallery = createBadgeGallery(container, {
+    language: 'es',
+    onBack: mountLessonMenu,
+  });
+
+  currentView = 'badges';
 }
 
 /**
@@ -276,6 +317,22 @@ function handleBackToMenu() {
  * Handle quiz completion
  */
 function handleQuizComplete(result) {
+  // Record quiz attempt for badge tracking
+  recordQuizAttempt(
+    selectedLessonId,
+    result.score,
+    result.answers.length,
+    result.passed,
+  );
+
+  // Check for new badges BEFORE marking lesson complete
+  const newBadges = checkAndAwardBadges({
+    lessonId: selectedLessonId,
+    score: result.score,
+    total: result.answers.length,
+    passed: result.passed,
+  });
+
   // Check for new milestone BEFORE adding points
   let newMilestone = null;
   if (result.passed && result.pointsEarned > 0) {
@@ -290,23 +347,33 @@ function handleQuizComplete(result) {
     }
   }
 
-  // Show milestone celebration or return to menu
-  if (newMilestone) {
-    // Show celebration first, then return to menu
-    setTimeout(() => {
+  // Chain celebrations: badges → milestone → menu
+  const returnToMenu = () => {
+    mountLessonMenu();
+  };
+
+  const showMilestoneOrReturn = () => {
+    if (newMilestone) {
       showMilestoneCelebration(newMilestone, {
         language: 'es',
-        onDismiss: () => {
-          mountLessonMenu();
-        },
+        onDismiss: returnToMenu,
       });
-    }, 600);
-  } else {
-    // Return to menu after a short delay
-    setTimeout(() => {
-      mountLessonMenu();
-    }, 500);
-  }
+    } else {
+      returnToMenu();
+    }
+  };
+
+  // Show badge celebrations first, then milestone, then return
+  setTimeout(() => {
+    if (newBadges.length > 0) {
+      showBadgeCelebrations(newBadges, {
+        language: 'es',
+        onComplete: showMilestoneOrReturn,
+      });
+    } else {
+      showMilestoneOrReturn();
+    }
+  }, 600);
 }
 
 /**

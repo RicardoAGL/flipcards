@@ -270,6 +270,32 @@ describe('LessonMenu Component', () => {
     });
   });
 
+  describe('Badge Gallery Navigation', () => {
+    it('should render a view badges button', () => {
+      createLessonMenu(container, {});
+
+      const badgesBtn = container.querySelector('[data-action="view-badges"]');
+      expect(badgesBtn).not.toBeNull();
+    });
+
+    it('should call onViewBadges when badge button is clicked', () => {
+      const onViewBadges = vi.fn();
+      createLessonMenu(container, { onViewBadges });
+
+      const badgesBtn = container.querySelector('[data-action="view-badges"]');
+      badgesBtn.click();
+
+      expect(onViewBadges).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not throw if onViewBadges is not provided', () => {
+      createLessonMenu(container, {});
+
+      const badgesBtn = container.querySelector('[data-action="view-badges"]');
+      expect(() => badgesBtn.click()).not.toThrow();
+    });
+  });
+
   describe('Language Support', () => {
     it('should render Spanish text by default', () => {
       createLessonMenu(container, {});

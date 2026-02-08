@@ -216,7 +216,7 @@ export function showBadgeCelebration(badgeId, options = {}) {
   const badge = getBadgeById(badgeId);
 
   if (!badge) {
-    if (onDismiss) onDismiss();
+    if (onDismiss) {onDismiss();}
     return;
   }
 
@@ -285,7 +285,7 @@ export function showBadgeCelebrations(badgeIds, options = {}) {
   const { language = 'es', onComplete } = options;
 
   if (!badgeIds || badgeIds.length === 0) {
-    if (onComplete) onComplete();
+    if (onComplete) {onComplete();}
     return;
   }
 
@@ -293,7 +293,7 @@ export function showBadgeCelebrations(badgeIds, options = {}) {
 
   const showNext = () => {
     if (index >= badgeIds.length) {
-      if (onComplete) onComplete();
+      if (onComplete) {onComplete();}
       return;
     }
 

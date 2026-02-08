@@ -1,0 +1,162 @@
+/**
+ * Badge Gallery Styles
+ * Styles for the badge gallery component
+ */
+
+/* ============================================
+   GALLERY CONTAINER
+   ============================================ */
+
+.badge-gallery {
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: var(--space-4);
+  animation: fadeIn var(--duration-normal) var(--ease-out);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.badge-gallery__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.badge-gallery__back {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-primary);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.badge-gallery__back:hover {
+  background: var(--bg-secondary);
+}
+
+.badge-gallery__title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ============================================
+   SUMMARY
+   ============================================ */
+
+.badge-gallery__summary {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-6);
+}
+
+/* ============================================
+   CATEGORY SECTIONS
+   ============================================ */
+
+.badge-gallery__category {
+  margin-bottom: var(--space-6);
+}
+
+.badge-gallery__category-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-md);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-3);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--border-default);
+}
+
+.badge-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-3);
+}
+
+@media (min-width: 480px) {
+  .badge-gallery__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* ============================================
+   BADGE CARD
+   ============================================ */
+
+.badge-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-default);
+  background: var(--bg-primary);
+  transition: transform var(--duration-fast) var(--ease-out),
+              box-shadow var(--duration-fast) var(--ease-out);
+}
+
+/* Earned state */
+.badge-card--earned {
+  border-color: var(--color-primary-300);
+  background: var(--color-primary-50);
+}
+
+.badge-card--earned:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Locked/unearned state */
+.badge-card--locked {
+  opacity: 0.5;
+  filter: grayscale(0.6);
+}
+
+/* ============================================
+   BADGE CARD ELEMENTS
+   ============================================ */
+
+.badge-card__icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.badge-card__name {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.badge-card__description {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  line-height: 1.3;
+  margin-bottom: var(--space-2);
+}
+
+.badge-card__date {
+  font-size: var(--font-size-xs);
+  color: var(--color-success-600);
+  font-weight: 500;
+}
+
+.badge-card__progress {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-weight: 500;
+}
