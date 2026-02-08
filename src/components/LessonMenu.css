@@ -150,13 +150,38 @@
    ============================================ */
 
 .lesson-menu-grid {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ============================================
+   PHASE SECTIONS
+   ============================================ */
+
+.lesson-menu-phase {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.lesson-menu-phase-title {
+  font-family: var(--font-display);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  color: var(--text-secondary);
+  padding-bottom: var(--space-2);
+  border-bottom: 1px solid var(--color-gray-100);
+}
+
+.lesson-menu-phase-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: var(--space-4);
 }
 
 @media (max-width: 360px) {
-  .lesson-menu-grid {
+  .lesson-menu-phase-grid {
     grid-template-columns: 1fr;
   }
 }
