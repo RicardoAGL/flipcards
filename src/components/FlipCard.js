@@ -28,12 +28,20 @@ const sampleLessonData = {
 };
 
 /**
+ * @typedef {Object} FlipCardLessonData
+ * @property {string} sound
+ * @property {string} ipa
+ * @property {string} description
+ * @property {Array<{prefix: string, suffix: string, word?: string, translation?: Record<string, string>}>} words
+ */
+
+/**
  * Create the FlipCard component
- * @param {Object} lessonData - Lesson data containing sound, IPA, description, and words
+ * @param {FlipCardLessonData} lessonData - Lesson data containing sound, IPA, description, and words
  * @param {HTMLElement} container - Container element to render into
  * @param {Object} [options] - Configuration options
  * @param {string} [options.language='es'] - Display language for translations ('es' or 'en')
- * @returns {Object} Component API
+ * @returns {{ destroy: () => void, setLessonData: (newData: FlipCardLessonData) => void, getState: () => any, getCurrentWord: () => any, buildFullWord: () => string }} Component API
  */
 export function createFlipCard(lessonData = sampleLessonData, container, options = {}) {
   const language = options.language || 'es';
@@ -44,11 +52,13 @@ export function createFlipCard(lessonData = sampleLessonData, container, options
   let isPrefixFlipping = false;
   let isSuffixFlipping = false;
   let isTranslationVisible = false;
+  /** @type {ReturnType<typeof createTTSController> | null} */
   let ttsController = null;
   let ttsAvailable = false;
   let isSpeaking = false;
 
   // Elements cache
+  /** @type {any} */
   let elements = {};
 
   /**
@@ -316,10 +326,11 @@ export function createFlipCard(lessonData = sampleLessonData, container, options
   /**
    * Handle keyboard events on cards
    */
+  /** @param {KeyboardEvent} event */
   const handleCardKeydown = (event) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      event.target.click();
+      /** @type {HTMLElement} */ (event.target).click();
     }
   };
 
@@ -336,6 +347,7 @@ export function createFlipCard(lessonData = sampleLessonData, container, options
   /**
    * Handle pronounce button click
    */
+  /** @param {Event} event */
   const handlePronounce = async (event) => {
     event.stopPropagation(); // Prevent card flip
 
@@ -355,14 +367,14 @@ export function createFlipCard(lessonData = sampleLessonData, container, options
           btn.classList.remove('is-playing');
           btn.setAttribute('aria-label', `Pronounce the word ${fullWord}`);
         },
-        onError: (error) => {
+        onError: (/** @type {any} */ error) => {
           console.error('TTS error:', error);
           isSpeaking = false;
           btn.classList.remove('is-playing');
           showTTSError();
         },
       });
-    } catch (error) {
+    } catch (/** @type {any} */ error) {
       console.error('TTS error:', error);
       isSpeaking = false;
       btn.classList.remove('is-playing');
@@ -461,6 +473,7 @@ export function createFlipCard(lessonData = sampleLessonData, container, options
   /**
    * Update lesson data
    */
+  /** @param {FlipCardLessonData} newData */
   const setLessonData = (newData) => {
     lessonData = newData;
     currentWordIndex = 0;

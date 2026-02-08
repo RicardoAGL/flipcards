@@ -101,7 +101,7 @@ export function createStarIndicatorHTML(options = {}) {
  */
 export function createStarProgressHTML(options = {}) {
   const { language = 'es', points } = options;
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
   const totalPoints = points !== undefined ? points : getTotalPoints();
   const nextMilestone = getNextMilestone(totalPoints);
   const currentMilestone = getCurrentMilestone(totalPoints);
@@ -141,15 +141,25 @@ export function createStarProgressHTML(options = {}) {
 }
 
 /**
+ * @typedef {Object} MilestoneData
+ * @property {string} nameES
+ * @property {string} nameEN
+ * @property {string} color
+ * @property {number} points
+ * @property {string} [level]
+ * @property {number} [remaining]
+ */
+
+/**
  * Show milestone celebration modal
- * @param {Object} milestone - The milestone achieved
- * @param {Object} options - Configuration options
- * @param {string} [options.language='es'] - Display language
+ * @param {MilestoneData} milestone - The milestone achieved
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.language] - Display language
  * @param {Function} [options.onDismiss] - Callback when dismissed
  */
 export function showMilestoneCelebration(milestone, options = {}) {
   const { language = 'es', onDismiss } = options;
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
   const milestoneName = language === 'es' ? milestone.nameES : milestone.nameEN;
 
   // Create overlay
@@ -159,7 +169,7 @@ export function showMilestoneCelebration(milestone, options = {}) {
   overlay.setAttribute('aria-modal', 'true');
   overlay.setAttribute('aria-label', text.newMilestone);
 
-  const starSuffix = language === 'en' ? ` ${text.starSuffix}` : '';
+  const starSuffix = language === 'en' ? ` ${/** @type {any} */ (text).starSuffix}` : '';
 
   overlay.innerHTML = `
     <div class="milestone-celebration-content">
@@ -186,7 +196,7 @@ export function showMilestoneCelebration(milestone, options = {}) {
   };
 
   // Bind events
-  overlay.querySelector('[data-dismiss]').addEventListener('click', dismiss);
+  /** @type {HTMLElement} */ (overlay.querySelector('[data-dismiss]')).addEventListener('click', dismiss);
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) {
       dismiss();
@@ -194,6 +204,7 @@ export function showMilestoneCelebration(milestone, options = {}) {
   });
 
   // Handle escape key
+  /** @type {(e: KeyboardEvent) => void} */
   const handleKeydown = (e) => {
     if (e.key === 'Escape') {
       dismiss();
@@ -206,7 +217,7 @@ export function showMilestoneCelebration(milestone, options = {}) {
   document.body.appendChild(overlay);
 
   // Focus the button
-  overlay.querySelector('[data-dismiss]').focus();
+  /** @type {HTMLElement} */ (overlay.querySelector('[data-dismiss]')).focus();
 }
 
 /**
@@ -218,7 +229,7 @@ export function showMilestoneCelebration(milestone, options = {}) {
  */
 export function showBadgeCelebration(badgeId, options = {}) {
   const { language = 'es', onDismiss } = options;
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
   const badge = getBadgeById(badgeId);
 
   if (!badge) {
@@ -257,7 +268,7 @@ export function showBadgeCelebration(badgeId, options = {}) {
   };
 
   // Bind events
-  overlay.querySelector('[data-dismiss]').addEventListener('click', dismiss);
+  /** @type {HTMLElement} */ (overlay.querySelector('[data-dismiss]')).addEventListener('click', dismiss);
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) {
       dismiss();
@@ -265,6 +276,7 @@ export function showBadgeCelebration(badgeId, options = {}) {
   });
 
   // Handle escape key
+  /** @type {(e: KeyboardEvent) => void} */
   const handleKeydown = (e) => {
     if (e.key === 'Escape') {
       dismiss();
@@ -277,7 +289,7 @@ export function showBadgeCelebration(badgeId, options = {}) {
   document.body.appendChild(overlay);
 
   // Focus the button
-  overlay.querySelector('[data-dismiss]').focus();
+  /** @type {HTMLElement} */ (overlay.querySelector('[data-dismiss]')).focus();
 }
 
 /**
@@ -318,10 +330,10 @@ export function showBadgeCelebrations(badgeIds, options = {}) {
 
 /**
  * Show a combined celebration modal for multiple badges and/or milestone
- * @param {Object} options - Configuration options
- * @param {string[]} [options.badges=[]] - Array of badge IDs to celebrate
- * @param {Object|null} [options.milestone=null] - Milestone achieved
- * @param {string} [options.language='es'] - Display language
+ * @param {Object} [options] - Configuration options
+ * @param {string[]} [options.badges] - Array of badge IDs to celebrate
+ * @param {MilestoneData | null} [options.milestone] - Milestone achieved
+ * @param {string} [options.language] - Display language
  * @param {Function} [options.onDismiss] - Callback when dismissed
  */
 export function showCombinedCelebration({ badges = [], milestone = null, language = 'es', onDismiss } = {}) {
@@ -347,7 +359,7 @@ export function showCombinedCelebration({ badges = [], milestone = null, languag
   }
 
   // Combined modal: 2+ badges, or 1+ badge AND milestone
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
 
   const badgeItems = badges.map((id) => {
     const badge = getBadgeById(id);
@@ -362,7 +374,7 @@ export function showCombinedCelebration({ badges = [], milestone = null, languag
   }).join('');
 
   let milestoneSection = '';
-  if (hasMilestone) {
+  if (hasMilestone && milestone) {
     const milestoneName = language === 'es' ? milestone.nameES : milestone.nameEN;
     milestoneSection = `
       <div class="combined-celebration-section">
@@ -395,6 +407,7 @@ export function showCombinedCelebration({ badges = [], milestone = null, languag
     </div>
   `;
 
+  /** @type {(e: KeyboardEvent) => void} */
   const handleKeydown = (e) => {
     if (e.key === 'Escape') { dismiss(); }
   };
@@ -405,20 +418,23 @@ export function showCombinedCelebration({ badges = [], milestone = null, languag
     if (onDismiss) { onDismiss(); }
   };
 
-  overlay.querySelector('[data-dismiss]').addEventListener('click', dismiss);
+  /** @type {HTMLElement} */ (overlay.querySelector('[data-dismiss]')).addEventListener('click', dismiss);
   overlay.addEventListener('click', (e) => {
     if (e.target === overlay) { dismiss(); }
   });
   document.addEventListener('keydown', handleKeydown);
 
   document.body.appendChild(overlay);
-  overlay.querySelector('[data-dismiss]').focus();
+  /** @type {HTMLElement} */ (overlay.querySelector('[data-dismiss]')).focus();
 }
 
 /**
  * Create a Star Indicator component with update capability
  * @param {HTMLElement} container - Container element to render into
- * @param {Object} options - Configuration options
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.size] - Size variant ('sm', 'md', 'lg')
+ * @param {boolean} [options.showProgress] - Whether to show progress bar
+ * @param {string} [options.language] - Display language
  * @returns {Object} Component API
  */
 export function createStarIndicator(container, options = {}) {

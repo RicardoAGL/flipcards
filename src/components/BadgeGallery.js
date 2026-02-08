@@ -22,7 +22,7 @@ const TEXT = {
     back: 'Volver',
     earned: 'Conseguida',
     locked: 'Por conseguir',
-    summary: (earned, total) => `${earned} de ${total} insignias conseguidas`,
+    summary: (/** @type {number} */ earned, /** @type {number} */ total) => `${earned} de ${total} insignias conseguidas`,
     categories: {
       [BADGE_CATEGORIES.ENCOURAGEMENT]: 'Perseverancia',
       [BADGE_CATEGORIES.MASTERY]: 'Maestría',
@@ -34,7 +34,7 @@ const TEXT = {
     back: 'Back',
     earned: 'Earned',
     locked: 'Locked',
-    summary: (earned, total) => `${earned} of ${total} badges earned`,
+    summary: (/** @type {number} */ earned, /** @type {number} */ total) => `${earned} of ${total} badges earned`,
     categories: {
       [BADGE_CATEGORIES.ENCOURAGEMENT]: 'Perseverance',
       [BADGE_CATEGORIES.MASTERY]: 'Mastery',
@@ -45,11 +45,11 @@ const TEXT = {
 
 /**
  * Get progress info for a badge based on its criteria
- * @param {Object} badge - Badge definition
+ * @param {typeof BADGES[number]} badge - Badge definition
  * @returns {{ current: number, target: number } | null}
  */
 function getBadgeProgress(badge) {
-  const { criteria } = badge;
+  const criteria = /** @type {any} */ (badge.criteria);
 
   if (criteria.type === 'quiz_pass_count') {
     const passed = getQuizHistory().filter(a => a.passed).length;
@@ -84,7 +84,7 @@ function formatDate(timestamp) {
 export function createBadgeGallery(container, options = {}) {
   const language = options.language || 'es';
   const onBack = options.onBack || null;
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
 
   /** @type {Function|null} */
   let keydownHandler = null;
@@ -135,8 +135,12 @@ export function createBadgeGallery(container, options = {}) {
 
   /**
    * Render a single badge card
+   * @param {typeof BADGES[number]} badge
+   * @param {Map<string, any>} earnedMap
+   * @param {typeof TEXT['es']} _text
+   * @param {string} lang
    */
-  function renderBadgeCard(badge, earnedMap, text, lang) {
+  function renderBadgeCard(badge, earnedMap, _text, lang) {
     const earned = earnedMap.get(badge.id);
     const stateClass = earned ? 'badge-card--earned' : 'badge-card--locked';
     const name = lang === 'en' ? badge.nameEN : badge.nameES;
@@ -176,12 +180,12 @@ export function createBadgeGallery(container, options = {}) {
       });
     }
 
-    keydownHandler = (e) => {
+    keydownHandler = (/** @type {KeyboardEvent} */ e) => {
       if (e.key === 'Escape' && onBack) {
         onBack();
       }
     };
-    document.addEventListener('keydown', keydownHandler);
+    document.addEventListener('keydown', /** @type {EventListener} */ (keydownHandler));
   }
 
   /**
@@ -189,7 +193,7 @@ export function createBadgeGallery(container, options = {}) {
    */
   function destroy() {
     if (keydownHandler) {
-      document.removeEventListener('keydown', keydownHandler);
+      document.removeEventListener('keydown', /** @type {EventListener} */ (keydownHandler));
       keydownHandler = null;
     }
     container.innerHTML = '';
@@ -212,7 +216,7 @@ export function createBadgeGallery(container, options = {}) {
    */
   function refresh() {
     if (keydownHandler) {
-      document.removeEventListener('keydown', keydownHandler);
+      document.removeEventListener('keydown', /** @type {EventListener} */ (keydownHandler));
       keydownHandler = null;
     }
     render();

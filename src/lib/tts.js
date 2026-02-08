@@ -50,6 +50,7 @@ export function scoreVoice(voice) {
  */
 export function getDutchVoices(timeout = 3000) {
   return new Promise((resolve) => {
+    /** @param {SpeechSynthesisVoice[]} voices */
     const filterAndSort = (voices) => {
       return voices
         .filter((voice) => voice.lang.startsWith('nl'))
@@ -100,12 +101,12 @@ export async function isDutchVoiceAvailable() {
 /**
  * Speak text in Dutch
  * @param {string} text - The text to speak
- * @param {Object} options - Optional configuration
- * @param {number} options.rate - Speech rate (0.1 to 10, default 0.9)
- * @param {number} options.pitch - Speech pitch (0 to 2, default 1)
- * @param {Function} options.onStart - Callback when speech starts
- * @param {Function} options.onEnd - Callback when speech ends
- * @param {Function} options.onError - Callback on error
+ * @param {Object} [options] - Optional configuration
+ * @param {number} [options.rate] - Speech rate (0.1 to 10, default 0.9)
+ * @param {number} [options.pitch] - Speech pitch (0 to 2, default 1)
+ * @param {Function} [options.onStart] - Callback when speech starts
+ * @param {Function} [options.onEnd] - Callback when speech ends
+ * @param {Function} [options.onError] - Callback on error
  * @returns {Promise<void>}
  */
 export async function speakDutch(text, options = {}) {
@@ -173,11 +174,13 @@ export function stopSpeaking() {
 
 /**
  * Create a TTS controller with state management
- * @returns {Object} TTS controller with speak, stop, and state methods
+ * @returns {{ init: () => Promise<boolean>, speak: (text: string) => Promise<void>, stop: () => void, getIsSpeaking: () => boolean, getIsAvailable: () => boolean | null, subscribe: (listener: (arg0: {isSpeaking: boolean, isAvailable: boolean | null}) => void) => Function }} TTS controller with speak, stop, and state methods
  */
 export function createTTSController() {
   let isSpeaking = false;
+  /** @type {boolean | null} */
   let isAvailable = null;
+  /** @type {Array<function({isSpeaking: boolean, isAvailable: boolean | null}): void>} */
   let listeners = [];
 
   const notify = () => {
@@ -249,7 +252,7 @@ export function createTTSController() {
 
     /**
      * Subscribe to state changes
-     * @param {Function} listener
+     * @param {(arg0: {isSpeaking: boolean, isAvailable: boolean | null}) => void} listener
      * @returns {Function} Unsubscribe function
      */
     subscribe(listener) {

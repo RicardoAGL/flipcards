@@ -7,7 +7,7 @@ const TEXT = {
     skip: 'Saltar',
     next: 'Siguiente',
     done: 'Comenzar',
-    stepOf: (current, total) => `${current} de ${total}`,
+    stepOf: (/** @type {number} */ current, /** @type {number} */ total) => `${current} de ${total}`,
     steps: [
       {
         icon: '\u{1F4DA}',
@@ -35,7 +35,7 @@ const TEXT = {
     skip: 'Skip',
     next: 'Next',
     done: 'Start Learning',
-    stepOf: (current, total) => `${current} of ${total}`,
+    stepOf: (/** @type {number} */ current, /** @type {number} */ total) => `${current} of ${total}`,
     steps: [
       {
         icon: '\u{1F4DA}',
@@ -72,7 +72,7 @@ export function createTutorial(options = {}) {
   const { language = 'es', onComplete } = options;
   let currentStep = 0;
 
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
 
   // Create overlay
   const overlay = document.createElement('div');
@@ -112,11 +112,11 @@ export function createTutorial(options = {}) {
     `;
 
     // Bind button events
-    overlay.querySelector('[data-tutorial-skip]').addEventListener('click', complete);
-    overlay.querySelector('[data-tutorial-next]').addEventListener('click', handleNext);
+    /** @type {HTMLElement} */ (overlay.querySelector('[data-tutorial-skip]')).addEventListener('click', complete);
+    /** @type {HTMLElement} */ (overlay.querySelector('[data-tutorial-next]')).addEventListener('click', handleNext);
 
     // Focus the next button
-    overlay.querySelector('[data-tutorial-next]').focus();
+    /** @type {HTMLElement} */ (overlay.querySelector('[data-tutorial-next]')).focus();
   }
 
   function handleNext() {
@@ -138,6 +138,7 @@ export function createTutorial(options = {}) {
     overlay.remove();
   }
 
+  /** @param {KeyboardEvent} e */
   function handleKeydown(e) {
     if (e.key === 'Escape') { complete(); }
   }

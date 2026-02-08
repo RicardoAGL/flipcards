@@ -7,16 +7,17 @@ import { vi } from 'vitest';
 
 /**
  * Create a mock localStorage with vi.fn() spies
- * @returns {Object} Mock localStorage
+ * @returns {any} Mock localStorage
  */
 export function createLocalStorageMock() {
+  /** @type {Record<string, string>} */
   let store = {};
   return {
-    getItem: vi.fn((key) => store[key] || null),
-    setItem: vi.fn((key, value) => {
+    getItem: vi.fn((/** @type {string} */ key) => store[key] || null),
+    setItem: vi.fn((/** @type {string} */ key, /** @type {string} */ value) => {
       store[key] = value;
     }),
-    removeItem: vi.fn((key) => {
+    removeItem: vi.fn((/** @type {string} */ key) => {
       delete store[key];
     }),
     clear: vi.fn(() => {
@@ -49,7 +50,7 @@ export function removeTestContainer(container) {
 /**
  * Create a mock Web Speech API (speechSynthesis + SpeechSynthesisUtterance)
  * Installs on the global/window object
- * @returns {Object} Mock references for assertions
+ * @returns {any} Mock references for assertions
  */
 export function createSpeechSynthesisMock() {
   const mockUtterance = {
@@ -63,11 +64,12 @@ export function createSpeechSynthesisMock() {
     onerror: null,
   };
 
+  /** @type {any} */
   const mockSynthesis = {
     getVoices: vi.fn(() => [
-      { lang: 'nl-NL', name: 'Dutch', localService: true },
+      { lang: 'nl-NL', name: 'Dutch', localService: true, default: false, voiceURI: 'mock-uri' },
     ]),
-    speak: vi.fn((utterance) => {
+    speak: vi.fn((/** @type {any} */ utterance) => {
       // Trigger onend asynchronously
       setTimeout(() => {
         if (utterance.onend) utterance.onend();
@@ -84,7 +86,8 @@ export function createSpeechSynthesisMock() {
     configurable: true,
   });
 
-  global.SpeechSynthesisUtterance = vi.fn(function (text) {
+  /** @type {any} */
+  const uttCtor = vi.fn(function (/** @type {string} */ text) {
     this.text = text;
     this.lang = '';
     this.rate = 1;
@@ -94,14 +97,15 @@ export function createSpeechSynthesisMock() {
     this.onend = null;
     this.onerror = null;
   });
+  global.SpeechSynthesisUtterance = uttCtor;
 
   return { mockSynthesis, mockUtterance, SpeechSynthesisUtterance: global.SpeechSynthesisUtterance };
 }
 
 /**
  * Create a valid mock lesson object for testing
- * @param {Object} [overrides] - Optional overrides for specific fields
- * @returns {Object} A valid lesson matching the schema
+ * @param {any} [overrides] - Optional overrides for specific fields
+ * @returns {any} A valid lesson matching the schema
  */
 export function createMockLesson(overrides = {}) {
   return {

@@ -164,6 +164,7 @@ export function getDistractors(word, lesson, count = 3) {
  */
 function generateSimilarWords(word, sound) {
   const distractors = [];
+  /** @type {Record<string, string[]>} */
   const vowelVariants = {
     aa: ['a', 'ae', 'ee'],
     ee: ['e', 'ie', 'aa'],
@@ -315,7 +316,7 @@ export function getQuizFeedback(result, language = 'es') {
     },
   };
 
-  const lang = messages[language] || messages.es;
+  const lang = messages[/** @type {'es' | 'en'} */ (language)] || messages.es;
 
   if (result.percentage === 100) {
     return lang.perfect;
@@ -400,6 +401,7 @@ export function generateFeedbackExplanation(question, selectedWord, language = '
 
   const templates = {
     es: {
+      /** @param {string} selSound @param {string} selIpa */
       differentSound: (selSound, selIpa) =>
         `El sonido '${correctSound}' ${correctIpa} es diferente de '${selSound}' ${selIpa}. Escucha la diferencia con atención.`,
       sameSound: () =>
@@ -408,6 +410,7 @@ export function generateFeedbackExplanation(question, selectedWord, language = '
         `Recuerda: '${correctSound}' se pronuncia ${correctIpa}.`,
     },
     en: {
+      /** @param {string} selSound @param {string} selIpa */
       differentSound: (selSound, selIpa) =>
         `The '${correctSound}' sound ${correctIpa} is different from '${selSound}' ${selIpa}. Listen carefully to the difference.`,
       sameSound: () =>
@@ -417,7 +420,7 @@ export function generateFeedbackExplanation(question, selectedWord, language = '
     },
   };
 
-  const t = templates[language] || templates.es;
+  const t = templates[/** @type {'es' | 'en'} */ (language)] || templates.es;
 
   if (!selectedInfo) {
     return t.fallback();

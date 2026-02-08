@@ -58,14 +58,14 @@ const POINTS_PER_CORRECT = 20;
 
 /**
  * Create the Quiz component
- * @param {Object} lesson - The lesson data
- * @param {Object} options - Configuration options
- * @param {number} [options.questionCount=5] - Number of questions
- * @param {string} [options.language='es'] - Display language ('es' or 'en')
- * @param {Function} options.onComplete - Callback when quiz is completed
+ * @param {import('../data/schema.js').Lesson} lesson - The lesson data
+ * @param {Object} [options] - Configuration options
+ * @param {number} [options.questionCount] - Number of questions
+ * @param {string} [options.language] - Display language ('es' or 'en')
+ * @param {Function} [options.onComplete] - Callback when quiz is completed
  * @param {Function} [options.onClose] - Callback when quiz is closed
  * @param {import('../lib/quizHelpers.js').QuizQuestion[]} [options.questions] - Pre-supplied questions (overrides generateQuiz)
- * @returns {Object} Component API with mount and destroy methods
+ * @returns {{ mount: (targetContainer: HTMLElement) => Promise<void>, destroy: () => void, getState: () => any }} Component API with mount and destroy methods
  */
 export function createQuiz(lesson, options = {}) {
   const {
@@ -75,19 +75,24 @@ export function createQuiz(lesson, options = {}) {
     onClose,
   } = options;
 
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
 
   // State
+  /** @type {HTMLElement | null} */
   let container = null;
+  /** @type {import('../lib/quizHelpers.js').QuizQuestion[]} */
   let questions = [];
   let currentQuestionIndex = 0;
+  /** @type {import('../lib/quizHelpers.js').UserAnswer[]} */
   let answers = [];
   let isAnswered = false;
   let isSpeaking = false;
   let ttsAvailable = false;
+  /** @type {ReturnType<typeof createQuizResults> | null} */
   let resultsComponent = null;
 
   // Elements cache
+  /** @type {any} */
   let elements = {};
 
   /**
@@ -109,6 +114,7 @@ export function createQuiz(lesson, options = {}) {
   /**
    * Get description based on language
    */
+  /** @param {import('../lib/quizHelpers.js').QuizQuestion} question */
   const getDescription = (question) => {
     return language === 'en' ? question.descriptionEN : question.descriptionES;
   };
@@ -204,7 +210,7 @@ export function createQuiz(lesson, options = {}) {
       </div>
     `;
 
-    container.innerHTML = html;
+    /** @type {HTMLElement} */ (container).innerHTML = html;
     cacheElements();
     bindEvents();
 
@@ -249,16 +255,16 @@ export function createQuiz(lesson, options = {}) {
    * Update listen button visual state
    */
   const updateListenButtonState = () => {
-    const listenBtn = container?.querySelector('[data-action="preview-sound"]');
+    const listenBtn = /** @type {HTMLButtonElement | null} */ (container?.querySelector('[data-action="preview-sound"]'));
     if (listenBtn) {
       if (isSpeaking) {
         listenBtn.classList.add('is-playing');
         listenBtn.disabled = true;
-        listenBtn.querySelector('.quiz-listen-text').textContent = text.autoPlaying;
+        /** @type {HTMLElement} */ (listenBtn.querySelector('.quiz-listen-text')).textContent = text.autoPlaying;
       } else {
         listenBtn.classList.remove('is-playing');
         listenBtn.disabled = false;
-        listenBtn.querySelector('.quiz-listen-text').textContent = text.listenAgain;
+        /** @type {HTMLElement} */ (listenBtn.querySelector('.quiz-listen-text')).textContent = text.listenAgain;
       }
     }
   };
@@ -287,9 +293,10 @@ export function createQuiz(lesson, options = {}) {
   /**
    * Render answer options
    */
+  /** @param {import('../lib/quizHelpers.js').QuizQuestion} question */
   const renderOptions = (question) => {
     return question.options
-      .map((option, index) => {
+      .map((/** @type {string} */ option, /** @type {number} */ index) => {
         const optionLetter = String.fromCharCode(65 + index); // A, B, C, D
         return `
           <button
@@ -318,13 +325,14 @@ export function createQuiz(lesson, options = {}) {
    * Cache DOM elements
    */
   const cacheElements = () => {
+    const c = /** @type {HTMLElement} */ (container);
     elements = {
-      closeBtn: container.querySelector('[data-action="close"]'),
-      soundBtn: container.querySelector('[data-action="preview-sound"]'),
-      options: container.querySelectorAll('.quiz-option'),
-      feedbackContainer: container.querySelector('[data-feedback-container]'),
-      nextBtn: container.querySelector('[data-action="next"]'),
-      progressDots: container.querySelectorAll('.quiz-progress-dot'),
+      closeBtn: c.querySelector('[data-action="close"]'),
+      soundBtn: c.querySelector('[data-action="preview-sound"]'),
+      options: c.querySelectorAll('.quiz-option'),
+      feedbackContainer: c.querySelector('[data-feedback-container]'),
+      nextBtn: c.querySelector('[data-action="next"]'),
+      progressDots: c.querySelectorAll('.quiz-progress-dot'),
     };
   };
 
@@ -343,7 +351,7 @@ export function createQuiz(lesson, options = {}) {
     }
 
     // Option buttons
-    elements.options.forEach((btn) => {
+    elements.options.forEach((/** @type {HTMLElement} */ btn) => {
       btn.addEventListener('click', handleOptionClick);
     });
 
@@ -353,7 +361,7 @@ export function createQuiz(lesson, options = {}) {
     }
 
     // Keyboard navigation
-    container.addEventListener('keydown', handleKeydown);
+    /** @type {HTMLElement} */ (container).addEventListener('keydown', handleKeydown);
   };
 
   /**
@@ -399,13 +407,14 @@ export function createQuiz(lesson, options = {}) {
   /**
    * Handle option click
    */
+  /** @param {Event} event */
   const handleOptionClick = async (event) => {
     if (isAnswered) {
       return;
     }
 
-    const optionBtn = event.currentTarget;
-    const selected = optionBtn.dataset.option;
+    const optionBtn = /** @type {HTMLElement} */ (event.currentTarget);
+    const selected = /** @type {string} */ (optionBtn.dataset.option);
     const question = getCurrentQuestion();
     const isCorrect = selected === question.correctAnswer;
 
@@ -435,8 +444,13 @@ export function createQuiz(lesson, options = {}) {
   /**
    * Update options state after answer
    */
+  /**
+   * @param {string} selected
+   * @param {string} correct
+   * @param {boolean} isCorrect
+   */
   const updateOptionsState = (selected, correct, isCorrect) => {
-    elements.options.forEach((btn) => {
+    elements.options.forEach((/** @type {any} */ btn) => {
       const option = btn.dataset.option;
       btn.disabled = true;
 
@@ -504,6 +518,7 @@ export function createQuiz(lesson, options = {}) {
   /**
    * Update progress dot for current question
    */
+  /** @param {boolean} isCorrect */
   const updateProgressDot = (isCorrect) => {
     const dot = elements.progressDots[currentQuestionIndex];
     if (dot) {
@@ -528,6 +543,7 @@ export function createQuiz(lesson, options = {}) {
   /**
    * Show points animation
    */
+  /** @param {HTMLElement} optionBtn */
   const showPointsAnimation = (optionBtn) => {
     const pointsEl = document.createElement('span');
     pointsEl.className = 'quiz-points-animation';
@@ -546,6 +562,7 @@ export function createQuiz(lesson, options = {}) {
   /**
    * Play correct word pronunciation
    */
+  /** @param {string} word */
   const playCorrectPronunciation = async (word) => {
     if (isSpeaking) {
       return;
@@ -588,6 +605,7 @@ export function createQuiz(lesson, options = {}) {
   /**
    * Handle keyboard navigation
    */
+  /** @param {KeyboardEvent} event */
   const handleKeydown = (event) => {
     if (event.key === 'Escape') {
       handleClose();
@@ -624,8 +642,8 @@ export function createQuiz(lesson, options = {}) {
       badge: (result.passed && result.percentage === 100) ? {
         name: 'Perfect Score',
         icon: '',
-      } : null,
-      onContinue: (finalResult) => {
+      } : undefined,
+      onContinue: (/** @type {any} */ finalResult) => {
         if (onComplete) {
           onComplete({
             score: finalResult.score,
@@ -646,7 +664,7 @@ export function createQuiz(lesson, options = {}) {
       onClose: handleClose,
     });
 
-    resultsComponent.mount(container);
+    resultsComponent.mount(/** @type {HTMLElement} */ (container));
   };
 
   /**

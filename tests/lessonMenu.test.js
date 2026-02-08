@@ -7,13 +7,14 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // Mock localStorage before importing modules that use it
 const localStorageMock = (() => {
+  /** @type {Record<string, string>} */
   let store = {};
   return {
-    getItem: vi.fn((key) => store[key] || null),
-    setItem: vi.fn((key, value) => {
+    getItem: vi.fn(/** @param {string} key */ (key) => store[key] || null),
+    setItem: vi.fn(/** @param {string} key @param {string} value */ (key, value) => {
       store[key] = value;
     }),
-    removeItem: vi.fn((key) => {
+    removeItem: vi.fn(/** @param {string} key */ (key) => {
       delete store[key];
     }),
     clear: vi.fn(() => {
@@ -37,6 +38,7 @@ import { STORAGE_KEYS } from '../src/lib/progressStorage.js';
 import { getLessonsDueForReview } from '../src/lib/reviewScheduler.js';
 
 describe('LessonMenu Component', () => {
+  /** @type {HTMLElement} */
   let container;
 
   beforeEach(() => {
@@ -117,7 +119,7 @@ describe('LessonMenu Component', () => {
     it('should render Phase 2 sound cards (oe, ie, ei, ij, ou, au, eu, ui)', () => {
       createLessonMenu(container, {});
 
-      const phase2 = container.querySelector('[data-phase="2"]');
+      const phase2 = /** @type {HTMLElement} */ (container.querySelector('[data-phase="2"]'));
       expect(phase2).not.toBeNull();
 
       const phase2Sounds = phase2.querySelectorAll('.sound-card-sound');
@@ -137,7 +139,7 @@ describe('LessonMenu Component', () => {
     it('should show 0% progress when no lessons completed', () => {
       createLessonMenu(container, {});
 
-      const progressBar = container.querySelector('.lesson-menu-progress-bar');
+      const progressBar = /** @type {HTMLElement} */ (container.querySelector('.lesson-menu-progress-bar'));
       expect(progressBar.style.width).toBe('0%');
     });
 
@@ -150,7 +152,7 @@ describe('LessonMenu Component', () => {
 
       createLessonMenu(container, {});
 
-      const progressBar = container.querySelector('.lesson-menu-progress-bar');
+      const progressBar = /** @type {HTMLElement} */ (container.querySelector('.lesson-menu-progress-bar'));
       expect(progressBar.style.width).toBe('8%');
     });
 
@@ -159,7 +161,7 @@ describe('LessonMenu Component', () => {
 
       createLessonMenu(container, {});
 
-      const pointsDisplay = container.querySelector('.lesson-menu-points');
+      const pointsDisplay = /** @type {HTMLElement} */ (container.querySelector('.lesson-menu-points'));
       expect(pointsDisplay.textContent).toContain('150');
     });
   });
@@ -173,7 +175,7 @@ describe('LessonMenu Component', () => {
       );
       beginnerButtons.forEach((btn) => {
         expect(btn.classList.contains('level-btn--unlocked')).toBe(true);
-        expect(btn.dataset.unlocked).toBe('true');
+        expect(/** @type {HTMLElement} */ (btn).dataset.unlocked).toBe('true');
       });
     });
 
@@ -185,7 +187,7 @@ describe('LessonMenu Component', () => {
       );
       advancedButtons.forEach((btn) => {
         expect(btn.classList.contains('level-btn--locked')).toBe(true);
-        expect(btn.dataset.unlocked).toBe('false');
+        expect(/** @type {HTMLElement} */ (btn).dataset.unlocked).toBe('false');
       });
     });
 
@@ -197,7 +199,7 @@ describe('LessonMenu Component', () => {
 
       createLessonMenu(container, {});
 
-      const aaAdvanced = container.querySelector('[data-lesson-id="P1-AA-ADV"]');
+      const aaAdvanced = /** @type {HTMLElement} */ (container.querySelector('[data-lesson-id="P1-AA-ADV"]'));
       expect(aaAdvanced.classList.contains('level-btn--unlocked')).toBe(true);
       expect(aaAdvanced.dataset.unlocked).toBe('true');
     });
@@ -210,7 +212,7 @@ describe('LessonMenu Component', () => {
 
       createLessonMenu(container, {});
 
-      const aaBeginner = container.querySelector('[data-lesson-id="P1-AA-BEG"]');
+      const aaBeginner = /** @type {HTMLElement} */ (container.querySelector('[data-lesson-id="P1-AA-BEG"]'));
       expect(aaBeginner.classList.contains('level-btn--completed')).toBe(true);
     });
   });
@@ -221,9 +223,9 @@ describe('LessonMenu Component', () => {
 
       createLessonMenu(container, { onSelectLesson });
 
-      const beginnerButton = container.querySelector(
+      const beginnerButton = /** @type {HTMLButtonElement} */ (container.querySelector(
         '[data-lesson-id="P1-AA-BEG"]'
-      );
+      ));
       beginnerButton.click();
 
       expect(onSelectLesson).toHaveBeenCalledWith('P1-AA-BEG');
@@ -234,9 +236,9 @@ describe('LessonMenu Component', () => {
 
       createLessonMenu(container, { onSelectLesson });
 
-      const advancedButton = container.querySelector(
+      const advancedButton = /** @type {HTMLButtonElement} */ (container.querySelector(
         '[data-lesson-id="P1-AA-ADV"]'
-      );
+      ));
       advancedButton.click();
 
       expect(onSelectLesson).not.toHaveBeenCalled();
@@ -245,12 +247,12 @@ describe('LessonMenu Component', () => {
     it('should show locked message when locked lesson is clicked', async () => {
       createLessonMenu(container, {});
 
-      const advancedButton = container.querySelector(
+      const advancedButton = /** @type {HTMLButtonElement} */ (container.querySelector(
         '[data-lesson-id="P1-AA-ADV"]'
-      );
+      ));
       advancedButton.click();
 
-      const lockedMessage = container.querySelector('[data-locked-message]');
+      const lockedMessage = /** @type {HTMLElement} */ (container.querySelector('[data-locked-message]'));
       expect(lockedMessage.style.display).toBe('block');
     });
   });
@@ -307,7 +309,7 @@ describe('LessonMenu Component', () => {
 
       menu.refresh();
 
-      const aaBeginner = container.querySelector('[data-lesson-id="P1-AA-BEG"]');
+      const aaBeginner = /** @type {HTMLElement} */ (container.querySelector('[data-lesson-id="P1-AA-BEG"]'));
       expect(aaBeginner.classList.contains('level-btn--completed')).toBe(true);
     });
   });
@@ -324,7 +326,7 @@ describe('LessonMenu Component', () => {
       const onViewBadges = vi.fn();
       createLessonMenu(container, { onViewBadges });
 
-      const badgesBtn = container.querySelector('[data-action="view-badges"]');
+      const badgesBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="view-badges"]'));
       badgesBtn.click();
 
       expect(onViewBadges).toHaveBeenCalledTimes(1);
@@ -333,7 +335,7 @@ describe('LessonMenu Component', () => {
     it('should not throw if onViewBadges is not provided', () => {
       createLessonMenu(container, {});
 
-      const badgesBtn = container.querySelector('[data-action="view-badges"]');
+      const badgesBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="view-badges"]'));
       expect(() => badgesBtn.click()).not.toThrow();
     });
   });
@@ -342,21 +344,21 @@ describe('LessonMenu Component', () => {
     it('should render Spanish text by default', () => {
       createLessonMenu(container, {});
 
-      const title = container.querySelector('.lesson-menu-title');
+      const title = /** @type {HTMLElement} */ (container.querySelector('.lesson-menu-title'));
       expect(title.textContent).toBe('Lecciones');
     });
 
     it('should render English text when language is en', () => {
       createLessonMenu(container, { language: 'en' });
 
-      const title = container.querySelector('.lesson-menu-title');
+      const title = /** @type {HTMLElement} */ (container.querySelector('.lesson-menu-title'));
       expect(title.textContent).toBe('Lessons');
     });
   });
 
   describe('Review Indicators', () => {
     it('should not render review button when no lessons are due', () => {
-      getLessonsDueForReview.mockReturnValue([]);
+      /** @type {import('vitest').Mock} */ (getLessonsDueForReview).mockReturnValue([]);
 
       createLessonMenu(container, {});
 
@@ -365,13 +367,13 @@ describe('LessonMenu Component', () => {
     });
 
     it('should render review button when lessons are due', () => {
-      getLessonsDueForReview.mockReturnValue([
+      /** @type {import('vitest').Mock} */ (getLessonsDueForReview).mockReturnValue([
         { lessonId: 'P1-AA-BEG', urgency: 100, lastReview: 0, reviewCount: 0 },
       ]);
 
       createLessonMenu(container, {});
 
-      const reviewBtn = container.querySelector('[data-action="start-review"]');
+      const reviewBtn = /** @type {HTMLElement} */ (container.querySelector('[data-action="start-review"]'));
       expect(reviewBtn).not.toBeNull();
       expect(reviewBtn.textContent).toContain('1');
     });
@@ -382,13 +384,13 @@ describe('LessonMenu Component', () => {
         JSON.stringify(['P1-AA-BEG'])
       );
 
-      getLessonsDueForReview.mockReturnValue([
+      /** @type {import('vitest').Mock} */ (getLessonsDueForReview).mockReturnValue([
         { lessonId: 'P1-AA-BEG', urgency: 100, lastReview: 0, reviewCount: 0 },
       ]);
 
       createLessonMenu(container, {});
 
-      const aaBeg = container.querySelector('[data-lesson-id="P1-AA-BEG"]');
+      const aaBeg = /** @type {HTMLElement} */ (container.querySelector('[data-lesson-id="P1-AA-BEG"]'));
       expect(aaBeg.classList.contains('level-btn--review-due')).toBe(true);
     });
 
@@ -398,25 +400,25 @@ describe('LessonMenu Component', () => {
         JSON.stringify(['P1-AA-BEG', 'P1-EE-BEG'])
       );
 
-      getLessonsDueForReview.mockReturnValue([
+      /** @type {import('vitest').Mock} */ (getLessonsDueForReview).mockReturnValue([
         { lessonId: 'P1-AA-BEG', urgency: 100, lastReview: 0, reviewCount: 0 },
       ]);
 
       createLessonMenu(container, {});
 
-      const eeBeg = container.querySelector('[data-lesson-id="P1-EE-BEG"]');
+      const eeBeg = /** @type {HTMLElement} */ (container.querySelector('[data-lesson-id="P1-EE-BEG"]'));
       expect(eeBeg.classList.contains('level-btn--review-due')).toBe(false);
     });
 
     it('should call onStartReview when review button is clicked', () => {
-      getLessonsDueForReview.mockReturnValue([
+      /** @type {import('vitest').Mock} */ (getLessonsDueForReview).mockReturnValue([
         { lessonId: 'P1-AA-BEG', urgency: 100, lastReview: 0, reviewCount: 0 },
       ]);
 
       const onStartReview = vi.fn();
       createLessonMenu(container, { onStartReview });
 
-      const reviewBtn = container.querySelector('[data-action="start-review"]');
+      const reviewBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="start-review"]'));
       reviewBtn.click();
 
       expect(onStartReview).toHaveBeenCalledTimes(1);

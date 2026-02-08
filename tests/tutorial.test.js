@@ -5,6 +5,13 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createTutorial } from '../src/components/Tutorial.js';
 
+/**
+ * querySelector shorthand that returns HTMLElement (non-null assertion for tests)
+ * @param {string} selector
+ * @returns {HTMLElement}
+ */
+const qs = (selector) => /** @type {HTMLElement} */ (document.querySelector(selector));
+
 describe('Tutorial', () => {
   beforeEach(() => {
     document.body.innerHTML = '';
@@ -18,7 +25,7 @@ describe('Tutorial', () => {
   describe('rendering', () => {
     it('should render overlay with dialog role', () => {
       const tut = createTutorial();
-      const overlay = document.querySelector('.tutorial-overlay');
+      const overlay = qs('.tutorial-overlay');
 
       expect(overlay).toBeTruthy();
       expect(overlay.getAttribute('role')).toBe('dialog');
@@ -30,7 +37,7 @@ describe('Tutorial', () => {
     it('should render first step content by default', () => {
       const tut = createTutorial({ language: 'es' });
 
-      expect(document.querySelector('.tutorial-title').textContent).toBe('Elige un sonido');
+      expect(qs('.tutorial-title').textContent).toBe('Elige un sonido');
       expect(document.querySelector('.tutorial-description')).toBeTruthy();
       expect(document.querySelector('.tutorial-icon')).toBeTruthy();
 
@@ -49,7 +56,7 @@ describe('Tutorial', () => {
 
     it('should render step counter showing 1 de 4', () => {
       const tut = createTutorial({ language: 'es' });
-      const counter = document.querySelector('.tutorial-step-counter');
+      const counter = qs('.tutorial-step-counter');
 
       expect(counter.textContent).toBe('1 de 4');
 
@@ -69,12 +76,12 @@ describe('Tutorial', () => {
   describe('navigation', () => {
     it('should advance to next step on Next click', () => {
       const tut = createTutorial({ language: 'es' });
-      const nextBtn = document.querySelector('[data-tutorial-next]');
+      const nextBtn = qs('[data-tutorial-next]');
 
       nextBtn.click();
 
-      expect(document.querySelector('.tutorial-title').textContent).toBe('Explora con tarjetas');
-      expect(document.querySelector('.tutorial-step-counter').textContent).toBe('2 de 4');
+      expect(qs('.tutorial-title').textContent).toBe('Explora con tarjetas');
+      expect(qs('.tutorial-step-counter').textContent).toBe('2 de 4');
       expect(tut.getState().currentStep).toBe(1);
 
       tut.destroy();
@@ -83,7 +90,7 @@ describe('Tutorial', () => {
     it('should update dots on navigation', () => {
       const tut = createTutorial();
 
-      document.querySelector('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
 
       const dots = document.querySelectorAll('.tutorial-dot');
       expect(dots[0].classList.contains('tutorial-dot--completed')).toBe(true);
@@ -96,11 +103,11 @@ describe('Tutorial', () => {
       const tut = createTutorial({ language: 'es' });
 
       // Advance to last step
-      document.querySelector('[data-tutorial-next]').click();
-      document.querySelector('[data-tutorial-next]').click();
-      document.querySelector('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
 
-      expect(document.querySelector('[data-tutorial-next]').textContent).toBe('Comenzar');
+      expect(qs('[data-tutorial-next]').textContent).toBe('Comenzar');
       expect(tut.getState().currentStep).toBe(3);
 
       tut.destroy();
@@ -113,11 +120,11 @@ describe('Tutorial', () => {
       createTutorial({ onComplete });
 
       // Advance to last step
-      document.querySelector('[data-tutorial-next]').click();
-      document.querySelector('[data-tutorial-next]').click();
-      document.querySelector('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
       // Click done
-      document.querySelector('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
 
       expect(onComplete).toHaveBeenCalledOnce();
       expect(document.querySelector('.tutorial-overlay')).toBeNull();
@@ -127,7 +134,7 @@ describe('Tutorial', () => {
       const onComplete = vi.fn();
       createTutorial({ onComplete });
 
-      document.querySelector('[data-tutorial-skip]').click();
+      qs('[data-tutorial-skip]').click();
 
       expect(onComplete).toHaveBeenCalledOnce();
       expect(document.querySelector('.tutorial-overlay')).toBeNull();
@@ -137,7 +144,7 @@ describe('Tutorial', () => {
       const onComplete = vi.fn();
       createTutorial({ onComplete });
 
-      const overlay = document.querySelector('.tutorial-overlay');
+      const overlay = qs('.tutorial-overlay');
       overlay.click();
 
       expect(onComplete).toHaveBeenCalledOnce();
@@ -158,7 +165,7 @@ describe('Tutorial', () => {
       const onComplete = vi.fn();
       createTutorial({ onComplete });
 
-      document.querySelector('.tutorial-card').click();
+      qs('.tutorial-card').click();
 
       expect(onComplete).not.toHaveBeenCalled();
       expect(document.querySelector('.tutorial-overlay')).toBeTruthy();
@@ -168,7 +175,7 @@ describe('Tutorial', () => {
       const onComplete = vi.fn();
       createTutorial({ onComplete });
 
-      document.querySelector('[data-tutorial-skip]').click();
+      qs('[data-tutorial-skip]').click();
 
       expect(document.querySelectorAll('.tutorial-overlay')).toHaveLength(0);
     });
@@ -178,8 +185,8 @@ describe('Tutorial', () => {
     it('should render Spanish text by default', () => {
       const tut = createTutorial({ language: 'es' });
 
-      expect(document.querySelector('[data-tutorial-skip]').textContent).toBe('Saltar');
-      expect(document.querySelector('[data-tutorial-next]').textContent).toBe('Siguiente');
+      expect(qs('[data-tutorial-skip]').textContent).toBe('Saltar');
+      expect(qs('[data-tutorial-next]').textContent).toBe('Siguiente');
 
       tut.destroy();
     });
@@ -187,9 +194,9 @@ describe('Tutorial', () => {
     it('should render English text', () => {
       const tut = createTutorial({ language: 'en' });
 
-      expect(document.querySelector('[data-tutorial-skip]').textContent).toBe('Skip');
-      expect(document.querySelector('[data-tutorial-next]').textContent).toBe('Next');
-      expect(document.querySelector('.tutorial-title').textContent).toBe('Choose a sound');
+      expect(qs('[data-tutorial-skip]').textContent).toBe('Skip');
+      expect(qs('[data-tutorial-next]').textContent).toBe('Next');
+      expect(qs('.tutorial-title').textContent).toBe('Choose a sound');
 
       tut.destroy();
     });
@@ -197,7 +204,7 @@ describe('Tutorial', () => {
     it('should fall back to Spanish for unknown language', () => {
       const tut = createTutorial({ language: 'fr' });
 
-      expect(document.querySelector('[data-tutorial-skip]').textContent).toBe('Saltar');
+      expect(qs('[data-tutorial-skip]').textContent).toBe('Saltar');
 
       tut.destroy();
     });
@@ -205,11 +212,11 @@ describe('Tutorial', () => {
     it('should show Start Learning on last step in English', () => {
       const tut = createTutorial({ language: 'en' });
 
-      document.querySelector('[data-tutorial-next]').click();
-      document.querySelector('[data-tutorial-next]').click();
-      document.querySelector('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
 
-      expect(document.querySelector('[data-tutorial-next]').textContent).toBe('Start Learning');
+      expect(qs('[data-tutorial-next]').textContent).toBe('Start Learning');
 
       tut.destroy();
     });
@@ -218,7 +225,7 @@ describe('Tutorial', () => {
   describe('accessibility', () => {
     it('should have aria-modal attribute', () => {
       const tut = createTutorial();
-      const overlay = document.querySelector('.tutorial-overlay');
+      const overlay = qs('.tutorial-overlay');
 
       expect(overlay.getAttribute('aria-modal')).toBe('true');
 
@@ -239,7 +246,7 @@ describe('Tutorial', () => {
       const tut = createTutorial();
       const focusSpy = vi.spyOn(HTMLButtonElement.prototype, 'focus');
 
-      document.querySelector('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
 
       expect(focusSpy).toHaveBeenCalled();
 
@@ -254,7 +261,7 @@ describe('Tutorial', () => {
 
       expect(tut.getState().currentStep).toBe(0);
 
-      document.querySelector('[data-tutorial-next]').click();
+      qs('[data-tutorial-next]').click();
       expect(tut.getState().currentStep).toBe(1);
 
       tut.destroy();

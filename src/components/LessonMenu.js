@@ -63,21 +63,25 @@ const TEXT = {
 /**
  * Create the Lesson Menu component
  * @param {HTMLElement} container - Container element to render into
- * @param {Object} options - Configuration options
- * @param {string} [options.language='es'] - Display language ('es' or 'en')
- * @param {Function} options.onSelectLesson - Callback when a lesson is selected
- * @returns {Object} Component API
+ * @param {Object} [options] - Configuration options
+ * @param {string} [options.language] - Display language ('es' or 'en')
+ * @param {Function} [options.onSelectLesson] - Callback when a lesson is selected
+ * @param {Function} [options.onViewBadges] - Callback when view badges is clicked
+ * @param {Function} [options.onStartReview] - Callback when start review is clicked
+ * @returns {{ destroy: () => void, refresh: () => void, getState: () => any }} Component API
  */
 export function createLessonMenu(container, options = {}) {
   const { language = 'es', onSelectLesson, onViewBadges, onStartReview } = options;
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
 
   // State
   let progress = getProgress();
   let completedLessons = getCompletedLessons();
+  /** @type {ReturnType<typeof setTimeout> | null} */
   let lockedMessageTimeout = null;
 
   // Elements cache
+  /** @type {any} */
   let elements = {};
 
   /**
@@ -177,8 +181,8 @@ export function createLessonMenu(container, options = {}) {
         <span class="sound-card-sound" id="sound-${sound}-label">${sound}</span>
         <span class="sound-card-ipa">${info.ipa}</span>
         <div class="sound-card-levels">
-          ${renderLevelButton(beginnerLesson, text.beginner, dueLessonIds)}
-          ${renderLevelButton(advancedLesson, text.advanced, dueLessonIds)}
+          ${renderLevelButton(/** @type {import('../data/schema.js').Lesson} */ (beginnerLesson), text.beginner, dueLessonIds)}
+          ${renderLevelButton(/** @type {import('../data/schema.js').Lesson} */ (advancedLesson), text.advanced, dueLessonIds)}
         </div>
       </div>
     `;
@@ -194,8 +198,8 @@ export function createLessonMenu(container, options = {}) {
     return phases.map(phase => {
       const phaseLessons = lessonsByPhase[phase];
       const phaseSounds = [...new Set(phaseLessons.map(l => l.sound.combination))];
-      const phaseName = PHASE_NAMES[phase] || { es: '', en: '' };
-      const phaseLabel = phaseName[language] || phaseName.es;
+      const phaseName = /** @type {Record<number, { es: string, en: string }>} */ (PHASE_NAMES)[phase] || { es: '', en: '' };
+      const phaseLabel = phaseName[/** @type {'es' | 'en'} */ (language)] || phaseName.es;
 
       return `
         <div class="lesson-menu-phase" data-phase="${phase}">
@@ -210,7 +214,7 @@ export function createLessonMenu(container, options = {}) {
 
   /**
    * Render a level button
-   * @param {Object} lesson - The lesson data
+   * @param {import('../data/schema.js').Lesson} lesson - The lesson data
    * @param {string} levelLabel - Display label for the level
    * @param {Set<string>} dueLessonIds - Set of lesson IDs due for review
    */
@@ -275,7 +279,7 @@ export function createLessonMenu(container, options = {}) {
    * Bind event listeners
    */
   const bindEvents = () => {
-    elements.levelButtons.forEach(btn => {
+    elements.levelButtons.forEach((/** @type {HTMLElement} */ btn) => {
       btn.addEventListener('click', handleLevelClick);
     });
 
@@ -297,8 +301,9 @@ export function createLessonMenu(container, options = {}) {
   /**
    * Handle level button click
    */
+  /** @param {Event} event */
   const handleLevelClick = (event) => {
-    const btn = event.currentTarget;
+    const btn = /** @type {HTMLElement} */ (event.currentTarget);
     const lessonId = btn.dataset.lessonId;
     const isUnlocked = btn.dataset.unlocked === 'true';
 

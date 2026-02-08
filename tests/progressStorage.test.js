@@ -36,14 +36,16 @@ import {
 } from '../src/lib/progressStorage.js';
 
 // Mock localStorage
+/** @type {any} */
 const localStorageMock = (() => {
+  /** @type {Record<string, string>} */
   let store = {};
   return {
-    getItem: vi.fn((key) => store[key] || null),
-    setItem: vi.fn((key, value) => {
+    getItem: vi.fn((/** @type {string} */ key) => store[key] || null),
+    setItem: vi.fn((/** @type {string} */ key, /** @type {string} */ value) => {
       store[key] = value;
     }),
-    removeItem: vi.fn((key) => {
+    removeItem: vi.fn((/** @type {string} */ key) => {
       delete store[key];
     }),
     clear: vi.fn(() => {
@@ -121,7 +123,7 @@ describe('Progress Storage', () => {
 
       // Should not be called again since lesson already exists
       const calls = localStorageMock.setItem.mock.calls.filter(
-        (call) => call[0] === STORAGE_KEYS.COMPLETED_LESSONS
+        (/** @type {any} */ call) => call[0] === STORAGE_KEYS.COMPLETED_LESSONS
       );
       // Initial set + no additional set for duplicate
       expect(calls.length).toBe(1);
@@ -282,41 +284,41 @@ describe('Progress Storage', () => {
     });
 
     it('should return bronze at 200 points', () => {
-      const milestone = getCurrentMilestone(200);
+      const milestone = /** @type {any} */ (getCurrentMilestone(200));
       expect(milestone.level).toBe('bronze');
     });
 
     it('should return silver at 640 points', () => {
-      const milestone = getCurrentMilestone(640);
+      const milestone = /** @type {any} */ (getCurrentMilestone(640));
       expect(milestone.level).toBe('silver');
     });
 
     it('should return gold at 1280 points', () => {
-      const milestone = getCurrentMilestone(1280);
+      const milestone = /** @type {any} */ (getCurrentMilestone(1280));
       expect(milestone.level).toBe('gold');
     });
 
     it('should return previous milestone when between thresholds', () => {
-      const milestone = getCurrentMilestone(400);
+      const milestone = /** @type {any} */ (getCurrentMilestone(400));
       expect(milestone.level).toBe('bronze');
     });
   });
 
   describe('getNextMilestone', () => {
     it('should return bronze as first milestone', () => {
-      const next = getNextMilestone(0);
+      const next = /** @type {any} */ (getNextMilestone(0));
       expect(next.level).toBe('bronze');
       expect(next.remaining).toBe(200);
     });
 
     it('should return silver after bronze', () => {
-      const next = getNextMilestone(200);
+      const next = /** @type {any} */ (getNextMilestone(200));
       expect(next.level).toBe('silver');
       expect(next.remaining).toBe(440);
     });
 
     it('should return gold after silver', () => {
-      const next = getNextMilestone(640);
+      const next = /** @type {any} */ (getNextMilestone(640));
       expect(next.level).toBe('gold');
       expect(next.remaining).toBe(640);
     });
@@ -327,7 +329,7 @@ describe('Progress Storage', () => {
     });
 
     it('should calculate correct remaining points', () => {
-      const next = getNextMilestone(100);
+      const next = /** @type {any} */ (getNextMilestone(100));
       expect(next.remaining).toBe(100);
     });
   });
@@ -359,21 +361,21 @@ describe('Progress Storage', () => {
 
     it('should return bronze when crossing 200 threshold', () => {
       localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '150');
-      const result = checkNewMilestone(100);
+      const result = /** @type {any} */ (checkNewMilestone(100));
       expect(result).not.toBeNull();
       expect(result.level).toBe('bronze');
     });
 
     it('should return silver when crossing 640 threshold', () => {
       localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '600');
-      const result = checkNewMilestone(100);
+      const result = /** @type {any} */ (checkNewMilestone(100));
       expect(result).not.toBeNull();
       expect(result.level).toBe('silver');
     });
 
     it('should return gold when crossing 1280 threshold', () => {
       localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '1200');
-      const result = checkNewMilestone(200);
+      const result = /** @type {any} */ (checkNewMilestone(200));
       expect(result).not.toBeNull();
       expect(result.level).toBe('gold');
     });
@@ -473,7 +475,7 @@ describe('Progress Storage', () => {
       recordQuizAttempt('P1-EE-BEG', 5, 5, true);
 
       const calls = localStorageMock.setItem.mock.calls.filter(
-        (c) => c[0] === STORAGE_KEYS.QUIZ_HISTORY
+        (/** @type {any} */ c) => c[0] === STORAGE_KEYS.QUIZ_HISTORY
       );
       const lastCall = calls[calls.length - 1];
       const saved = JSON.parse(lastCall[1]);
@@ -741,7 +743,7 @@ describe('Progress Storage', () => {
       updateReviewDate('P1-EE-BEG', 200);
 
       const calls = localStorageMock.setItem.mock.calls.filter(
-        (c) => c[0] === STORAGE_KEYS.REVIEW_DATES
+        (/** @type {any} */ c) => c[0] === STORAGE_KEYS.REVIEW_DATES
       );
       const lastCall = calls[calls.length - 1];
       const saved = JSON.parse(lastCall[1]);
@@ -758,7 +760,7 @@ describe('Progress Storage', () => {
       updateReviewDate('P1-AA-BEG', 999);
 
       const calls = localStorageMock.setItem.mock.calls.filter(
-        (c) => c[0] === STORAGE_KEYS.REVIEW_DATES
+        (/** @type {any} */ c) => c[0] === STORAGE_KEYS.REVIEW_DATES
       );
       const lastCall = calls[calls.length - 1];
       const saved = JSON.parse(lastCall[1]);

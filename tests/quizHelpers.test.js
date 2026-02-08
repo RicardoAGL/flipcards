@@ -3,7 +3,7 @@
  * Tests for quiz generation, scoring, and feedback utilities
  */
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeEach } from 'vitest';
 import {
   getDistractors,
   generateQuiz,
@@ -20,10 +20,11 @@ import {
 import { createMockLesson } from './setup.js';
 
 describe('Quiz Helpers', () => {
+  /** @type {import('../src/data/schema.js').Lesson} */
   let mockLesson;
 
   beforeEach(() => {
-    mockLesson = createMockLesson();
+    mockLesson = /** @type {import('../src/data/schema.js').Lesson} */ (createMockLesson());
   });
 
   // ==========================================
@@ -62,9 +63,9 @@ describe('Quiz Helpers', () => {
     });
 
     it('should use distractor pool when available', () => {
-      const lessonWithPool = createMockLesson({
+      const lessonWithPool = /** @type {import('../src/data/schema.js').Lesson} */ (createMockLesson({
         distractorPool: ['kaas', 'huis', 'fiets', 'boom'],
-      });
+      }));
       const word = lessonWithPool.words[0];
       const distractors = getDistractors(word, lessonWithPool, 3);
 
@@ -82,12 +83,12 @@ describe('Quiz Helpers', () => {
     });
 
     it('should return fewer distractors when not enough candidates', () => {
-      const tinyLesson = createMockLesson({
+      const tinyLesson = /** @type {import('../src/data/schema.js').Lesson} */ (createMockLesson({
         words: [
           { wordId: 'aa-001', word: 'naam', prefix: 'n', suffix: 'm', translation: { es: 'nombre', en: 'name' }, syllables: 1 },
           { wordId: 'aa-002', word: 'jaar', prefix: 'j', suffix: 'r', translation: { es: 'año', en: 'year' }, syllables: 1 },
         ],
-      });
+      }));
       const word = tinyLesson.words[0];
       const distractors = getDistractors(word, tinyLesson, 3);
 
@@ -158,12 +159,12 @@ describe('Quiz Helpers', () => {
     });
 
     it('should filter out standalone sound entries', () => {
-      const lessonWithStandalone = createMockLesson({
+      const lessonWithStandalone = /** @type {import('../src/data/schema.js').Lesson} */ (createMockLesson({
         words: [
           ...mockLesson.words,
           { wordId: 'aa-solo', word: 'aa', prefix: '', suffix: '', translation: { es: 'aa', en: 'aa' }, syllables: 1 },
         ],
-      });
+      }));
 
       const questions = generateQuiz(lessonWithStandalone, 5);
       const questionWords = questions.map(q => q.correctAnswer);
@@ -182,7 +183,7 @@ describe('Quiz Helpers', () => {
     it('should include translation in questions', () => {
       const questions = generateQuiz(mockLesson, 3);
 
-      questions.forEach(q => {
+      questions.forEach((/** @type {any} */ q) => {
         expect(q).toHaveProperty('translation');
         expect(q.translation).toHaveProperty('es');
         expect(q.translation).toHaveProperty('en');
@@ -296,7 +297,7 @@ describe('Quiz Helpers', () => {
   // ==========================================
   describe('createUserAnswer', () => {
     it('should create correct answer object for correct selection', () => {
-      const question = { questionId: 'q1', correctAnswer: 'naam' };
+      const question = /** @type {any} */ ({ questionId: 'q1', correctAnswer: 'naam' });
       const answer = createUserAnswer(question, 'naam');
 
       expect(answer.questionId).toBe('q1');
@@ -306,7 +307,7 @@ describe('Quiz Helpers', () => {
     });
 
     it('should create correct answer object for wrong selection', () => {
-      const question = { questionId: 'q1', correctAnswer: 'naam' };
+      const question = /** @type {any} */ ({ questionId: 'q1', correctAnswer: 'naam' });
       const answer = createUserAnswer(question, 'jaar');
 
       expect(answer.isCorrect).toBe(false);
@@ -320,7 +321,7 @@ describe('Quiz Helpers', () => {
   // ==========================================
   describe('getQuizFeedback', () => {
     it('should return perfect feedback for 100%', () => {
-      const result = { percentage: 100, passed: true };
+      const result = /** @type {any} */ ({ percentage: 100, passed: true });
       const feedback = getQuizFeedback(result, 'es');
 
       expect(feedback.title).toBe('Perfecto!');
@@ -328,7 +329,7 @@ describe('Quiz Helpers', () => {
     });
 
     it('should return passed feedback for passing score', () => {
-      const result = { percentage: 80, passed: true };
+      const result = /** @type {any} */ ({ percentage: 80, passed: true });
       const feedback = getQuizFeedback(result, 'es');
 
       expect(feedback.title).toBe('Muy bien!');
@@ -336,7 +337,7 @@ describe('Quiz Helpers', () => {
     });
 
     it('should return failed feedback for failing score', () => {
-      const result = { percentage: 40, passed: false };
+      const result = /** @type {any} */ ({ percentage: 40, passed: false });
       const feedback = getQuizFeedback(result, 'es');
 
       expect(feedback.title).toBe('Sigue intentando');
@@ -344,21 +345,21 @@ describe('Quiz Helpers', () => {
     });
 
     it('should support English language', () => {
-      const result = { percentage: 100, passed: true };
+      const result = /** @type {any} */ ({ percentage: 100, passed: true });
       const feedback = getQuizFeedback(result, 'en');
 
       expect(feedback.title).toBe('Perfect!');
     });
 
     it('should default to Spanish for unknown language', () => {
-      const result = { percentage: 100, passed: true };
+      const result = /** @type {any} */ ({ percentage: 100, passed: true });
       const feedback = getQuizFeedback(result, 'fr');
 
       expect(feedback.title).toBe('Perfecto!');
     });
 
     it('should include a message in feedback', () => {
-      const result = { percentage: 80, passed: true };
+      const result = /** @type {any} */ ({ percentage: 80, passed: true });
       const feedback = getQuizFeedback(result, 'es');
 
       expect(feedback.message).toBeTruthy();
@@ -408,17 +409,17 @@ describe('Quiz Helpers', () => {
   // ==========================================
   describe('validateAnswer', () => {
     it('should return true for correct answer', () => {
-      const question = { correctAnswer: 'naam' };
+      const question = /** @type {any} */ ({ correctAnswer: 'naam' });
       expect(validateAnswer('naam', question)).toBe(true);
     });
 
     it('should return false for incorrect answer', () => {
-      const question = { correctAnswer: 'naam' };
+      const question = /** @type {any} */ ({ correctAnswer: 'naam' });
       expect(validateAnswer('jaar', question)).toBe(false);
     });
 
     it('should be case-sensitive', () => {
-      const question = { correctAnswer: 'naam' };
+      const question = /** @type {any} */ ({ correctAnswer: 'naam' });
       expect(validateAnswer('Naam', question)).toBe(false);
     });
   });
@@ -432,8 +433,8 @@ describe('Quiz Helpers', () => {
       const result = getWordSound('naam');
 
       expect(result).not.toBeNull();
-      expect(result.sound).toBe('aa');
-      expect(result.ipa).toBeTruthy();
+      expect(/** @type {any} */ (result).sound).toBe('aa');
+      expect(/** @type {any} */ (result).ipa).toBeTruthy();
     });
 
     it('should return null for an unknown word', () => {
@@ -446,11 +447,11 @@ describe('Quiz Helpers', () => {
       const result = getWordSound('Naam');
 
       expect(result).not.toBeNull();
-      expect(result.sound).toBe('aa');
+      expect(/** @type {any} */ (result).sound).toBe('aa');
     });
 
     it('should return description fields', () => {
-      const result = getWordSound('naam');
+      const result = /** @type {any} */ (getWordSound('naam'));
 
       expect(result).toHaveProperty('descriptionES');
       expect(result).toHaveProperty('descriptionEN');
@@ -463,12 +464,12 @@ describe('Quiz Helpers', () => {
   // generateFeedbackExplanation
   // ==========================================
   describe('generateFeedbackExplanation', () => {
-    const aaQuestion = {
+    const aaQuestion = /** @type {any} */ ({
       questionId: 'q1',
       correctAnswer: 'naam',
       sound: 'aa',
       ipa: '[aː]',
-    };
+    });
 
     it('should mention different sounds when selected word is from a different sound', () => {
       // 'boek' is in oe lesson (P2-OE-BEG)

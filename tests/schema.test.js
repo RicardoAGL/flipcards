@@ -65,10 +65,10 @@ describe('isValidLessonId', () => {
   });
 
   it('should reject non-string values', () => {
-    expect(isValidLessonId(null)).toBe(false);
-    expect(isValidLessonId(undefined)).toBe(false);
-    expect(isValidLessonId(123)).toBe(false);
-    expect(isValidLessonId({})).toBe(false);
+    expect(isValidLessonId(/** @type {any} */ (null))).toBe(false);
+    expect(isValidLessonId(/** @type {any} */ (undefined))).toBe(false);
+    expect(isValidLessonId(/** @type {any} */ (123))).toBe(false);
+    expect(isValidLessonId(/** @type {any} */ ({}))).toBe(false);
   });
 });
 
@@ -92,12 +92,12 @@ describe('parseLessonId', () => {
   });
 
   it('should convert BEG to beginner', () => {
-    const result = parseLessonId('P1-EE-BEG');
+    const result = /** @type {any} */ (parseLessonId('P1-EE-BEG'));
     expect(result.level).toBe('beginner');
   });
 
   it('should convert ADV to advanced', () => {
-    const result = parseLessonId('P1-OO-ADV');
+    const result = /** @type {any} */ (parseLessonId('P1-OO-ADV'));
     expect(result.level).toBe('advanced');
   });
 
@@ -108,12 +108,12 @@ describe('parseLessonId', () => {
   });
 
   it('should lowercase the sound combination', () => {
-    const result = parseLessonId('P1-AA-BEG');
+    const result = /** @type {any} */ (parseLessonId('P1-AA-BEG'));
     expect(result.sound).toBe('aa');
   });
 
   it('should parse phase as number', () => {
-    const result = parseLessonId('P2-UI-BEG');
+    const result = /** @type {any} */ (parseLessonId('P2-UI-BEG'));
     expect(result.phase).toBe(2);
     expect(typeof result.phase).toBe('number');
   });
@@ -143,7 +143,7 @@ describe('validateWord', () => {
   });
 
   it('should detect invalid wordId type', () => {
-    const word = { ...validWord, wordId: 123 };
+    const word = /** @type {any} */ ({ ...validWord, wordId: 123 });
     const result = validateWord(word);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('wordId is required and must be a string');
@@ -157,42 +157,42 @@ describe('validateWord', () => {
   });
 
   it('should detect invalid prefix type', () => {
-    const word = { ...validWord, prefix: 123 };
+    const word = /** @type {any} */ ({ ...validWord, prefix: 123 });
     const result = validateWord(word);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('prefix must be a string');
   });
 
   it('should detect invalid suffix type', () => {
-    const word = { ...validWord, suffix: null };
+    const word = /** @type {any} */ ({ ...validWord, suffix: null });
     const result = validateWord(word);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('suffix must be a string');
   });
 
   it('should detect missing translation object', () => {
-    const word = { ...validWord, translation: null };
+    const word = /** @type {any} */ ({ ...validWord, translation: null });
     const result = validateWord(word);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('translation is required and must be an object');
   });
 
   it('should detect invalid translation.es type', () => {
-    const word = { ...validWord, translation: { es: null, en: 'name' } };
+    const word = /** @type {any} */ ({ ...validWord, translation: { es: null, en: 'name' } });
     const result = validateWord(word);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('translation.es is required and must be a string');
   });
 
   it('should detect invalid translation.en type', () => {
-    const word = { ...validWord, translation: { es: 'nombre', en: null } };
+    const word = /** @type {any} */ ({ ...validWord, translation: { es: 'nombre', en: null } });
     const result = validateWord(word);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('translation.en is required and must be a string');
   });
 
   it('should detect invalid syllables type', () => {
-    const word = { ...validWord, syllables: '1' };
+    const word = /** @type {any} */ ({ ...validWord, syllables: '1' });
     const result = validateWord(word);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('syllables must be a positive number');
@@ -240,14 +240,14 @@ describe('validateSound', () => {
   });
 
   it('should detect missing ipa', () => {
-    const sound = { ...validSound, ipa: null };
+    const sound = /** @type {any} */ ({ ...validSound, ipa: null });
     const result = validateSound(sound);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('sound.ipa is required and must be a string');
   });
 
   it('should detect missing descriptionES', () => {
-    const sound = { ...validSound, descriptionES: undefined };
+    const sound = /** @type {any} */ ({ ...validSound, descriptionES: undefined });
     const result = validateSound(sound);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('sound.descriptionES is required and must be a string');
@@ -261,7 +261,7 @@ describe('validateSound', () => {
   });
 
   it('should detect invalid combination type', () => {
-    const sound = { ...validSound, combination: 123 };
+    const sound = /** @type {any} */ ({ ...validSound, combination: 123 });
     const result = validateSound(sound);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('sound.combination is required and must be a string');
@@ -269,6 +269,7 @@ describe('validateSound', () => {
 });
 
 describe('validateLesson', () => {
+  /** @type {any} */
   const validLesson = {
     lessonId: 'P1-AA-BEG',
     phase: 1,
@@ -470,6 +471,7 @@ describe('validateLesson', () => {
 });
 
 describe('toFlipCardFormat', () => {
+  /** @type {any} */
   const lesson = {
     lessonId: 'P1-AA-BEG',
     phase: 1,
@@ -556,6 +558,7 @@ describe('toFlipCardFormat', () => {
 });
 
 describe('extractMetadata', () => {
+  /** @type {any} */
   const lesson = {
     lessonId: 'P1-AA-BEG',
     phase: 1,

@@ -36,9 +36,9 @@ import P2_UI_ADV from './P2-UI-ADV.json';
 
 /**
  * All lessons indexed by their ID
- * @type {Object.<string, import('../schema.js').Lesson>}
+ * @type {Record<string, import('../schema.js').Lesson>}
  */
-export const lessonsById = {
+export const lessonsById = /** @type {Record<string, import('../schema.js').Lesson>} */ ({
   // Phase 1
   'P1-AA-BEG': P1_AA_BEG,
   'P1-AA-ADV': P1_AA_ADV,
@@ -65,7 +65,7 @@ export const lessonsById = {
   'P2-EU-ADV': P2_EU_ADV,
   'P2-UI-BEG': P2_UI_BEG,
   'P2-UI-ADV': P2_UI_ADV,
-};
+});
 
 /**
  * Ordered list of all lesson IDs (for progression)
@@ -150,9 +150,9 @@ export const lessonMenu = lessonOrder.map(id => generateMenuEntry(lessonsById[id
 
 /**
  * Lessons grouped by sound
- * @type {Object.<string, import('../schema.js').Lesson[]>}
+ * @type {Record<string, import('../schema.js').Lesson[]>}
  */
-export const lessonsBySound = {
+export const lessonsBySound = /** @type {Record<string, import('../schema.js').Lesson[]>} */ ({
   // Phase 1
   aa: [P1_AA_BEG, P1_AA_ADV],
   ee: [P1_EE_BEG, P1_EE_ADV],
@@ -167,13 +167,13 @@ export const lessonsBySound = {
   au: [P2_AU_BEG, P2_AU_ADV],
   eu: [P2_EU_BEG, P2_EU_ADV],
   ui: [P2_UI_BEG, P2_UI_ADV],
-};
+});
 
 /**
  * Lessons grouped by phase
- * @type {Object.<number, import('../schema.js').Lesson[]>}
+ * @type {Record<number, import('../schema.js').Lesson[]>}
  */
-export const lessonsByPhase = {
+export const lessonsByPhase = /** @type {Record<number, import('../schema.js').Lesson[]>} */ ({
   1: [
     P1_AA_BEG, P1_AA_ADV,
     P1_EE_BEG, P1_EE_ADV,
@@ -190,7 +190,7 @@ export const lessonsByPhase = {
     P2_EU_BEG, P2_EU_ADV,
     P2_UI_BEG, P2_UI_ADV,
   ],
-};
+});
 
 /**
  * Sound information for all phases
