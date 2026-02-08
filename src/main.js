@@ -21,9 +21,10 @@ import {
 } from './lib/progressStorage.js';
 import { showMilestoneCelebration, showBadgeCelebrations } from './components/StarIndicator.js';
 import { createBadgeGallery } from './components/BadgeGallery.js';
+import { createSplashScreen } from './components/SplashScreen.js';
 
 // Application state
-let currentView = 'menu'; // 'menu' | 'flipcard' | 'quiz' | 'badges'
+let currentView = 'splash'; // 'splash' | 'menu' | 'flipcard' | 'quiz' | 'badges'
 let currentLanguage = getLanguage();
 let selectedLessonId = null;
 let currentLesson = null;
@@ -32,6 +33,7 @@ let flipCard = null;
 let quiz = null;
 let lessonMenu = null;
 let badgeGallery = null;
+let splashScreen = null;
 
 /**
  * Initialize the application
@@ -45,7 +47,7 @@ function init() {
   }
 
   renderLayout(app);
-  mountLessonMenu();
+  mountSplashScreen();
 }
 
 /**
@@ -134,6 +136,45 @@ function renderLayout(app) {
 }
 
 /**
+ * Mount the Splash Screen component
+ */
+function mountSplashScreen() {
+  const container = document.getElementById('main-container');
+  if (!container) {
+    return;
+  }
+
+  destroyCurrentComponent();
+
+  // Hide footer, back button, points, subtitle, header title, and lang toggle
+  const footer = document.getElementById('app-footer');
+  const backBtn = document.getElementById('back-btn');
+  const subtitle = document.getElementById('view-subtitle');
+  const headerPoints = document.getElementById('header-points');
+  const headerTitle = document.querySelector('.app-header-row h1');
+  const langToggle = document.getElementById('lang-toggle-btn');
+
+  if (footer) { footer.style.display = 'none'; }
+  if (backBtn) { backBtn.style.visibility = 'hidden'; }
+  if (subtitle) { subtitle.textContent = ''; }
+  if (headerPoints) { headerPoints.style.display = 'none'; }
+  if (headerTitle) { headerTitle.style.display = 'none'; }
+  if (langToggle) { langToggle.style.display = 'none'; }
+
+  splashScreen = createSplashScreen(container, {
+    language: currentLanguage,
+    onStart: mountLessonMenu,
+    onLanguageChange: (lang) => {
+      handleLanguageChange(lang);
+      // Re-mount splash with new language
+      mountSplashScreen();
+    },
+  });
+
+  currentView = 'splash';
+}
+
+/**
  * Mount the Lesson Menu component
  */
 function mountLessonMenu() {
@@ -150,19 +191,15 @@ function mountLessonMenu() {
   const backBtn = document.getElementById('back-btn');
   const subtitle = document.getElementById('view-subtitle');
   const headerPoints = document.getElementById('header-points');
+  const headerTitle = document.querySelector('.app-header-row h1');
+  const langToggle = document.getElementById('lang-toggle-btn');
 
-  if (footer) {
-    footer.style.display = 'none';
-  }
-  if (backBtn) {
-    backBtn.style.visibility = 'hidden';
-  }
-  if (subtitle) {
-    subtitle.textContent = '';
-  }
-  if (headerPoints) {
-    headerPoints.style.display = 'none';
-  }
+  if (footer) { footer.style.display = 'none'; }
+  if (backBtn) { backBtn.style.visibility = 'hidden'; }
+  if (subtitle) { subtitle.textContent = ''; }
+  if (headerPoints) { headerPoints.style.display = 'none'; }
+  if (headerTitle) { headerTitle.style.display = ''; }
+  if (langToggle) { langToggle.style.display = ''; }
 
   // Create and mount lesson menu
   lessonMenu = createLessonMenu(container, {
@@ -207,16 +244,14 @@ function mountFlipCard() {
   const footer = document.getElementById('app-footer');
   const backBtn = document.getElementById('back-btn');
   const headerPoints = document.getElementById('header-points');
+  const headerTitle = document.querySelector('.app-header-row h1');
+  const langToggle = document.getElementById('lang-toggle-btn');
 
-  if (footer) {
-    footer.style.display = 'block';
-  }
-  if (backBtn) {
-    backBtn.style.visibility = 'visible';
-  }
-  if (headerPoints) {
-    headerPoints.style.display = 'flex';
-  }
+  if (footer) { footer.style.display = 'block'; }
+  if (backBtn) { backBtn.style.visibility = 'visible'; }
+  if (headerPoints) { headerPoints.style.display = 'flex'; }
+  if (headerTitle) { headerTitle.style.display = ''; }
+  if (langToggle) { langToggle.style.display = ''; }
 
   // Create and mount flip card with current lesson data
   flipCard = createFlipCard(flipCardData, container, { language: currentLanguage });
@@ -276,6 +311,10 @@ function destroyCurrentComponent() {
     badgeGallery.destroy();
     badgeGallery = null;
   }
+  if (splashScreen) {
+    splashScreen.destroy();
+    splashScreen = null;
+  }
 }
 
 /**
@@ -294,19 +333,15 @@ function mountBadgeGallery() {
   const backBtn = document.getElementById('back-btn');
   const subtitle = document.getElementById('view-subtitle');
   const headerPoints = document.getElementById('header-points');
+  const headerTitle = document.querySelector('.app-header-row h1');
+  const langToggle = document.getElementById('lang-toggle-btn');
 
-  if (footer) {
-    footer.style.display = 'none';
-  }
-  if (backBtn) {
-    backBtn.style.visibility = 'hidden';
-  }
-  if (subtitle) {
-    subtitle.textContent = '';
-  }
-  if (headerPoints) {
-    headerPoints.style.display = 'none';
-  }
+  if (footer) { footer.style.display = 'none'; }
+  if (backBtn) { backBtn.style.visibility = 'hidden'; }
+  if (subtitle) { subtitle.textContent = ''; }
+  if (headerPoints) { headerPoints.style.display = 'none'; }
+  if (headerTitle) { headerTitle.style.display = ''; }
+  if (langToggle) { langToggle.style.display = ''; }
 
   badgeGallery = createBadgeGallery(container, {
     language: currentLanguage,
