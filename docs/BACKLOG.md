@@ -9,10 +9,10 @@
 
 | Metric | Value |
 |--------|-------|
-| Sounds covered | 4 (aa, ee, oo, uu) |
-| Lessons | 8 (BEG + ADV per sound) |
-| Words | 84 |
-| Tests | 437 (14 test files) |
+| Sounds covered | 8 (aa, ee, oo, uu, oe, ie, ei, ij) |
+| Lessons | 16 (BEG + ADV per sound) |
+| Words | 252 |
+| Tests | 443 (14 test files) |
 | Components | 8 (FlipCard, Quiz, QuizResults, LessonMenu, BadgeGallery, StarIndicator, SplashScreen, SoundIntro) |
 | Languages | 2 (ES, EN) — user-selectable via header toggle + splash screen |
 | Storage | localStorage only (5 keys) |
@@ -81,6 +81,14 @@
 - [x] View flow: Splash → Menu → SoundIntro → FlipCard → Quiz → Results → Menu
 - [x] 437 tests across 14 files (added splashScreen, soundIntro test files)
 
+### Sprint 3 — Content Expansion (First Batch)
+- [x] **BL-003** Phase 2 first batch: 8 lessons for oe, ie, ei, ij (BEG + ADV each)
+- [x] **BL-018** 5 new badges: sound-master-oe, sound-master-ie, sound-master-ei, sound-master-ij, level-2-complete
+- [x] **BL-019** ei/ij cross-distractors for spelling discrimination
+- [x] Dynamic badge logic (iterates `lessonsBySound` instead of hardcoded array)
+- [x] Phase-grouped LessonMenu rendering (Phase 1: Same Vowel, Phase 2: Vowel Pairs)
+- [x] 443 tests across 14 files
+
 ---
 
 ## Backlog
@@ -126,7 +134,7 @@ Currently the UI language is hardcoded to `'es'` in main.js. All components alre
 ---
 
 ### BL-003: Add Phase 2 Vowel Pair Lessons
-**Priority:** P0 | **Effort:** Large | **Status:** Not Started
+**Priority:** P0 | **Effort:** Large | **Status:** Partial (first batch complete)
 
 Add lessons for Dutch diphthongs and vowel pairs. Currently only "same vowel" sounds (aa, ee, oo, uu). Need to add vowel combinations.
 
@@ -376,7 +384,7 @@ uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
 ---
 
 ### BL-018: Add Phase 2 Badges
-**Priority:** P2 | **Effort:** Small | **Status:** Not Started
+**Priority:** P2 | **Effort:** Small | **Status:** Partial (first batch complete)
 
 **Depends on:** BL-003
 
@@ -390,7 +398,7 @@ When Phase 2 content is added, create corresponding badges:
 ---
 
 ### BL-019: Minimal Pair Exercises
-**Priority:** P2 | **Effort:** Medium | **Status:** Not Started
+**Priority:** P2 | **Effort:** Medium | **Status:** Partial (ei/ij cross-distractors done)
 
 **From pedagogical review:** For Phase 2, add exercises that contrast similar-sounding pairs:
 - ei vs ij (same pronunciation, different spelling)
@@ -474,10 +482,10 @@ Add PWA manifest and service worker for:
 9. ~~BL-020: Pre-lesson sound introduction (small)~~
 10. ~~BL-021: Learning objectives display (small)~~
 
-### Sprint 3 — Content Expansion
-11. BL-003: Phase 2 vowel pair lessons — first batch: oe, ie, ei, ij (large)
-12. BL-018: Phase 2 badges (small)
-13. BL-019: Minimal pair exercises for ei/ij, ou/au (medium)
+### Sprint 3 — Content Expansion (First Batch) ✅
+11. ~~BL-003: Phase 2 vowel pair lessons — first batch: oe, ie, ei, ij (large)~~
+12. ~~BL-018: Phase 2 badges — first batch: 4 sound-master + level-2-complete (small)~~
+13. ~~BL-019: Minimal pair cross-distractors for ei/ij (medium)~~
 
 ### Sprint 4 — Learning Mechanics
 14. BL-007: Spaced repetition / review mode (medium)

@@ -20,9 +20,6 @@ import { createStarIndicatorHTML, createStarProgressHTML } from './StarIndicator
 import './LessonMenu.css';
 
 /**
- * Text content for different languages
- */
-/**
  * Phase display names
  * @type {Object.<number, { es: string, en: string }>}
  */
