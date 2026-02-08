@@ -1,0 +1,99 @@
+{
+  "lessonId": "P2-IJ-BEG",
+  "phase": 2,
+  "sound": {
+    "combination": "ij",
+    "ipa": "[\u025bi]",
+    "descriptionES": "Mismo sonido que 'ei', diferente escritura",
+    "descriptionEN": "Same sound as 'ei', different spelling"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "ij-001",
+      "word": "wijn",
+      "prefix": "w",
+      "suffix": "n",
+      "translation": { "es": "vino", "en": "wine" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ij-002",
+      "word": "vrij",
+      "prefix": "vr",
+      "suffix": "",
+      "translation": { "es": "libre", "en": "free" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ij-003",
+      "word": "bij",
+      "prefix": "b",
+      "suffix": "",
+      "translation": { "es": "abeja/cerca de", "en": "bee/near" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ij-004",
+      "word": "ijs",
+      "prefix": "",
+      "suffix": "s",
+      "translation": { "es": "hielo/helado", "en": "ice/ice cream" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ij-005",
+      "word": "blij",
+      "prefix": "bl",
+      "suffix": "",
+      "translation": { "es": "contento", "en": "happy" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ij-006",
+      "word": "fijn",
+      "prefix": "f",
+      "suffix": "n",
+      "translation": { "es": "fino/agradable", "en": "fine/nice" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ij-007",
+      "word": "rij",
+      "prefix": "r",
+      "suffix": "",
+      "translation": { "es": "fila", "en": "row/line" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ij-008",
+      "word": "tijd",
+      "prefix": "t",
+      "suffix": "d",
+      "translation": { "es": "tiempo", "en": "time" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ij-000",
+      "word": "ij",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "wijn", "vrij", "bij", "ijs", "blij", "fijn", "rij", "tijd",
+    "trein", "klein", "reis", "ei", "kei", "hei", "leiden",
+    "naam", "boek", "niet", "goed"
+  ]
+}

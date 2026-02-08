@@ -1,0 +1,131 @@
+{
+  "lessonId": "P2-IE-ADV",
+  "phase": 2,
+  "sound": {
+    "combination": "ie",
+    "ipa": "[i]",
+    "descriptionES": "Similar a la 'i' en espa\u00f1ol como en 'si'",
+    "descriptionEN": "Like 'ee' in 'see'"
+  },
+  "level": "advanced",
+  "unlockRequires": "P2-IE-BEG",
+  "words": [
+    {
+      "wordId": "ie-101",
+      "word": "verliezen",
+      "prefix": "verl",
+      "suffix": "zen",
+      "translation": { "es": "perder", "en": "to lose" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ie-102",
+      "word": "plezier",
+      "prefix": "plez",
+      "suffix": "r",
+      "translation": { "es": "placer/diversi\u00f3n", "en": "fun/pleasure" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ie-103",
+      "word": "familie",
+      "prefix": "famil",
+      "suffix": "",
+      "translation": { "es": "familia", "en": "family" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ie-104",
+      "word": "bieden",
+      "prefix": "b",
+      "suffix": "den",
+      "translation": { "es": "ofrecer", "en": "to offer" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ie-105",
+      "word": "kiezen",
+      "prefix": "k",
+      "suffix": "zen",
+      "translation": { "es": "elegir", "en": "to choose" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ie-106",
+      "word": "dieren",
+      "prefix": "d",
+      "suffix": "ren",
+      "translation": { "es": "animales", "en": "animals" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ie-107",
+      "word": "schieten",
+      "prefix": "sch",
+      "suffix": "ten",
+      "translation": { "es": "disparar", "en": "to shoot" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ie-108",
+      "word": "verdieping",
+      "prefix": "verd",
+      "suffix": "ping",
+      "translation": { "es": "piso/planta", "en": "floor/story" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ie-109",
+      "word": "biertje",
+      "prefix": "b",
+      "suffix": "rtje",
+      "translation": { "es": "cervecita", "en": "small beer" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ie-110",
+      "word": "vriend",
+      "prefix": "vr",
+      "suffix": "nd",
+      "translation": { "es": "amigo", "en": "friend" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-111",
+      "word": "fiets",
+      "prefix": "f",
+      "suffix": "ts",
+      "translation": { "es": "bicicleta", "en": "bicycle" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-112",
+      "word": "nieuw",
+      "prefix": "n",
+      "suffix": "uw",
+      "translation": { "es": "nuevo", "en": "new" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-000",
+      "word": "ie",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "verliezen", "plezier", "familie", "bieden", "kiezen", "dieren",
+    "schieten", "verdieping", "biertje", "vriend", "fiets", "nieuw",
+    "niet", "hier", "brief", "ziek", "boek", "goed", "groot", "veel"
+  ]
+}

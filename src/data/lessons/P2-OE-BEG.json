@@ -1,0 +1,98 @@
+{
+  "lessonId": "P2-OE-BEG",
+  "phase": 2,
+  "sound": {
+    "combination": "oe",
+    "ipa": "[u]",
+    "descriptionES": "Similar a la 'u' en espa\u00f1ol como en 'su'",
+    "descriptionEN": "Like 'oo' in 'book' but shorter"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "oe-001",
+      "word": "boek",
+      "prefix": "b",
+      "suffix": "k",
+      "translation": { "es": "libro", "en": "book" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-002",
+      "word": "goed",
+      "prefix": "g",
+      "suffix": "d",
+      "translation": { "es": "bueno", "en": "good" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-003",
+      "word": "groep",
+      "prefix": "gr",
+      "suffix": "p",
+      "translation": { "es": "grupo", "en": "group" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-004",
+      "word": "doen",
+      "prefix": "d",
+      "suffix": "n",
+      "translation": { "es": "hacer", "en": "to do" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-005",
+      "word": "voet",
+      "prefix": "v",
+      "suffix": "t",
+      "translation": { "es": "pie", "en": "foot" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-006",
+      "word": "moeder",
+      "prefix": "m",
+      "suffix": "der",
+      "translation": { "es": "madre", "en": "mother" },
+      "syllables": 2
+    },
+    {
+      "wordId": "oe-007",
+      "word": "koel",
+      "prefix": "k",
+      "suffix": "l",
+      "translation": { "es": "fresco", "en": "cool" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-008",
+      "word": "zoen",
+      "prefix": "z",
+      "suffix": "n",
+      "translation": { "es": "beso", "en": "kiss" },
+      "syllables": 1
+    },
+    {
+      "wordId": "oe-000",
+      "word": "oe",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "boek", "goed", "groep", "doen", "voet", "moeder", "koel", "zoen",
+    "naam", "straat", "groot", "rood", "been", "zee", "duur", "uur"
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "lessonId": "P2-IE-BEG",
+  "phase": 2,
+  "sound": {
+    "combination": "ie",
+    "ipa": "[i]",
+    "descriptionES": "Similar a la 'i' en espa\u00f1ol como en 'si'",
+    "descriptionEN": "Like 'ee' in 'see'"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "ie-001",
+      "word": "niet",
+      "prefix": "n",
+      "suffix": "t",
+      "translation": { "es": "no", "en": "not" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-002",
+      "word": "wie",
+      "prefix": "w",
+      "suffix": "",
+      "translation": { "es": "qui\u00e9n", "en": "who" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-003",
+      "word": "hier",
+      "prefix": "h",
+      "suffix": "r",
+      "translation": { "es": "aqu\u00ed", "en": "here" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-004",
+      "word": "lied",
+      "prefix": "l",
+      "suffix": "d",
+      "translation": { "es": "canci\u00f3n", "en": "song" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-005",
+      "word": "dier",
+      "prefix": "d",
+      "suffix": "r",
+      "translation": { "es": "animal", "en": "animal" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-006",
+      "word": "brief",
+      "prefix": "br",
+      "suffix": "f",
+      "translation": { "es": "carta", "en": "letter" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-007",
+      "word": "ziek",
+      "prefix": "z",
+      "suffix": "k",
+      "translation": { "es": "enfermo", "en": "sick" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-008",
+      "word": "vier",
+      "prefix": "v",
+      "suffix": "r",
+      "translation": { "es": "cuatro", "en": "four" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ie-000",
+      "word": "ie",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "niet", "wie", "hier", "lied", "dier", "brief", "ziek", "vier",
+    "naam", "straat", "boek", "goed", "been", "zee", "groot", "rood"
+  ]
+}

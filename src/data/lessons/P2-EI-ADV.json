@@ -1,0 +1,131 @@
+{
+  "lessonId": "P2-EI-ADV",
+  "phase": 2,
+  "sound": {
+    "combination": "ei",
+    "ipa": "[\u025bi]",
+    "descriptionES": "Similar a 'ei' como en 'reina'",
+    "descriptionEN": "Like 'ay' in 'say' or 'ei' in 'eight'"
+  },
+  "level": "advanced",
+  "unlockRequires": "P2-EI-BEG",
+  "words": [
+    {
+      "wordId": "ei-101",
+      "word": "eigenlijk",
+      "prefix": "",
+      "suffix": "genlijk",
+      "translation": { "es": "en realidad", "en": "actually" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ei-102",
+      "word": "veilig",
+      "prefix": "v",
+      "suffix": "lig",
+      "translation": { "es": "seguro", "en": "safe" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-103",
+      "word": "meisje",
+      "prefix": "m",
+      "suffix": "sje",
+      "translation": { "es": "chica", "en": "girl" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-104",
+      "word": "reizen",
+      "prefix": "r",
+      "suffix": "zen",
+      "translation": { "es": "viajar", "en": "to travel" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-105",
+      "word": "verscheiden",
+      "prefix": "versch",
+      "suffix": "den",
+      "translation": { "es": "varios/fallecer", "en": "several/to pass away" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ei-106",
+      "word": "arbeider",
+      "prefix": "arb",
+      "suffix": "der",
+      "translation": { "es": "trabajador", "en": "worker" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ei-107",
+      "word": "bereiden",
+      "prefix": "ber",
+      "suffix": "den",
+      "translation": { "es": "preparar", "en": "to prepare" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ei-108",
+      "word": "eitje",
+      "prefix": "",
+      "suffix": "tje",
+      "translation": { "es": "huevito", "en": "little egg" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-109",
+      "word": "leidraad",
+      "prefix": "l",
+      "suffix": "draad",
+      "translation": { "es": "directriz/gu\u00eda", "en": "guideline" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-110",
+      "word": "einde",
+      "prefix": "",
+      "suffix": "nde",
+      "translation": { "es": "fin/final", "en": "end" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-111",
+      "word": "geheim",
+      "prefix": "geh",
+      "suffix": "m",
+      "translation": { "es": "secreto", "en": "secret" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-112",
+      "word": "weiden",
+      "prefix": "w",
+      "suffix": "den",
+      "translation": { "es": "pastar/prados", "en": "to graze/meadows" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ei-000",
+      "word": "ei",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "eigenlijk", "veilig", "meisje", "reizen", "verscheiden", "arbeider",
+    "bereiden", "eitje", "leidraad", "einde", "geheim", "weiden", "trein", "klein",
+    "reis", "schrijven", "vrijdag", "rijden", "bedrijf", "krijgen", "bijzonder"
+  ]
+}
