@@ -16,6 +16,7 @@ const STORAGE_KEYS = {
   TOTAL_POINTS: 'flipcards_total_points',
   EARNED_BADGES: 'flipcards_earned_badges',
   QUIZ_HISTORY: 'flipcards_quiz_history',
+  LANGUAGE: 'flipcards_language',
 };
 
 /**
@@ -146,6 +147,38 @@ export function resetProgress() {
     localStorage.removeItem(STORAGE_KEYS.QUIZ_HISTORY);
   } catch {
     console.warn('Failed to reset progress in localStorage');
+  }
+}
+
+/** @type {string[]} */
+const SUPPORTED_LANGUAGES = ['es', 'en'];
+
+/**
+ * Get the stored language preference
+ * @returns {string} Language code ('es' or 'en')
+ */
+export function getLanguage() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEYS.LANGUAGE);
+    if (stored && SUPPORTED_LANGUAGES.includes(stored)) {
+      return stored;
+    }
+    return 'es';
+  } catch {
+    return 'es';
+  }
+}
+
+/**
+ * Set the language preference
+ * @param {string} lang - Language code ('es' or 'en')
+ */
+export function setLanguage(lang) {
+  const validLang = SUPPORTED_LANGUAGES.includes(lang) ? lang : 'es';
+  try {
+    localStorage.setItem(STORAGE_KEYS.LANGUAGE, validLang);
+  } catch {
+    console.warn('Failed to save language preference to localStorage');
   }
 }
 

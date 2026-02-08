@@ -16,12 +16,15 @@ import {
   checkNewMilestone,
   recordQuizAttempt,
   checkAndAwardBadges,
+  getLanguage,
+  setLanguage,
 } from './lib/progressStorage.js';
 import { showMilestoneCelebration, showBadgeCelebrations } from './components/StarIndicator.js';
 import { createBadgeGallery } from './components/BadgeGallery.js';
 
 // Application state
 let currentView = 'menu'; // 'menu' | 'flipcard' | 'quiz' | 'badges'
+let currentLanguage = getLanguage();
 let selectedLessonId = null;
 let currentLesson = null;
 let flipCardData = null;
@@ -65,11 +68,21 @@ function renderLayout(app) {
             </svg>
           </button>
           <h1>Dutch Pronunciation</h1>
-          <div class="app-header-points" id="header-points">
-            <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-            </svg>
-            <span id="points-value">${getTotalPoints()}</span>
+          <div class="app-header-right">
+            <div class="app-header-points" id="header-points">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+              </svg>
+              <span id="points-value">${getTotalPoints()}</span>
+            </div>
+            <button class="app-lang-btn" type="button" id="lang-toggle-btn"
+                    aria-label="Switch language">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="18" height="18">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+              <span id="lang-label">${currentLanguage.toUpperCase()}</span>
+            </button>
           </div>
         </div>
         <p class="app-subtitle" id="view-subtitle"></p>
@@ -109,6 +122,14 @@ function renderLayout(app) {
     backBtn.addEventListener('click', handleBackToMenu);
   }
 
+  const langBtn = document.getElementById('lang-toggle-btn');
+  if (langBtn) {
+    langBtn.addEventListener('click', () => {
+      const newLang = currentLanguage === 'es' ? 'en' : 'es';
+      handleLanguageChange(newLang);
+    });
+  }
+
   addLayoutStyles();
 }
 
@@ -145,7 +166,7 @@ function mountLessonMenu() {
 
   // Create and mount lesson menu
   lessonMenu = createLessonMenu(container, {
-    language: 'es',
+    language: currentLanguage,
     onSelectLesson: handleSelectLesson,
     onViewBadges: mountBadgeGallery,
   });
@@ -198,7 +219,7 @@ function mountFlipCard() {
   }
 
   // Create and mount flip card with current lesson data
-  flipCard = createFlipCard(flipCardData, container, { language: 'es' });
+  flipCard = createFlipCard(flipCardData, container, { language: currentLanguage });
   currentView = 'flipcard';
 
   // Update UI
@@ -222,7 +243,7 @@ async function mountQuiz() {
   // Create and mount quiz with same lesson as FlipCard
   quiz = createQuiz(currentLesson, {
     questionCount: 5,
-    language: 'es',
+    language: currentLanguage,
     onComplete: handleQuizComplete,
     onClose: handleQuizClose,
   });
@@ -288,7 +309,7 @@ function mountBadgeGallery() {
   }
 
   badgeGallery = createBadgeGallery(container, {
-    language: 'es',
+    language: currentLanguage,
     onBack: mountLessonMenu,
   });
 
@@ -311,6 +332,33 @@ function handleToggleView() {
  */
 function handleBackToMenu() {
   mountLessonMenu();
+}
+
+/**
+ * Handle language change
+ * @param {string} lang - New language code ('es' or 'en')
+ */
+function handleLanguageChange(lang) {
+  setLanguage(lang);
+  currentLanguage = lang;
+
+  // Update language label in header
+  const langLabel = document.getElementById('lang-label');
+  if (langLabel) {
+    langLabel.textContent = lang.toUpperCase();
+  }
+
+  // Re-render the current view
+  const viewMounters = {
+    menu: mountLessonMenu,
+    flipcard: mountFlipCard,
+    badges: mountBadgeGallery,
+  };
+
+  const mounter = viewMounters[currentView];
+  if (mounter) {
+    mounter();
+  }
 }
 
 /**
@@ -355,7 +403,7 @@ function handleQuizComplete(result) {
   const showMilestoneOrReturn = () => {
     if (newMilestone) {
       showMilestoneCelebration(newMilestone, {
-        language: 'es',
+        language: currentLanguage,
         onDismiss: returnToMenu,
       });
     } else {
@@ -367,7 +415,7 @@ function handleQuizComplete(result) {
   setTimeout(() => {
     if (newBadges.length > 0) {
       showBadgeCelebrations(newBadges, {
-        language: 'es',
+        language: currentLanguage,
         onComplete: showMilestoneOrReturn,
       });
     } else {
@@ -472,6 +520,12 @@ function addLayoutStyles() {
       height: 24px;
     }
 
+    .app-header-right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+    }
+
     .app-header-points {
       display: flex;
       align-items: center;
@@ -488,6 +542,28 @@ function addLayoutStyles() {
       width: 16px;
       height: 16px;
       color: var(--color-primary-500);
+    }
+
+    .app-lang-btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-1);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--rounded-full);
+      font-size: var(--font-size-sm);
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color var(--duration-fast) var(--ease-out),
+                  background-color var(--duration-fast) var(--ease-out);
+    }
+
+    .app-lang-btn:hover {
+      color: var(--text-primary);
+      background-color: var(--color-gray-100);
+    }
+
+    .app-lang-btn svg {
+      display: block;
     }
 
     .app-subtitle {

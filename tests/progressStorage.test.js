@@ -26,6 +26,8 @@ import {
   recordQuizAttempt,
   getQuizAttemptsForLesson,
   checkAndAwardBadges,
+  getLanguage,
+  setLanguage,
 } from '../src/lib/progressStorage.js';
 
 // Mock localStorage
@@ -622,6 +624,44 @@ describe('Progress Storage', () => {
 
       expect(localStorageMock.removeItem).toHaveBeenCalledWith(STORAGE_KEYS.EARNED_BADGES);
       expect(localStorageMock.removeItem).toHaveBeenCalledWith(STORAGE_KEYS.QUIZ_HISTORY);
+    });
+  });
+
+  describe('language preference', () => {
+    it('should return es by default when nothing stored', () => {
+      expect(getLanguage()).toBe('es');
+    });
+
+    it('should return stored language preference', () => {
+      localStorageMock.setItem(STORAGE_KEYS.LANGUAGE, 'en');
+      expect(getLanguage()).toBe('en');
+    });
+
+    it('should persist language via setLanguage', () => {
+      setLanguage('en');
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        STORAGE_KEYS.LANGUAGE,
+        'en'
+      );
+    });
+
+    it('should default to es for invalid language values', () => {
+      localStorageMock.setItem(STORAGE_KEYS.LANGUAGE, 'invalid');
+      expect(getLanguage()).toBe('es');
+    });
+
+    it('should store es when setLanguage receives invalid value', () => {
+      setLanguage('fr');
+      expect(localStorageMock.setItem).toHaveBeenCalledWith(
+        STORAGE_KEYS.LANGUAGE,
+        'es'
+      );
+    });
+
+    it('should not be cleared by resetProgress', () => {
+      setLanguage('en');
+      resetProgress();
+      expect(localStorageMock.removeItem).not.toHaveBeenCalledWith(STORAGE_KEYS.LANGUAGE);
     });
   });
 });
