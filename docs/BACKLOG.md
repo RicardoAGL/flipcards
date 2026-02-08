@@ -12,10 +12,10 @@
 | Sounds covered | 12 (aa, ee, oo, uu, oe, ie, ei, ij, ou, au, eu, ui) |
 | Lessons | 24 (BEG + ADV per sound) |
 | Words | 260 |
-| Tests | 530 (16 test files) |
-| Components | 8 (FlipCard, Quiz, QuizResults, LessonMenu, BadgeGallery, StarIndicator, SplashScreen, SoundIntro) |
+| Tests | 559 (17 test files) |
+| Components | 9 (FlipCard, Quiz, QuizResults, LessonMenu, BadgeGallery, StarIndicator, SplashScreen, SoundIntro, Tutorial) |
 | Languages | 2 (ES, EN) — user-selectable via header toggle + splash screen |
-| Storage | localStorage only (6 keys) |
+| Storage | localStorage only (7 keys) |
 | Deployment | GitHub Pages (static SPA) |
 | Backend | None |
 | PWA | No |
@@ -109,6 +109,10 @@
 - [x] **BL-019** Completed cross-distractors: eu/ui ADV asymmetry fix + eu/oe bidirectional
 - [x] **BL-017** Batched celebration modals: `showCombinedCelebration()` in StarIndicator.js
 - [x] 530 tests across 16 test files
+
+### Sprint 7 — Tutorial Overlay
+- [x] **BL-026** Interactive tutorial / help overlay: 4-slide modal carousel, auto-runs on first visit, replayable via `?` header button, bilingual (ES/EN), `TUTORIAL_COMPLETED` localStorage key
+- [x] 559 tests across 17 test files
 
 ---
 
@@ -486,7 +490,7 @@ Add PWA manifest and service worker for:
 ---
 
 ### BL-026: Interactive Tutorial / Help Overlay
-**Priority:** P1 | **Effort:** Medium | **Status:** Not Started
+**Priority:** P1 | **Effort:** Medium | **Status:** Complete
 
 **From user testing:** First-time users get lost navigating the app flow (menu → sound intro → flashcards → quiz). Need an onboarding tutorial that explains the UI.
 
@@ -547,13 +551,16 @@ Add PWA manifest and service worker for:
 19. ~~BL-019: Complete cross-distractors — eu/oe bidirectional (medium)~~
 20. ~~BL-017: Batch celebration modals (small)~~
 
+### Sprint 7 — Tutorial Overlay ✅
+21. ~~BL-026: Interactive tutorial / help overlay (medium)~~
+
 ### Future — Server-Side Features
-21. BL-009: Login / registration (large)
-22. BL-008: Cross-device score persistence (large)
-23. BL-012: Example sentences (medium)
-24. BL-013: TTS voice selection (medium)
-25. BL-022: Confusion tracking (medium)
-26. BL-023: PWA / service worker (medium)
+22. BL-009: Login / registration (large)
+23. BL-008: Cross-device score persistence (large)
+24. BL-012: Example sentences (medium)
+25. BL-013: TTS voice selection (medium)
+26. BL-022: Confusion tracking (medium)
+27. BL-023: PWA / service worker (medium)
 
 ---
 
@@ -576,4 +583,4 @@ Add PWA manifest and service worker for:
 - **Positive findings:** localStorage stores only non-sensitive data, proper error handling, CI uses `npm ci`, least-privilege workflow permissions
 
 ### Architecture Clarification
-- **No DuckDB** is used anywhere in the project. Progress is stored in browser localStorage only (6 keys: completed_lessons, total_points, earned_badges, quiz_history, language, lesson_review_dates). For server-side persistence, PostgreSQL (via Supabase or custom API) is recommended.
+- **No DuckDB** is used anywhere in the project. Progress is stored in browser localStorage only (7 keys: completed_lessons, total_points, earned_badges, quiz_history, language, lesson_review_dates, tutorial_completed). For server-side persistence, PostgreSQL (via Supabase or custom API) is recommended.

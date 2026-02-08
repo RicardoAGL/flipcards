@@ -31,6 +31,8 @@ import {
   getReviewDates,
   updateReviewDate,
   getReviewCounts,
+  getTutorialCompleted,
+  setTutorialCompleted,
 } from '../src/lib/progressStorage.js';
 
 // Mock localStorage
@@ -845,6 +847,33 @@ describe('Progress Storage', () => {
       setLanguage('en');
       resetProgress();
       expect(localStorageMock.removeItem).not.toHaveBeenCalledWith(STORAGE_KEYS.LANGUAGE);
+    });
+  });
+
+  describe('tutorial completion', () => {
+    it('should return false by default', () => {
+      expect(getTutorialCompleted()).toBe(false);
+    });
+
+    it('should return true after setTutorialCompleted', () => {
+      setTutorialCompleted();
+      expect(getTutorialCompleted()).toBe(true);
+    });
+
+    it('should handle getItem error gracefully', () => {
+      localStorageMock.getItem.mockImplementationOnce(() => { throw new Error('fail'); });
+      expect(getTutorialCompleted()).toBe(false);
+    });
+
+    it('should handle setItem error gracefully', () => {
+      localStorageMock.setItem.mockImplementationOnce(() => { throw new Error('fail'); });
+      expect(() => setTutorialCompleted()).not.toThrow();
+    });
+
+    it('should be cleared by resetProgress', () => {
+      setTutorialCompleted();
+      resetProgress();
+      expect(localStorageMock.removeItem).toHaveBeenCalledWith(STORAGE_KEYS.TUTORIAL_COMPLETED);
     });
   });
 });

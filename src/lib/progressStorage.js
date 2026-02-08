@@ -18,6 +18,7 @@ const STORAGE_KEYS = {
   QUIZ_HISTORY: 'flipcards_quiz_history',
   LANGUAGE: 'flipcards_language',
   REVIEW_DATES: 'flipcards_lesson_review_dates',
+  TUTORIAL_COMPLETED: 'flipcards_tutorial_completed',
 };
 
 /**
@@ -200,6 +201,7 @@ export function resetProgress() {
     localStorage.removeItem(STORAGE_KEYS.EARNED_BADGES);
     localStorage.removeItem(STORAGE_KEYS.QUIZ_HISTORY);
     localStorage.removeItem(STORAGE_KEYS.REVIEW_DATES);
+    localStorage.removeItem(STORAGE_KEYS.TUTORIAL_COMPLETED);
   } catch {
     console.warn('Failed to reset progress in localStorage');
   }
@@ -234,6 +236,29 @@ export function setLanguage(lang) {
     localStorage.setItem(STORAGE_KEYS.LANGUAGE, validLang);
   } catch {
     console.warn('Failed to save language preference to localStorage');
+  }
+}
+
+/**
+ * Get whether the tutorial has been completed
+ * @returns {boolean} True if tutorial was completed
+ */
+export function getTutorialCompleted() {
+  try {
+    return localStorage.getItem(STORAGE_KEYS.TUTORIAL_COMPLETED) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Mark the tutorial as completed
+ */
+export function setTutorialCompleted() {
+  try {
+    localStorage.setItem(STORAGE_KEYS.TUTORIAL_COMPLETED, 'true');
+  } catch {
+    console.warn('Failed to save tutorial completion to localStorage');
   }
 }
 
