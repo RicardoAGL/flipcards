@@ -22,8 +22,8 @@ describe('BADGE_CATEGORIES', () => {
 });
 
 describe('BADGES', () => {
-  it('should contain 10 badge definitions', () => {
-    expect(BADGES).toHaveLength(10);
+  it('should contain 15 badge definitions', () => {
+    expect(BADGES).toHaveLength(15);
   });
 
   it('should have required fields for each badge', () => {
@@ -81,8 +81,8 @@ describe('BADGES', () => {
     );
 
     expect(encouragementBadges).toHaveLength(3);
-    expect(masteryBadges).toHaveLength(5);
-    expect(milestoneBadges).toHaveLength(2);
+    expect(masteryBadges).toHaveLength(9);
+    expect(milestoneBadges).toHaveLength(3);
   });
 });
 
@@ -152,10 +152,10 @@ describe('getBadgesByCategory', () => {
     expect(ids).toContain('perseverance');
   });
 
-  it('should return 5 mastery badges', () => {
+  it('should return 9 mastery badges', () => {
     const badges = getBadgesByCategory(BADGE_CATEGORIES.MASTERY);
 
-    expect(badges).toHaveLength(5);
+    expect(badges).toHaveLength(9);
     expect(badges.every((b) => b.category === BADGE_CATEGORIES.MASTERY)).toBe(true);
 
     const ids = badges.map((b) => b.id);
@@ -164,17 +164,22 @@ describe('getBadgesByCategory', () => {
     expect(ids).toContain('sound-master-ee');
     expect(ids).toContain('sound-master-oo');
     expect(ids).toContain('sound-master-uu');
+    expect(ids).toContain('sound-master-oe');
+    expect(ids).toContain('sound-master-ie');
+    expect(ids).toContain('sound-master-ei');
+    expect(ids).toContain('sound-master-ij');
   });
 
-  it('should return 2 milestone badges', () => {
+  it('should return 3 milestone badges', () => {
     const badges = getBadgesByCategory(BADGE_CATEGORIES.MILESTONE);
 
-    expect(badges).toHaveLength(2);
+    expect(badges).toHaveLength(3);
     expect(badges.every((b) => b.category === BADGE_CATEGORIES.MILESTONE)).toBe(true);
 
     const ids = badges.map((b) => b.id);
     expect(ids).toContain('first-steps');
     expect(ids).toContain('level-1-complete');
+    expect(ids).toContain('level-2-complete');
   });
 
   it('should return empty array for invalid category', () => {

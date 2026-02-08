@@ -144,6 +144,58 @@ export const BADGES = [
     },
   },
   {
+    id: 'sound-master-oe',
+    category: BADGE_CATEGORIES.MASTERY,
+    nameES: 'Maestro de OE',
+    nameEN: 'OE Master',
+    descriptionES: 'Completa principiante y avanzado de "oe"',
+    descriptionEN: 'Complete beginner and advanced "oe"',
+    icon: '🏅',
+    criteria: {
+      type: 'sound_mastery',
+      sound: 'oe',
+    },
+  },
+  {
+    id: 'sound-master-ie',
+    category: BADGE_CATEGORIES.MASTERY,
+    nameES: 'Maestro de IE',
+    nameEN: 'IE Master',
+    descriptionES: 'Completa principiante y avanzado de "ie"',
+    descriptionEN: 'Complete beginner and advanced "ie"',
+    icon: '🏅',
+    criteria: {
+      type: 'sound_mastery',
+      sound: 'ie',
+    },
+  },
+  {
+    id: 'sound-master-ei',
+    category: BADGE_CATEGORIES.MASTERY,
+    nameES: 'Maestro de EI',
+    nameEN: 'EI Master',
+    descriptionES: 'Completa principiante y avanzado de "ei"',
+    descriptionEN: 'Complete beginner and advanced "ei"',
+    icon: '🏅',
+    criteria: {
+      type: 'sound_mastery',
+      sound: 'ei',
+    },
+  },
+  {
+    id: 'sound-master-ij',
+    category: BADGE_CATEGORIES.MASTERY,
+    nameES: 'Maestro de IJ',
+    nameEN: 'IJ Master',
+    descriptionES: 'Completa principiante y avanzado de "ij"',
+    descriptionEN: 'Complete beginner and advanced "ij"',
+    icon: '🏅',
+    criteria: {
+      type: 'sound_mastery',
+      sound: 'ij',
+    },
+  },
+  {
     id: 'level-1-complete',
     category: BADGE_CATEGORIES.MILESTONE,
     nameES: 'Nivel 1 Completo',
@@ -154,6 +206,19 @@ export const BADGES = [
     criteria: {
       type: 'lessons_completed',
       count: 8,
+    },
+  },
+  {
+    id: 'level-2-complete',
+    category: BADGE_CATEGORIES.MILESTONE,
+    nameES: 'Nivel 2 Completo',
+    nameEN: 'Level 2 Complete',
+    descriptionES: 'Completa todas las lecciones de Pares Voc\u00e1licos',
+    descriptionEN: 'Complete all Vowel Pairs lessons',
+    icon: '🏆',
+    criteria: {
+      type: 'lessons_completed',
+      count: 16,
     },
   },
 ];
