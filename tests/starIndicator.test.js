@@ -29,12 +29,12 @@ Object.defineProperty(global, 'localStorage', {
 // Mock progressStorage module
 vi.mock('../src/lib/progressStorage.js', () => ({
   MILESTONES: [
-    { level: 1, points: 300, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
-    { level: 2, points: 800, color: '#C0C0C0', nameES: 'Plata', nameEN: 'Silver' },
-    { level: 3, points: 1500, color: '#FFD700', nameES: 'Oro', nameEN: 'Gold' },
+    { level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
+    { level: 2, points: 640, color: '#C0C0C0', nameES: 'Plata', nameEN: 'Silver' },
+    { level: 3, points: 1280, color: '#FFD700', nameES: 'Oro', nameEN: 'Gold' },
   ],
   getCurrentMilestone: vi.fn(() => null),
-  getNextMilestone: vi.fn(() => ({ level: 1, points: 300, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze', remaining: 300 })),
+  getNextMilestone: vi.fn(() => ({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze', remaining: 200 })),
   getAchievedMilestones: vi.fn(() => []),
   getTotalPoints: vi.fn(() => 0),
 }));
@@ -97,7 +97,7 @@ describe('StarIndicator Component', () => {
     getAchievedMilestones.mockReturnValue([]);
     getNextMilestone.mockReturnValue({
       level: 1,
-      points: 300,
+      points: 200,
       color: '#CD7F32',
       nameES: 'Bronce',
       nameEN: 'Bronze',
@@ -140,8 +140,8 @@ describe('StarIndicator Component', () => {
 
     it('should render earned stars when milestones achieved', () => {
       getAchievedMilestones.mockReturnValue([
-        { level: 1, points: 300, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
-        { level: 2, points: 800, color: '#C0C0C0', nameES: 'Plata', nameEN: 'Silver' },
+        { level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
+        { level: 2, points: 640, color: '#C0C0C0', nameES: 'Plata', nameEN: 'Silver' },
       ]);
 
       const html = createStarIndicatorHTML();
@@ -159,7 +159,7 @@ describe('StarIndicator Component', () => {
     it('should render next milestone info when milestones remain', () => {
       getNextMilestone.mockReturnValue({
         level: 1,
-        points: 300,
+        points: 200,
         color: '#CD7F32',
         nameES: 'Bronce',
         nameEN: 'Bronze',
@@ -192,7 +192,7 @@ describe('StarIndicator Component', () => {
       getTotalPoints.mockReturnValue(150);
       getNextMilestone.mockReturnValue({
         level: 1,
-        points: 300,
+        points: 200,
         color: '#CD7F32',
         nameES: 'Bronce',
         nameEN: 'Bronze',
@@ -203,8 +203,8 @@ describe('StarIndicator Component', () => {
       container.innerHTML = html;
 
       const progressBar = container.querySelector('.star-progress-bar');
-      // 150 points out of 300 = 50%
-      expect(progressBar.style.width).toBe('50%');
+      // 150 points out of 200 = 75%
+      expect(progressBar.style.width).toBe('75%');
     });
   });
 
@@ -237,7 +237,7 @@ describe('StarIndicator Component', () => {
     it('should append overlay to document.body', () => {
       const milestone = {
         level: 1,
-        points: 300,
+        points: 200,
         color: '#CD7F32',
         nameES: 'Bronce',
         nameEN: 'Bronze',
@@ -252,7 +252,7 @@ describe('StarIndicator Component', () => {
     it('should display milestone name and points', () => {
       const milestone = {
         level: 1,
-        points: 300,
+        points: 200,
         color: '#CD7F32',
         nameES: 'Bronce',
         nameEN: 'Bronze',
@@ -265,13 +265,13 @@ describe('StarIndicator Component', () => {
       const message = overlay.querySelector('.milestone-celebration-message');
 
       expect(level.textContent).toContain('Bronce');
-      expect(message.textContent).toContain('300');
+      expect(message.textContent).toContain('200');
     });
 
     it('should dismiss on button click and call onDismiss callback', () => {
       const milestone = {
         level: 1,
-        points: 300,
+        points: 200,
         color: '#CD7F32',
         nameES: 'Bronce',
         nameEN: 'Bronze',

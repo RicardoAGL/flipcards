@@ -155,9 +155,9 @@ export function resetProgress() {
  * @type {Array<{level: string, points: number, color: string, nameES: string, nameEN: string}>}
  */
 export const MILESTONES = [
-  { level: 'bronze', points: 300, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
-  { level: 'silver', points: 800, color: '#C0C0C0', nameES: 'Plata', nameEN: 'Silver' },
-  { level: 'gold', points: 1500, color: '#FFD700', nameES: 'Oro', nameEN: 'Gold' },
+  { level: 'bronze', points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
+  { level: 'silver', points: 640, color: '#C0C0C0', nameES: 'Plata', nameEN: 'Silver' },
+  { level: 'gold', points: 1280, color: '#FFD700', nameES: 'Oro', nameEN: 'Gold' },
 ];
 
 /**
@@ -353,14 +353,6 @@ export function getQuizAttemptsForLesson(lessonId) {
 }
 
 /**
- * Get total count of completed quizzes
- * @returns {number} Total quiz count
- */
-export function getTotalQuizCount() {
-  return getQuizHistory().length;
-}
-
-/**
  * Check badge criteria and award any newly earned badges
  * Call this after a quiz is completed
  * @param {Object} quizResult - The quiz result
@@ -390,9 +382,10 @@ export function checkAndAwardBadges(quizResult) {
     }
   }
 
-  // Check: practice-master (complete 10 quizzes)
-  const quizCount = getTotalQuizCount();
-  if (quizCount >= 10) {
+  // Check: practice-master (pass 10 quizzes)
+  const history = getQuizHistory();
+  const passedQuizCount = history.filter(a => a.passed).length;
+  if (passedQuizCount >= 10) {
     if (awardBadge('practice-master')) {
       newBadges.push('practice-master');
     }
@@ -400,7 +393,6 @@ export function checkAndAwardBadges(quizResult) {
 
   // Check: never-give-up (score 0 and retry)
   // Look for a previous 0-score attempt on any lesson
-  const history = getQuizHistory();
   const hasZeroScore = history.some(
     attempt => attempt.score === 0 && attempt.timestamp < Date.now() - 1000,
   );

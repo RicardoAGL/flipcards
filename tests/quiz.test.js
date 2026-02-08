@@ -63,7 +63,7 @@ vi.mock('../src/lib/quizHelpers.js', () => ({
     percentage: 67,
     passed: false,
     points: 50,
-    breakdown: { correctPoints: 40, completionBonus: 10, perfectBonus: 0 },
+    breakdown: { correctPoints: 40, completionBonus: 10, masteryBonus: 0 },
   })),
   createUserAnswer: vi.fn((question, selected) => ({
     questionId: question.questionId,
@@ -130,7 +130,7 @@ describe('Quiz Component', () => {
         passingScore: 0.8,
         pointsPerCorrect: 20,
         completionBonus: 10,
-        perfectBonus: 25,
+        masteryBonus: 25,
       },
       estimatedMinutes: 5,
     };

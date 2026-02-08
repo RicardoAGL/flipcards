@@ -28,7 +28,7 @@ const TEXT = {
     pointsTitle: 'Puntos Ganados',
     correctAnswers: 'Respuestas correctas',
     completionBonus: 'Bonus de completar',
-    perfectBonus: 'Bonus perfecto',
+    masteryBonus: 'Bonus de maestría',
     total: 'Total',
     badgeUnlocked: 'Insignia Desbloqueada!',
     continue: 'Continuar',
@@ -47,7 +47,7 @@ const TEXT = {
     pointsTitle: 'Points Earned',
     correctAnswers: 'Correct answers',
     completionBonus: 'Completion bonus',
-    perfectBonus: 'Perfect bonus',
+    masteryBonus: 'Mastery bonus',
     total: 'Total',
     badgeUnlocked: 'Badge Unlocked!',
     continue: 'Continue',
@@ -184,10 +184,10 @@ export function createQuizResults(options) {
             <span class="quiz-results-breakdown-value quiz-results-breakdown-value--bonus">+${result.breakdown.completionBonus}</span>
           </div>
 
-          ${result.breakdown.perfectBonus > 0 ? `
+          ${result.breakdown.masteryBonus > 0 ? `
           <div class="quiz-results-breakdown-row">
-            <span class="quiz-results-breakdown-label">${text.perfectBonus}:</span>
-            <span class="quiz-results-breakdown-value quiz-results-breakdown-value--bonus">+${result.breakdown.perfectBonus}</span>
+            <span class="quiz-results-breakdown-label">${text.masteryBonus}:</span>
+            <span class="quiz-results-breakdown-value quiz-results-breakdown-value--bonus">+${result.breakdown.masteryBonus}</span>
           </div>
           ` : ''}
 

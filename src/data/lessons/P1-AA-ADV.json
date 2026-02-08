@@ -136,7 +136,7 @@
     "passingScore": 0.8,
     "pointsPerCorrect": 20,
     "completionBonus": 10,
-    "perfectBonus": 50
+    "masteryBonus": 20
   },
   "estimatedMinutes": 20,
   "distractorPool": [
