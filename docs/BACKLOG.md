@@ -12,7 +12,7 @@
 | Sounds covered | 12 (aa, ee, oo, uu, oe, ie, ei, ij, ou, au, eu, ui) |
 | Lessons | 24 (BEG + ADV per sound) |
 | Words | 260 |
-| Tests | 523 (17 test files) |
+| Tests | 530 (16 test files) |
 | Components | 8 (FlipCard, Quiz, QuizResults, LessonMenu, BadgeGallery, StarIndicator, SplashScreen, SoundIntro) |
 | Languages | 2 (ES, EN) — user-selectable via header toggle + splash screen |
 | Storage | localStorage only (6 keys) |
@@ -103,6 +103,12 @@
 - [x] level-2-complete threshold updated (16 → 24 lessons)
 - [x] Added `'ie'` to PHASE_2_SOUNDS in schema.js
 - [x] 523 tests across 17 files
+
+### Sprint 6 — Quick Wins Bundle
+- [x] **BL-024** Localized footer and view UI strings (TEXT object in main.js)
+- [x] **BL-019** Completed cross-distractors: eu/ui ADV asymmetry fix + eu/oe bidirectional
+- [x] **BL-017** Batched celebration modals: `showCombinedCelebration()` in StarIndicator.js
+- [x] 530 tests across 16 test files
 
 ---
 
@@ -392,7 +398,7 @@ uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
 ---
 
 ### BL-017: Batch Celebration Modals
-**Priority:** P3 | **Effort:** Small | **Status:** Not Started
+**Priority:** P3 | **Effort:** Small | **Status:** Complete
 
 **From gamification review:** After quiz completion, users can face up to 3 sequential interruption screens (results, milestone, badges). Consider batching celebrations into the results screen.
 
@@ -413,7 +419,7 @@ When Phase 2 content is added, create corresponding badges:
 ---
 
 ### BL-019: Minimal Pair Exercises
-**Priority:** P2 | **Effort:** Medium | **Status:** Partial (ei/ij cross-distractors done)
+**Priority:** P2 | **Effort:** Medium | **Status:** Complete
 
 **From pedagogical review:** For Phase 2, add exercises that contrast similar-sounding pairs:
 - ei vs ij (same pronunciation, different spelling)
@@ -462,7 +468,7 @@ Add PWA manifest and service worker for:
 ---
 
 ### BL-024: Localize Footer & View UI Strings
-**Priority:** P2 | **Effort:** Small | **Status:** Not Started
+**Priority:** P2 | **Effort:** Small | **Status:** Complete
 
 **From Sprint 2 PR review:** Footer button labels ("Start Quiz", "Back to Practice", "How to use:") and subtitle strings remain hardcoded in English while all other surfaces now respect language preference.
 
@@ -476,6 +482,32 @@ Add PWA manifest and service worker for:
 **From Sprint 2 PR review:** `allowJs: true` was added to fix CI but `checkJs: true` is not enabled, meaning JSDoc type annotations are not validated by tsc. Enabling it surfaces ~1076 errors that need incremental fixing.
 
 **Files:** `tsconfig.json`, various source and test files
+
+---
+
+### BL-026: Interactive Tutorial / Help Overlay
+**Priority:** P1 | **Effort:** Medium | **Status:** Not Started
+
+**From user testing:** First-time users get lost navigating the app flow (menu → sound intro → flashcards → quiz). Need an onboarding tutorial that explains the UI.
+
+**Behavior:**
+- Automatically shown on first visit (track `tutorial_completed` in localStorage)
+- Step-by-step overlay highlighting key UI elements: card tapping, flip gesture, quiz button, back navigation, language toggle
+- Can be replayed anytime via a help button (e.g., `?` icon in header)
+- Should be bilingual (ES/EN), following existing TEXT object pattern
+- Dismissible at any point (skip button)
+
+**Implementation options:**
+- A) Lightweight custom overlay: series of positioned tooltip-style popups with backdrop highlighting targeted elements
+- B) Coach marks pattern: semi-transparent overlay with cutouts around active elements + text callouts
+- C) Intro modal carousel: full-screen slides with screenshots/illustrations (simpler but less contextual)
+
+**Considerations:**
+- Keep it short (3-5 steps max) to avoid tutorial fatigue
+- Focus on the core loop: tap cards → flip for pronunciation → take quiz
+- Must work on mobile (touch-friendly dismiss/next)
+
+**New localStorage key:** `flipcards_tutorial_completed`
 
 ---
 
@@ -510,14 +542,18 @@ Add PWA manifest and service worker for:
 ### Sprint 5 — Content Expansion (Second Batch) ✅
 17. ~~BL-003: Phase 2 remaining sounds: ou, au, eu, ui (large)~~
 
+### Sprint 6 — Quick Wins Bundle ✅
+18. ~~BL-024: Localize footer & view UI strings (small)~~
+19. ~~BL-019: Complete cross-distractors — eu/oe bidirectional (medium)~~
+20. ~~BL-017: Batch celebration modals (small)~~
+
 ### Future — Server-Side Features
-18. BL-009: Login / registration (large)
-19. BL-008: Cross-device score persistence (large)
-20. BL-012: Example sentences (medium)
-21. BL-013: TTS voice selection (medium)
-22. BL-017: Batch celebration modals (small)
-23. BL-022: Confusion tracking (medium)
-24. BL-023: PWA / service worker (medium)
+21. BL-009: Login / registration (large)
+22. BL-008: Cross-device score persistence (large)
+23. BL-012: Example sentences (medium)
+24. BL-013: TTS voice selection (medium)
+25. BL-022: Confusion tracking (medium)
+26. BL-023: PWA / service worker (medium)
 
 ---
 
