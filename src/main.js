@@ -38,7 +38,7 @@ const TEXT = {
     startQuiz: 'Iniciar Quiz',
     backToPractice: 'Volver a Practicar',
     howToUse: '<strong>Cómo usar:</strong> Toca las tarjetas laterales para recorrer las palabras. Toca la tarjeta central para ver la guía de pronunciación.',
-    practiceSound: (sound) => `Practica el sonido "${sound}"`,
+    practiceSound: (/** @type {string} */ sound) => `Practica el sonido "${sound}"`,
     testKnowledge: 'Pon a prueba tu conocimiento',
     quizInstructions: '<strong>Quiz:</strong> Selecciona la palabra que contiene el sonido mostrado. ¡Obtén 80% para aprobar!',
   },
@@ -46,25 +46,37 @@ const TEXT = {
     startQuiz: 'Start Quiz',
     backToPractice: 'Back to Practice',
     howToUse: '<strong>How to use:</strong> Tap the side cards to cycle through words. Tap the center card to see the pronunciation guide.',
-    practiceSound: (sound) => `Practice the "${sound}" sound`,
+    practiceSound: (/** @type {string} */ sound) => `Practice the "${sound}" sound`,
     testKnowledge: 'Test your knowledge',
     quizInstructions: '<strong>Quiz:</strong> Select the word that contains the sound shown. Get 80% correct to pass!',
   },
 };
 
 // Application state
-let currentView = 'splash'; // 'splash' | 'menu' | 'sound-intro' | 'flipcard' | 'quiz' | 'badges'
+/** @type {'splash' | 'menu' | 'sound-intro' | 'flipcard' | 'quiz' | 'badges'} */
+let currentView = 'splash';
 let currentLanguage = getLanguage();
+/** @type {string | null} */
 let selectedLessonId = null;
+/** @type {import('./data/schema.js').Lesson | null} */
 let currentLesson = null;
+/** @type {ReturnType<typeof getLessonForFlipCard> | null} */
 let flipCardData = null;
+/** @type {ReturnType<typeof createFlipCard> | null} */
 let flipCard = null;
+/** @type {ReturnType<typeof createQuiz> | null} */
 let quiz = null;
+/** @type {ReturnType<typeof createLessonMenu> | null} */
 let lessonMenu = null;
+/** @type {ReturnType<typeof createBadgeGallery> | null} */
 let badgeGallery = null;
+/** @type {ReturnType<typeof createSplashScreen> | null} */
 let splashScreen = null;
+/** @type {ReturnType<typeof createSoundIntro> | null} */
 let soundIntro = null;
+/** @type {string[] | null} */
 let reviewedLessonIds = null;
+/** @type {ReturnType<typeof createTutorial> | null} */
 let tutorial = null;
 
 /**
@@ -84,6 +96,7 @@ function init() {
 
 /**
  * Render the main application layout
+ * @param {HTMLElement} app
  */
 function renderLayout(app) {
   app.innerHTML = `
@@ -140,13 +153,13 @@ function renderLayout(app) {
             class="app-btn app-btn--primary"
             type="button"
             id="toggle-view-btn"
-            aria-label="${(TEXT[currentLanguage] || TEXT.es).startQuiz}"
+            aria-label="${(TEXT[/** @type {'es' | 'en'} */ (currentLanguage)] || TEXT.es).startQuiz}"
           >
-            ${(TEXT[currentLanguage] || TEXT.es).startQuiz}
+            ${(TEXT[/** @type {'es' | 'en'} */ (currentLanguage)] || TEXT.es).startQuiz}
           </button>
         </div>
         <p class="instructions" id="instructions">
-          ${(TEXT[currentLanguage] || TEXT.es).howToUse}
+          ${(TEXT[/** @type {'es' | 'en'} */ (currentLanguage)] || TEXT.es).howToUse}
         </p>
       </footer>
     </main>
@@ -195,7 +208,7 @@ function mountSplashScreen() {
   const backBtn = document.getElementById('back-btn');
   const subtitle = document.getElementById('view-subtitle');
   const headerPoints = document.getElementById('header-points');
-  const headerTitle = document.querySelector('.app-header-row h1');
+  const headerTitle = /** @type {HTMLElement | null} */ (document.querySelector('.app-header-row h1'));
   const langToggle = document.getElementById('lang-toggle-btn');
 
   const helpBtn = document.getElementById('help-btn');
@@ -216,7 +229,7 @@ function mountSplashScreen() {
         showTutorial(true);
       }
     },
-    onLanguageChange: (lang) => {
+    onLanguageChange: (/** @type {string} */ lang) => {
       handleLanguageChange(lang);
       // Re-mount splash with new language
       mountSplashScreen();
@@ -243,7 +256,7 @@ function mountLessonMenu() {
   const backBtn = document.getElementById('back-btn');
   const subtitle = document.getElementById('view-subtitle');
   const headerPoints = document.getElementById('header-points');
-  const headerTitle = document.querySelector('.app-header-row h1');
+  const headerTitle = /** @type {HTMLElement | null} */ (document.querySelector('.app-header-row h1'));
   const langToggle = document.getElementById('lang-toggle-btn');
   const helpBtn = document.getElementById('help-btn');
 
@@ -275,6 +288,7 @@ function mountLessonMenu() {
 
 /**
  * Handle lesson selection from menu
+ * @param {string} lessonId
  */
 function handleSelectLesson(lessonId) {
   selectedLessonId = lessonId;
@@ -299,7 +313,7 @@ function mountSoundIntro() {
   const backBtn = document.getElementById('back-btn');
   const subtitle = document.getElementById('view-subtitle');
   const headerPoints = document.getElementById('header-points');
-  const headerTitle = document.querySelector('.app-header-row h1');
+  const headerTitle = /** @type {HTMLElement | null} */ (document.querySelector('.app-header-row h1'));
   const langToggle = document.getElementById('lang-toggle-btn');
   const helpBtn = document.getElementById('help-btn');
 
@@ -311,7 +325,7 @@ function mountSoundIntro() {
   if (langToggle) { langToggle.style.display = ''; }
   if (helpBtn) { helpBtn.style.display = ''; }
 
-  soundIntro = createSoundIntro(currentLesson, container, {
+  soundIntro = createSoundIntro(/** @type {import('./data/schema.js').Lesson} */ (currentLesson), container, {
     language: currentLanguage,
     onStartPractice: mountFlipCard,
     onBack: mountLessonMenu,
@@ -337,7 +351,7 @@ function mountFlipCard() {
   const footer = document.getElementById('app-footer');
   const backBtn = document.getElementById('back-btn');
   const headerPoints = document.getElementById('header-points');
-  const headerTitle = document.querySelector('.app-header-row h1');
+  const headerTitle = /** @type {HTMLElement | null} */ (document.querySelector('.app-header-row h1'));
   const langToggle = document.getElementById('lang-toggle-btn');
   const helpBtn = document.getElementById('help-btn');
 
@@ -349,7 +363,7 @@ function mountFlipCard() {
   if (helpBtn) { helpBtn.style.display = ''; }
 
   // Create and mount flip card with current lesson data
-  flipCard = createFlipCard(flipCardData, container, { language: currentLanguage });
+  flipCard = createFlipCard(/** @type {any} */ (flipCardData), container, { language: currentLanguage });
   currentView = 'flipcard';
 
   // Update UI
@@ -371,14 +385,14 @@ async function mountQuiz() {
   destroyCurrentComponent();
 
   // Create and mount quiz with same lesson as FlipCard
-  quiz = createQuiz(currentLesson, {
+  quiz = createQuiz(/** @type {import('./data/schema.js').Lesson} */ (currentLesson), {
     questionCount: 5,
     language: currentLanguage,
     onComplete: handleQuizComplete,
     onClose: handleQuizClose,
   });
 
-  await quiz.mount(container);
+  await quiz.mount(/** @type {HTMLElement} */ (container));
   currentView = 'quiz';
 
   // Update UI
@@ -436,7 +450,7 @@ function mountBadgeGallery() {
   const backBtn = document.getElementById('back-btn');
   const subtitle = document.getElementById('view-subtitle');
   const headerPoints = document.getElementById('header-points');
-  const headerTitle = document.querySelector('.app-header-row h1');
+  const headerTitle = /** @type {HTMLElement | null} */ (document.querySelector('.app-header-row h1'));
   const langToggle = document.getElementById('lang-toggle-btn');
   const helpBtn = document.getElementById('help-btn');
 
@@ -510,13 +524,14 @@ async function handleStartReview() {
     onClose: () => mountLessonMenu(),
   });
 
-  await quiz.mount(container);
+  await quiz.mount(/** @type {HTMLElement} */ (container));
   currentView = 'quiz';
   updateViewUI();
 }
 
 /**
  * Handle review quiz completion
+ * @param {{ passed: boolean, pointsEarned: number }} result
  */
 function handleReviewComplete(result) {
   // Only update review dates if the review was passed
@@ -593,6 +608,7 @@ function handleLanguageChange(lang) {
   }
 
   // Re-render the current view
+  /** @type {Record<string, Function>} */
   const viewMounters = {
     'menu': mountLessonMenu,
     'sound-intro': mountSoundIntro,
@@ -608,11 +624,13 @@ function handleLanguageChange(lang) {
 
 /**
  * Handle quiz completion
+ * @param {{ score: number, passed: boolean, pointsEarned: number, answers: any[] }} result
  */
 function handleQuizComplete(result) {
   // Record quiz attempt for badge tracking
+  const lessonId = /** @type {string} */ (selectedLessonId);
   recordQuizAttempt(
-    selectedLessonId,
+    lessonId,
     result.score,
     result.answers.length,
     result.passed,
@@ -620,13 +638,14 @@ function handleQuizComplete(result) {
 
   // Check for new badges BEFORE marking lesson complete
   const newBadges = checkAndAwardBadges({
-    lessonId: selectedLessonId,
+    lessonId,
     score: result.score,
     total: result.answers.length,
     passed: result.passed,
   });
 
   // Check for new milestone BEFORE adding points
+  /** @type {import('./components/StarIndicator.js').MilestoneData | null} */
   let newMilestone = null;
   if (result.passed && result.pointsEarned > 0) {
     newMilestone = checkNewMilestone(result.pointsEarned);
@@ -634,8 +653,8 @@ function handleQuizComplete(result) {
 
   // If passed, mark lesson complete, set review date, and add points
   if (result.passed) {
-    markLessonComplete(selectedLessonId);
-    updateReviewDate(selectedLessonId);
+    markLessonComplete(lessonId);
+    updateReviewDate(lessonId);
     if (result.pointsEarned > 0) {
       addPoints(result.pointsEarned);
     }
@@ -670,7 +689,7 @@ function updateViewUI() {
   const subtitle = document.getElementById('view-subtitle');
   const toggleBtn = document.getElementById('toggle-view-btn');
   const instructions = document.getElementById('instructions');
-  const text = TEXT[currentLanguage] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (currentLanguage)] || TEXT.es;
 
   if (currentView === 'flipcard' && currentLesson) {
     if (subtitle) {
@@ -703,7 +722,7 @@ function updateViewUI() {
 function updatePointsDisplay() {
   const pointsValue = document.getElementById('points-value');
   if (pointsValue) {
-    pointsValue.textContent = getTotalPoints();
+    pointsValue.textContent = String(getTotalPoints());
   }
 }
 

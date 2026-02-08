@@ -112,7 +112,7 @@ export function isValidLessonId(lessonId) {
 /**
  * Parses a lesson ID into its components
  * @param {string} lessonId - The lesson ID to parse
- * @returns {{ phase: number, sound: string, level: string } | null} Parsed components or null
+ * @returns {{ phase: number, sound: string, level: string | null } | null} Parsed components or null
  */
 export function parseLessonId(lessonId) {
   const match = lessonId.match(LESSON_ID_PATTERN);
@@ -286,7 +286,7 @@ export function validateLesson(lesson) {
 /**
  * Converts a full lesson to FlipCard-compatible format
  * @param {Lesson} lesson - The lesson data
- * @returns {Object} FlipCard-compatible lesson data
+ * @returns {{ sound: string, ipa: string, description: string, words: Array<{prefix: string, suffix: string, word: string, translation: Translation}> }} FlipCard-compatible lesson data
  */
 export function toFlipCardFormat(lesson) {
   return {

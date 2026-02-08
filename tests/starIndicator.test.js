@@ -6,14 +6,16 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // Mock localStorage before importing modules that use it
+/** @type {any} */
 const localStorageMock = (() => {
+  /** @type {Record<string, string>} */
   let store = {};
   return {
-    getItem: vi.fn((key) => store[key] || null),
-    setItem: vi.fn((key, value) => {
+    getItem: vi.fn((/** @type {string} */ key) => store[key] || null),
+    setItem: vi.fn((/** @type {string} */ key, /** @type {string} */ value) => {
       store[key] = value;
     }),
-    removeItem: vi.fn((key) => {
+    removeItem: vi.fn((/** @type {string} */ key) => {
       delete store[key];
     }),
     clear: vi.fn(() => {
@@ -41,251 +43,115 @@ vi.mock('../src/lib/progressStorage.js', () => ({
 
 // Mock badges module
 vi.mock('../src/data/badges.js', () => ({
-  getBadgeById: vi.fn((id) => {
+  getBadgeById: vi.fn((/** @type {string} */ id) => {
+    /** @type {Record<string, any>} */
     const badges = {
-      'first-steps': {
-        id: 'first-steps',
-        nameES: 'Primeros Pasos',
-        nameEN: 'First Steps',
-        descriptionES: 'Completa tu primera lección',
-        descriptionEN: 'Complete your first lesson',
-        icon: '🎯',
-      },
-      'perfect-score': {
-        id: 'perfect-score',
-        nameES: 'Puntuación Perfecta',
-        nameEN: 'Perfect Score',
-        descriptionES: 'Quiz perfecto',
-        descriptionEN: 'Perfect quiz',
-        icon: '💯',
-      },
+      'first-steps': { id: 'first-steps', nameES: 'Primeros Pasos', nameEN: 'First Steps', descriptionES: 'Completa tu primera lección', descriptionEN: 'Complete your first lesson', icon: '🎯' },
+      'perfect-score': { id: 'perfect-score', nameES: 'Puntuación Perfecta', nameEN: 'Perfect Score', descriptionES: 'Quiz perfecto', descriptionEN: 'Perfect quiz', icon: '💯' },
     };
     return badges[id] || null;
   }),
 }));
 
 // Import after mocks are set up
-import {
-  createStarIndicatorHTML,
-  createStarProgressHTML,
-  showMilestoneCelebration,
-  showBadgeCelebration,
-  showBadgeCelebrations,
-  showCombinedCelebration,
-  createStarIndicator,
-} from '../src/components/StarIndicator.js';
-import {
-  getAchievedMilestones,
-  getNextMilestone,
-  getTotalPoints,
-} from '../src/lib/progressStorage.js';
+import { createStarIndicatorHTML, createStarProgressHTML, showMilestoneCelebration, showBadgeCelebration, showBadgeCelebrations, showCombinedCelebration, createStarIndicator } from '../src/components/StarIndicator.js';
+import { getAchievedMilestones, getNextMilestone, getTotalPoints } from '../src/lib/progressStorage.js';
 import { getBadgeById } from '../src/data/badges.js';
 
+/** @type {import('vitest').Mock} */ const getTotalPointsMock = /** @type {any} */ (getTotalPoints);
+/** @type {import('vitest').Mock} */ const getAchievedMilestonesMock = /** @type {any} */ (getAchievedMilestones);
+/** @type {import('vitest').Mock} */ const getNextMilestoneMock = /** @type {any} */ (getNextMilestone);
+/** @type {import('vitest').Mock} */ const getBadgeByIdMock = /** @type {any} */ (getBadgeById);
+
 describe('StarIndicator Component', () => {
-  let container;
+  /** @type {HTMLElement} */ let container;
 
   beforeEach(() => {
-    // Create a fresh container for each test
     container = document.createElement('div');
     document.body.appendChild(container);
-
-    // Clear localStorage and mocks
     localStorageMock.clear();
     vi.clearAllMocks();
-
-    // Reset mock return values to defaults
-    getTotalPoints.mockReturnValue(0);
-    getAchievedMilestones.mockReturnValue([]);
-    getNextMilestone.mockReturnValue({
-      level: 1,
-      points: 200,
-      color: '#CD7F32',
-      nameES: 'Bronce',
-      nameEN: 'Bronze',
-      remaining: 300,
-    });
+    getTotalPointsMock.mockReturnValue(0);
+    getAchievedMilestonesMock.mockReturnValue([]);
+    getNextMilestoneMock.mockReturnValue({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze', remaining: 300 });
   });
 
   afterEach(() => {
-    // Clean up container
-    if (container && container.parentNode) {
-      container.parentNode.removeChild(container);
-    }
-
-    // Clean up any celebration overlays
+    if (container && container.parentNode) { container.parentNode.removeChild(container); }
     document.querySelectorAll('.milestone-celebration').forEach((el) => el.remove());
     document.querySelectorAll('.badge-celebration').forEach((el) => el.remove());
   });
 
   describe('createStarIndicatorHTML', () => {
-    it('should render 3 star SVGs', () => {
-      const html = createStarIndicatorHTML();
-      container.innerHTML = html;
-
-      const stars = container.querySelectorAll('.star-indicator-star');
-      expect(stars).toHaveLength(3);
-    });
-
-    it('should render all unearned when no milestones achieved', () => {
-      getAchievedMilestones.mockReturnValue([]);
-
-      const html = createStarIndicatorHTML();
-      container.innerHTML = html;
-
-      const unearnedStars = container.querySelectorAll('.star-indicator-star--unearned');
-      const earnedStars = container.querySelectorAll('.star-indicator-star--earned');
-
-      expect(unearnedStars).toHaveLength(3);
-      expect(earnedStars).toHaveLength(0);
-    });
-
+    it('should render 3 star SVGs', () => { const html = createStarIndicatorHTML(); container.innerHTML = html; expect(container.querySelectorAll('.star-indicator-star')).toHaveLength(3); });
+    it('should render all unearned when no milestones achieved', () => { getAchievedMilestonesMock.mockReturnValue([]); container.innerHTML = createStarIndicatorHTML(); expect(container.querySelectorAll('.star-indicator-star--unearned')).toHaveLength(3); expect(container.querySelectorAll('.star-indicator-star--earned')).toHaveLength(0); });
     it('should render earned stars when milestones achieved', () => {
-      getAchievedMilestones.mockReturnValue([
+      getAchievedMilestonesMock.mockReturnValue([
         { level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
         { level: 2, points: 640, color: '#C0C0C0', nameES: 'Plata', nameEN: 'Silver' },
       ]);
-
-      const html = createStarIndicatorHTML();
-      container.innerHTML = html;
-
-      const unearnedStars = container.querySelectorAll('.star-indicator-star--unearned');
-      const earnedStars = container.querySelectorAll('.star-indicator-star--earned');
-
-      expect(earnedStars).toHaveLength(2);
-      expect(unearnedStars).toHaveLength(1);
+      container.innerHTML = createStarIndicatorHTML();
+      expect(container.querySelectorAll('.star-indicator-star--earned')).toHaveLength(2);
+      expect(container.querySelectorAll('.star-indicator-star--unearned')).toHaveLength(1);
     });
   });
 
   describe('createStarProgressHTML', () => {
     it('should render next milestone info when milestones remain', () => {
-      getNextMilestone.mockReturnValue({
-        level: 1,
-        points: 200,
-        color: '#CD7F32',
-        nameES: 'Bronce',
-        nameEN: 'Bronze',
-        remaining: 150,
-      });
-
-      const html = createStarProgressHTML({ language: 'es' });
-      container.innerHTML = html;
-
-      const label = container.querySelector('.star-progress-label');
-      const points = container.querySelector('.star-progress-points');
-
+      getNextMilestoneMock.mockReturnValue({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze', remaining: 150 });
+      container.innerHTML = createStarProgressHTML({ language: 'es' });
+      const label = /** @type {HTMLElement} */ (container.querySelector('.star-progress-label'));
+      const points = /** @type {HTMLElement} */ (container.querySelector('.star-progress-points'));
       expect(label.textContent).toContain('Próximo hito');
       expect(label.textContent).toContain('Bronce');
       expect(points.textContent).toContain('150');
       expect(points.textContent).toContain('puntos restantes');
     });
-
     it('should show "all milestones complete" when no next milestone', () => {
-      getNextMilestone.mockReturnValue(null);
-
-      const html = createStarProgressHTML({ language: 'es' });
-      container.innerHTML = html;
-
-      const label = container.querySelector('.star-progress-label');
+      getNextMilestoneMock.mockReturnValue(null);
+      container.innerHTML = createStarProgressHTML({ language: 'es' });
+      const label = /** @type {HTMLElement} */ (container.querySelector('.star-progress-label'));
       expect(label.textContent).toContain('¡Todos los hitos completados!');
     });
-
     it('should calculate correct progress percentage', () => {
-      getTotalPoints.mockReturnValue(150);
-      getNextMilestone.mockReturnValue({
-        level: 1,
-        points: 200,
-        color: '#CD7F32',
-        nameES: 'Bronce',
-        nameEN: 'Bronze',
-        remaining: 150,
-      });
-
-      const html = createStarProgressHTML();
-      container.innerHTML = html;
-
-      const progressBar = container.querySelector('.star-progress-bar');
-      // 150 points out of 200 = 75%
+      getTotalPointsMock.mockReturnValue(150);
+      getNextMilestoneMock.mockReturnValue({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze', remaining: 150 });
+      container.innerHTML = createStarProgressHTML();
+      const progressBar = /** @type {HTMLElement} */ (container.querySelector('.star-progress-bar'));
       expect(progressBar.style.width).toBe('75%');
     });
   });
 
   describe('createStarIndicator', () => {
-    it('should render stars in container', () => {
-      createStarIndicator(container);
-
-      const starIndicator = container.querySelector('.star-indicator');
-      expect(starIndicator).not.toBeNull();
-    });
-
+    it('should render stars in container', () => { createStarIndicator(container); expect(container.querySelector('.star-indicator')).not.toBeNull(); });
     it('should return render, update, getState, destroy methods', () => {
-      const component = createStarIndicator(container);
-
+      const component = /** @type {any} */ (createStarIndicator(container));
       expect(typeof component.render).toBe('function');
       expect(typeof component.update).toBe('function');
       expect(typeof component.getState).toBe('function');
       expect(typeof component.destroy).toBe('function');
     });
-
-    it('destroy should clear container', () => {
-      const component = createStarIndicator(container);
-      component.destroy();
-
-      expect(container.innerHTML).toBe('');
-    });
+    it('destroy should clear container', () => { const component = /** @type {any} */ (createStarIndicator(container)); component.destroy(); expect(container.innerHTML).toBe(''); });
   });
 
   describe('showMilestoneCelebration', () => {
     it('should append overlay to document.body', () => {
-      const milestone = {
-        level: 1,
-        points: 200,
-        color: '#CD7F32',
-        nameES: 'Bronce',
-        nameEN: 'Bronze',
-      };
-
-      showMilestoneCelebration(milestone, { language: 'es' });
-
-      const overlay = document.body.querySelector('.milestone-celebration');
-      expect(overlay).not.toBeNull();
+      showMilestoneCelebration(/** @type {any} */ ({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' }), { language: 'es' });
+      expect(document.body.querySelector('.milestone-celebration')).not.toBeNull();
     });
-
     it('should display milestone name and points', () => {
-      const milestone = {
-        level: 1,
-        points: 200,
-        color: '#CD7F32',
-        nameES: 'Bronce',
-        nameEN: 'Bronze',
-      };
-
-      showMilestoneCelebration(milestone, { language: 'es' });
-
-      const overlay = document.body.querySelector('.milestone-celebration');
-      const level = overlay.querySelector('.milestone-celebration-level');
-      const message = overlay.querySelector('.milestone-celebration-message');
-
+      showMilestoneCelebration(/** @type {any} */ ({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' }), { language: 'es' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.milestone-celebration'));
+      const level = /** @type {HTMLElement} */ (overlay.querySelector('.milestone-celebration-level'));
+      const message = /** @type {HTMLElement} */ (overlay.querySelector('.milestone-celebration-message'));
       expect(level.textContent).toContain('Bronce');
       expect(message.textContent).toContain('200');
     });
-
     it('should dismiss on button click and call onDismiss callback', () => {
-      const milestone = {
-        level: 1,
-        points: 200,
-        color: '#CD7F32',
-        nameES: 'Bronce',
-        nameEN: 'Bronze',
-      };
       const onDismiss = vi.fn();
-
-      showMilestoneCelebration(milestone, { language: 'es', onDismiss });
-
-      const overlay = document.body.querySelector('.milestone-celebration');
-      const dismissBtn = overlay.querySelector('[data-dismiss]');
-
-      dismissBtn.click();
-
+      showMilestoneCelebration(/** @type {any} */ ({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' }), { language: 'es', onDismiss });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.milestone-celebration'));
+      /** @type {HTMLButtonElement} */ (overlay.querySelector('[data-dismiss]')).click();
       expect(document.body.querySelector('.milestone-celebration')).toBeNull();
       expect(onDismiss).toHaveBeenCalled();
     });
@@ -294,20 +160,15 @@ describe('StarIndicator Component', () => {
   describe('showBadgeCelebration', () => {
     it('should show badge celebration overlay', () => {
       showBadgeCelebration('first-steps', { language: 'es' });
-
-      const overlay = document.body.querySelector('.badge-celebration');
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.badge-celebration'));
       expect(overlay).not.toBeNull();
-
-      const badgeName = overlay.querySelector('.badge-celebration-name');
+      const badgeName = /** @type {HTMLElement} */ (overlay.querySelector('.badge-celebration-name'));
       expect(badgeName.textContent).toContain('Primeros Pasos');
     });
-
     it('should call onDismiss immediately if badge not found', () => {
-      getBadgeById.mockReturnValue(null);
+      getBadgeByIdMock.mockReturnValue(null);
       const onDismiss = vi.fn();
-
       showBadgeCelebration('non-existent-badge', { onDismiss });
-
       expect(onDismiss).toHaveBeenCalled();
       expect(document.body.querySelector('.badge-celebration')).toBeNull();
     });
@@ -316,189 +177,91 @@ describe('StarIndicator Component', () => {
   describe('showBadgeCelebrations', () => {
     beforeEach(() => {
       vi.useFakeTimers();
-      // Reset getBadgeById to return valid badges
-      getBadgeById.mockImplementation((id) => {
+      getBadgeByIdMock.mockImplementation((/** @type {string} */ id) => {
+        /** @type {Record<string, any>} */
         const badges = {
-          'first-steps': {
-            id: 'first-steps',
-            nameES: 'Primeros Pasos',
-            nameEN: 'First Steps',
-            descriptionES: 'Completa tu primera lección',
-            descriptionEN: 'Complete your first lesson',
-            icon: '🎯',
-          },
-          'perfect-score': {
-            id: 'perfect-score',
-            nameES: 'Puntuación Perfecta',
-            nameEN: 'Perfect Score',
-            descriptionES: 'Quiz perfecto',
-            descriptionEN: 'Perfect quiz',
-            icon: '💯',
-          },
+          'first-steps': { id: 'first-steps', nameES: 'Primeros Pasos', nameEN: 'First Steps', descriptionES: 'Completa tu primera lección', descriptionEN: 'Complete your first lesson', icon: '🎯' },
+          'perfect-score': { id: 'perfect-score', nameES: 'Puntuación Perfecta', nameEN: 'Perfect Score', descriptionES: 'Quiz perfecto', descriptionEN: 'Perfect quiz', icon: '💯' },
         };
         return badges[id] || null;
       });
     });
-
-    afterEach(() => {
-      vi.useRealTimers();
-    });
+    afterEach(() => { vi.useRealTimers(); });
 
     it('should show multiple badge celebrations in sequence', () => {
       const onComplete = vi.fn();
-
       showBadgeCelebrations(['first-steps', 'perfect-score'], { language: 'es', onComplete });
-
-      // First badge should appear immediately
-      let overlay = document.body.querySelector('.badge-celebration');
+      let overlay = /** @type {HTMLElement} */ (document.body.querySelector('.badge-celebration'));
       expect(overlay).not.toBeNull();
       expect(overlay.textContent).toContain('Primeros Pasos');
-
-      // Dismiss first badge
-      const dismissBtn = overlay.querySelector('[data-dismiss]');
-      dismissBtn.click();
-
-      // Fast-forward the 300ms delay
+      /** @type {HTMLButtonElement} */ (overlay.querySelector('[data-dismiss]')).click();
       vi.advanceTimersByTime(300);
-
-      // Second badge should appear
-      overlay = document.body.querySelector('.badge-celebration');
+      overlay = /** @type {HTMLElement} */ (document.body.querySelector('.badge-celebration'));
       expect(overlay).not.toBeNull();
       expect(overlay.textContent).toContain('Puntuación Perfecta');
-
-      // Dismiss second badge
-      overlay.querySelector('[data-dismiss]').click();
-
-      // Fast-forward the 300ms delay
+      /** @type {HTMLButtonElement} */ (overlay.querySelector('[data-dismiss]')).click();
       vi.advanceTimersByTime(300);
-
-      // onComplete should be called
       expect(onComplete).toHaveBeenCalled();
     });
-
-    it('should call onComplete immediately if no badges provided', () => {
-      const onComplete = vi.fn();
-
-      showBadgeCelebrations([], { onComplete });
-
-      expect(onComplete).toHaveBeenCalled();
-    });
+    it('should call onComplete immediately if no badges provided', () => { const onComplete = vi.fn(); showBadgeCelebrations([], { onComplete }); expect(onComplete).toHaveBeenCalled(); });
   });
 
   describe('showCombinedCelebration', () => {
     beforeEach(() => {
-      // Reset getBadgeById to return valid badges
-      getBadgeById.mockImplementation((id) => {
+      getBadgeByIdMock.mockImplementation((/** @type {string} */ id) => {
+        /** @type {Record<string, any>} */
         const badges = {
-          'first-steps': {
-            id: 'first-steps',
-            nameES: 'Primeros Pasos',
-            nameEN: 'First Steps',
-            descriptionES: 'Completa tu primera lección',
-            descriptionEN: 'Complete your first lesson',
-            icon: '🎯',
-          },
-          'perfect-score': {
-            id: 'perfect-score',
-            nameES: 'Puntuación Perfecta',
-            nameEN: 'Perfect Score',
-            descriptionES: 'Quiz perfecto',
-            descriptionEN: 'Perfect quiz',
-            icon: '💯',
-          },
+          'first-steps': { id: 'first-steps', nameES: 'Primeros Pasos', nameEN: 'First Steps', descriptionES: 'Completa tu primera lección', descriptionEN: 'Complete your first lesson', icon: '🎯' },
+          'perfect-score': { id: 'perfect-score', nameES: 'Puntuación Perfecta', nameEN: 'Perfect Score', descriptionES: 'Quiz perfecto', descriptionEN: 'Perfect quiz', icon: '💯' },
         };
         return badges[id] || null;
       });
     });
 
-    it('should call onDismiss immediately if no badges and no milestone', () => {
-      const onDismiss = vi.fn();
-
-      showCombinedCelebration({ badges: [], milestone: null, onDismiss });
-
-      expect(onDismiss).toHaveBeenCalled();
-      expect(document.body.querySelector('.combined-celebration')).toBeNull();
-    });
-
+    it('should call onDismiss immediately if no badges and no milestone', () => { const onDismiss = vi.fn(); showCombinedCelebration({ badges: [], milestone: null, onDismiss }); expect(onDismiss).toHaveBeenCalled(); expect(document.body.querySelector('.combined-celebration')).toBeNull(); });
     it('should delegate to showBadgeCelebration for single badge without milestone', () => {
       showCombinedCelebration({ badges: ['first-steps'], milestone: null, language: 'es' });
-
-      const overlay = document.body.querySelector('.badge-celebration');
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.badge-celebration'));
       expect(overlay).not.toBeNull();
       expect(overlay.textContent).toContain('Primeros Pasos');
-      // Should NOT have combined class
       expect(document.body.querySelector('.combined-celebration')).toBeNull();
     });
-
     it('should delegate to showMilestoneCelebration for milestone without badges', () => {
-      const milestone = { level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' };
-
-      showCombinedCelebration({ badges: [], milestone, language: 'es' });
-
-      const overlay = document.body.querySelector('.milestone-celebration');
+      showCombinedCelebration({ badges: [], milestone: /** @type {any} */ ({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' }), language: 'es' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.milestone-celebration'));
       expect(overlay).not.toBeNull();
       expect(overlay.textContent).toContain('Bronce');
       expect(document.body.querySelector('.combined-celebration')).toBeNull();
     });
-
     it('should show combined modal for multiple badges', () => {
-      showCombinedCelebration({
-        badges: ['first-steps', 'perfect-score'],
-        milestone: null,
-        language: 'es',
-      });
-
-      const overlay = document.body.querySelector('.combined-celebration');
+      showCombinedCelebration({ badges: ['first-steps', 'perfect-score'], milestone: null, language: 'es' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.combined-celebration'));
       expect(overlay).not.toBeNull();
       expect(overlay.textContent).toContain('Insignias Ganadas');
       expect(overlay.textContent).toContain('Primeros Pasos');
       expect(overlay.textContent).toContain('Puntuación Perfecta');
     });
-
     it('should show combined modal for badge + milestone', () => {
-      const milestone = { level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' };
-
-      showCombinedCelebration({
-        badges: ['first-steps'],
-        milestone,
-        language: 'es',
-      });
-
-      const overlay = document.body.querySelector('.combined-celebration');
+      showCombinedCelebration({ badges: ['first-steps'], milestone: /** @type {any} */ ({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' }), language: 'es' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.combined-celebration'));
       expect(overlay).not.toBeNull();
       expect(overlay.textContent).toContain('Insignias Ganadas');
       expect(overlay.textContent).toContain('Primeros Pasos');
       expect(overlay.textContent).toContain('Hito Alcanzado');
       expect(overlay.textContent).toContain('Bronce');
     });
-
     it('should dismiss on button click', () => {
       const onDismiss = vi.fn();
-
-      showCombinedCelebration({
-        badges: ['first-steps', 'perfect-score'],
-        milestone: null,
-        language: 'es',
-        onDismiss,
-      });
-
-      const overlay = document.body.querySelector('.combined-celebration');
+      showCombinedCelebration({ badges: ['first-steps', 'perfect-score'], milestone: null, language: 'es', onDismiss });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.combined-celebration'));
       expect(overlay).not.toBeNull();
-
-      overlay.querySelector('[data-dismiss]').click();
-
+      /** @type {HTMLButtonElement} */ (overlay.querySelector('[data-dismiss]')).click();
       expect(document.body.querySelector('.combined-celebration')).toBeNull();
       expect(onDismiss).toHaveBeenCalled();
     });
-
     it('should use correct language for EN', () => {
-      showCombinedCelebration({
-        badges: ['first-steps', 'perfect-score'],
-        milestone: null,
-        language: 'en',
-      });
-
-      const overlay = document.body.querySelector('.combined-celebration');
+      showCombinedCelebration({ badges: ['first-steps', 'perfect-score'], milestone: null, language: 'en' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.combined-celebration'));
       expect(overlay).not.toBeNull();
       expect(overlay.textContent).toContain('Badges Earned');
       expect(overlay.textContent).toContain('First Steps');

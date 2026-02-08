@@ -59,22 +59,14 @@ const TEXT = {
 /**
  * Create the QuizResults component
  * @param {Object} options - Configuration options
- * @param {Object} options.result - Quiz result data
- * @param {number} options.result.score - Number of correct answers
- * @param {number} options.result.total - Total number of questions
- * @param {number} options.result.percentage - Percentage score
- * @param {boolean} options.result.passed - Whether the quiz was passed
- * @param {number} options.result.points - Total points earned
- * @param {Object} options.result.breakdown - Points breakdown
- * @param {Object[]} options.answers - Array of user answers
- * @param {string} [options.language='es'] - Display language ('es' or 'en')
- * @param {Object} [options.badge] - Badge data if one was unlocked
- * @param {string} options.badge.name - Badge name
- * @param {string} options.badge.icon - Badge icon/emoji
- * @param {Function} options.onContinue - Callback when continue is clicked
- * @param {Function} options.onRetry - Callback when retry is clicked
- * @param {Function} options.onClose - Callback when close is clicked
- * @returns {Object} Component API with mount and destroy methods
+ * @param {import('../lib/quizHelpers.js').QuizResult} options.result - Quiz result data
+ * @param {import('../lib/quizHelpers.js').UserAnswer[]} options.answers - Array of user answers
+ * @param {string} [options.language] - Display language ('es' or 'en')
+ * @param {{ name: string, icon: string }} [options.badge] - Badge data if one was unlocked
+ * @param {Function} [options.onContinue] - Callback when continue is clicked
+ * @param {Function} [options.onRetry] - Callback when retry is clicked
+ * @param {Function} [options.onClose] - Callback when close is clicked
+ * @returns {{ mount: (targetContainer: HTMLElement) => void, destroy: () => void, getResult: () => any }} Component API with mount and destroy methods
  */
 export function createQuizResults(options) {
   const {
@@ -87,7 +79,8 @@ export function createQuizResults(options) {
     onClose,
   } = options;
 
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
+  /** @type {HTMLElement | null} */
   let container = null;
 
   /**
@@ -245,7 +238,7 @@ export function createQuizResults(options) {
       </div>
     `;
 
-    container.innerHTML = html;
+    /** @type {HTMLElement} */ (container).innerHTML = html;
     bindEvents();
   };
 
@@ -253,9 +246,10 @@ export function createQuizResults(options) {
    * Bind event listeners
    */
   const bindEvents = () => {
-    const closeBtn = container.querySelector('[data-action="close"]');
-    const continueBtn = container.querySelector('[data-action="continue"]');
-    const retryBtn = container.querySelector('[data-action="retry"]');
+    const c = /** @type {HTMLElement} */ (container);
+    const closeBtn = c.querySelector('[data-action="close"]');
+    const continueBtn = c.querySelector('[data-action="continue"]');
+    const retryBtn = c.querySelector('[data-action="retry"]');
 
     if (closeBtn) {
       closeBtn.addEventListener('click', handleClose);
@@ -270,7 +264,7 @@ export function createQuizResults(options) {
     }
 
     // Keyboard navigation
-    container.addEventListener('keydown', handleKeydown);
+    /** @type {HTMLElement} */ (container).addEventListener('keydown', handleKeydown);
   };
 
   /**
@@ -303,6 +297,7 @@ export function createQuizResults(options) {
   /**
    * Handle keyboard navigation
    */
+  /** @param {KeyboardEvent} event */
   const handleKeydown = (event) => {
     if (event.key === 'Escape') {
       handleClose();
@@ -318,7 +313,7 @@ export function createQuizResults(options) {
     render();
 
     // Focus management for accessibility
-    const firstButton = container.querySelector('.quiz-results-btn--primary');
+    const firstButton = /** @type {HTMLElement | null} */ (container.querySelector('.quiz-results-btn--primary'));
     if (firstButton) {
       setTimeout(() => firstButton.focus(), 100);
     }

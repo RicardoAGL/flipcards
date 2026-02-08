@@ -7,6 +7,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { createSpeechSynthesisMock } from './setup.js';
 
 // Set up speech synthesis mock before imports
+/** @type {any} */
 let synthMock;
 
 beforeEach(() => {
@@ -31,43 +32,43 @@ describe('TTS Utilities', () => {
   // ==========================================
   describe('scoreVoice', () => {
     it('should score nl-NL higher than nl-BE', () => {
-      const nlNL = { lang: 'nl-NL', name: 'Voice', localService: true };
-      const nlBE = { lang: 'nl-BE', name: 'Voice', localService: true };
+      const nlNL = /** @type {any} */ ({ lang: 'nl-NL', name: 'Voice', localService: true });
+      const nlBE = /** @type {any} */ ({ lang: 'nl-BE', name: 'Voice', localService: true });
 
       expect(scoreVoice(nlNL)).toBeGreaterThan(scoreVoice(nlBE));
     });
 
     it('should score nl-BE higher than other nl variants', () => {
-      const nlBE = { lang: 'nl-BE', name: 'Voice', localService: true };
-      const nlOther = { lang: 'nl', name: 'Voice', localService: true };
+      const nlBE = /** @type {any} */ ({ lang: 'nl-BE', name: 'Voice', localService: true });
+      const nlOther = /** @type {any} */ ({ lang: 'nl', name: 'Voice', localService: true });
 
       expect(scoreVoice(nlBE)).toBeGreaterThan(scoreVoice(nlOther));
     });
 
     it('should prefer cloud voices over local voices', () => {
-      const cloud = { lang: 'nl-NL', name: 'Voice', localService: false };
-      const local = { lang: 'nl-NL', name: 'Voice', localService: true };
+      const cloud = /** @type {any} */ ({ lang: 'nl-NL', name: 'Voice', localService: false });
+      const local = /** @type {any} */ ({ lang: 'nl-NL', name: 'Voice', localService: true });
 
       expect(scoreVoice(cloud)).toBeGreaterThan(scoreVoice(local));
     });
 
     it('should give bonus for named premium engines (Google, Microsoft, Apple)', () => {
-      const google = { lang: 'nl-NL', name: 'Google Dutch', localService: true };
-      const generic = { lang: 'nl-NL', name: 'Dutch Voice', localService: true };
+      const google = /** @type {any} */ ({ lang: 'nl-NL', name: 'Google Dutch', localService: true });
+      const generic = /** @type {any} */ ({ lang: 'nl-NL', name: 'Dutch Voice', localService: true });
 
       expect(scoreVoice(google)).toBeGreaterThan(scoreVoice(generic));
 
-      const microsoft = { lang: 'nl-NL', name: 'Microsoft Anna', localService: true };
+      const microsoft = /** @type {any} */ ({ lang: 'nl-NL', name: 'Microsoft Anna', localService: true });
       expect(scoreVoice(microsoft)).toBeGreaterThan(scoreVoice(generic));
 
-      const apple = { lang: 'nl-NL', name: 'Apple Xander', localService: true };
+      const apple = /** @type {any} */ ({ lang: 'nl-NL', name: 'Apple Xander', localService: true });
       expect(scoreVoice(apple)).toBeGreaterThan(scoreVoice(generic));
     });
 
     it('should rank cloud nl-NL Google voice highest', () => {
-      const best = { lang: 'nl-NL', name: 'Google Dutch', localService: false };
-      const good = { lang: 'nl-NL', name: 'Dutch Voice', localService: true };
-      const ok = { lang: 'nl-BE', name: 'Dutch Voice', localService: true };
+      const best = /** @type {any} */ ({ lang: 'nl-NL', name: 'Google Dutch', localService: false });
+      const good = /** @type {any} */ ({ lang: 'nl-NL', name: 'Dutch Voice', localService: true });
+      const ok = /** @type {any} */ ({ lang: 'nl-BE', name: 'Dutch Voice', localService: true });
 
       expect(scoreVoice(best)).toBeGreaterThan(scoreVoice(good));
       expect(scoreVoice(good)).toBeGreaterThan(scoreVoice(ok));

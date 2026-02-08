@@ -78,10 +78,12 @@ vi.mock('../src/lib/quizHelpers.js', () => ({
 import { createQuiz } from '../src/components/Quiz.js';
 import { speakDutch, isDutchVoiceAvailable } from '../src/lib/tts.js';
 import { createQuizResults } from '../src/components/QuizResults.js';
-import { generateQuiz, calculateScore, createUserAnswer, generateFeedbackExplanation } from '../src/lib/quizHelpers.js';
+import { generateQuiz, calculateScore as _calculateScore, createUserAnswer, generateFeedbackExplanation as _generateFeedbackExplanation } from '../src/lib/quizHelpers.js';
 
 describe('Quiz Component', () => {
+  /** @type {HTMLElement} */
   let container;
+  /** @type {any} */
   let mockLesson;
 
   beforeEach(() => {
@@ -100,6 +102,7 @@ describe('Quiz Component', () => {
         descriptionEN: 'Like a in father',
       },
       level: 'beginner',
+      unlockRequires: null,
       words: [
         {
           wordId: 'aa-001',
@@ -165,7 +168,7 @@ describe('Quiz Component', () => {
       const quiz = createQuiz(mockLesson, { questionCount: 3, language: 'es' });
       await quiz.mount(container);
 
-      const counter = container.querySelector('.quiz-question-counter');
+      const counter = /** @type {HTMLElement} */ (container.querySelector('.quiz-question-counter'));
       expect(counter.textContent).toBe('P 1/3');
     });
 
@@ -200,7 +203,7 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Click correct answer for first question (naam)
-      const correctOption = container.querySelector('[data-option="naam"]');
+      const correctOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       correctOption.click();
 
       expect(correctOption.classList.contains('quiz-option--correct')).toBe(true);
@@ -211,13 +214,13 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Click incorrect answer for first question (jaar instead of naam)
-      const incorrectOption = container.querySelector('[data-option="jaar"]');
+      const incorrectOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="jaar"]'));
       incorrectOption.click();
 
       expect(incorrectOption.classList.contains('quiz-option--incorrect')).toBe(true);
 
       // Check that correct answer is revealed
-      const correctOption = container.querySelector('[data-option="naam"]');
+      const correctOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       expect(correctOption.classList.contains('quiz-option--reveal-correct')).toBe(true);
     });
 
@@ -226,10 +229,10 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Click any answer
-      const option = container.querySelector('[data-option="naam"]');
+      const option = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       option.click();
 
-      const feedbackContainer = container.querySelector('[data-feedback-container]');
+      const feedbackContainer = /** @type {HTMLElement} */ (container.querySelector('[data-feedback-container]'));
       expect(feedbackContainer.innerHTML).not.toBe('');
       expect(feedbackContainer.querySelector('.quiz-feedback')).not.toBeNull();
     });
@@ -239,13 +242,13 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Click an answer
-      const option = container.querySelector('[data-option="naam"]');
+      const option = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       option.click();
 
       // Check all options are disabled
       const options = container.querySelectorAll('.quiz-option');
       options.forEach((opt) => {
-        expect(opt.disabled).toBe(true);
+        expect(/** @type {HTMLButtonElement} */ (opt).disabled).toBe(true);
       });
     });
 
@@ -254,12 +257,12 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Click incorrect answer
-      const incorrectOption = container.querySelector('[data-option="jaar"]');
+      const incorrectOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="jaar"]'));
       incorrectOption.click();
 
-      const explanation = container.querySelector('.quiz-feedback-explanation');
+      const explanation = /** @type {HTMLElement} */ (container.querySelector('.quiz-feedback-explanation'));
       expect(explanation).not.toBeNull();
-      expect(explanation.querySelector('.quiz-feedback-tip').textContent).toBe('Test explanation text');
+      expect(/** @type {HTMLElement} */ (explanation.querySelector('.quiz-feedback-tip')).textContent).toBe('Test explanation text');
     });
 
     it('should NOT show explanation in feedback for correct answer', async () => {
@@ -267,7 +270,7 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Click correct answer
-      const correctOption = container.querySelector('[data-option="naam"]');
+      const correctOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       correctOption.click();
 
       const explanation = container.querySelector('.quiz-feedback-explanation');
@@ -279,11 +282,11 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Initially next button should be hidden
-      const nextBtn = container.querySelector('[data-action="next"]');
+      const nextBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="next"]'));
       expect(nextBtn.classList.contains('quiz-next-btn--hidden')).toBe(true);
 
       // Click an answer
-      const option = container.querySelector('[data-option="naam"]');
+      const option = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       option.click();
 
       // Next button should now be visible
@@ -298,19 +301,19 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Verify we start at question 1
-      let counter = container.querySelector('.quiz-question-counter');
+      let counter = /** @type {HTMLElement} */ (container.querySelector('.quiz-question-counter'));
       expect(counter.textContent).toBe('P 1/3');
 
       // Answer first question
-      const option = container.querySelector('[data-option="naam"]');
+      const option = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       option.click();
 
       // Click next button
-      const nextBtn = container.querySelector('[data-action="next"]');
+      const nextBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="next"]'));
       nextBtn.click();
 
       // Verify we're now at question 2
-      counter = container.querySelector('.quiz-question-counter');
+      counter = /** @type {HTMLElement} */ (container.querySelector('.quiz-question-counter'));
       expect(counter.textContent).toBe('P 2/3');
     });
 
@@ -324,7 +327,7 @@ describe('Quiz Component', () => {
       expect(dots[0].classList.contains('quiz-progress-dot--current')).toBe(true);
 
       // Answer correctly
-      const correctOption = container.querySelector('[data-option="naam"]');
+      const correctOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       correctOption.click();
 
       // First dot should now be correct
@@ -338,24 +341,25 @@ describe('Quiz Component', () => {
 
       // Answer all 3 questions
       for (let i = 0; i < 3; i++) {
-        const option = container.querySelector('.quiz-option');
+        const option = /** @type {HTMLButtonElement} */ (container.querySelector('.quiz-option'));
         option.click();
 
         if (i < 2) {
-          const nextBtn = container.querySelector('[data-action="next"]');
+          const nextBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="next"]'));
           nextBtn.click();
         }
       }
 
       // Click next after last question
-      const nextBtn = container.querySelector('[data-action="next"]');
+      const nextBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="next"]'));
       nextBtn.click();
 
       // Verify createQuizResults was called
       expect(createQuizResults).toHaveBeenCalled();
 
       // Verify the results component was mounted
-      const mockResultsComponent = createQuizResults.mock.results[0].value;
+      const mockCreateQuizResults = /** @type {import('vitest').Mock} */ (createQuizResults);
+      const mockResultsComponent = mockCreateQuizResults.mock.results[0].value;
       expect(mockResultsComponent.mount).toHaveBeenCalledWith(container);
     });
 
@@ -403,7 +407,7 @@ describe('Quiz Component', () => {
       expect(state.isAnswered).toBe(false);
 
       // Answer a question
-      const option = container.querySelector('[data-option="naam"]');
+      const option = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       option.click();
 
       state = quiz.getState();
@@ -423,10 +427,10 @@ describe('Quiz Component', () => {
 
       // Answer all questions and advance to results
       for (let i = 0; i < 3; i++) {
-        const option = container.querySelector('.quiz-option');
+        const option = /** @type {HTMLButtonElement} */ (container.querySelector('.quiz-option'));
         option.click();
 
-        const nextBtn = container.querySelector('[data-action="next"]');
+        const nextBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="next"]'));
         nextBtn.click();
       }
 
@@ -451,7 +455,7 @@ describe('Quiz Component', () => {
     });
 
     it('should show TTS warning when TTS is unavailable', async () => {
-      isDutchVoiceAvailable.mockResolvedValueOnce(false);
+      /** @type {import('vitest').Mock} */ (isDutchVoiceAvailable).mockResolvedValueOnce(false);
 
       const quiz = createQuiz(mockLesson, { questionCount: 3 });
       await quiz.mount(container);
@@ -499,7 +503,7 @@ describe('Quiz Component', () => {
 
       vi.clearAllMocks();
 
-      const listenBtn = container.querySelector('[data-action="preview-sound"]');
+      const listenBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="preview-sound"]'));
       listenBtn.click();
 
       expect(speakDutch).toHaveBeenCalledWith(
@@ -519,7 +523,7 @@ describe('Quiz Component', () => {
       container.dispatchEvent(event);
 
       // First option should be selected
-      const firstOption = container.querySelectorAll('.quiz-option')[0];
+      const firstOption = /** @type {HTMLButtonElement} */ (container.querySelectorAll('.quiz-option')[0]);
       expect(firstOption.disabled).toBe(true);
     });
 
@@ -528,7 +532,7 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Answer first question
-      const option = container.querySelector('[data-option="naam"]');
+      const option = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       option.click();
 
       const state = quiz.getState();
@@ -586,10 +590,10 @@ describe('Quiz Component', () => {
       const quiz = createQuiz(mockLesson, { questionCount: 3 });
       await quiz.mount(container);
 
-      const counter = container.querySelector('.quiz-question-counter');
+      const counter = /** @type {HTMLElement} */ (container.querySelector('.quiz-question-counter'));
       expect(counter.textContent).toContain('P');
 
-      const instruction = container.querySelector('.quiz-instruction-text');
+      const instruction = /** @type {HTMLElement} */ (container.querySelector('.quiz-instruction-text'));
       expect(instruction.textContent).toBe('Escucha la palabra y selecciona la correcta');
     });
 
@@ -597,10 +601,10 @@ describe('Quiz Component', () => {
       const quiz = createQuiz(mockLesson, { questionCount: 3, language: 'en' });
       await quiz.mount(container);
 
-      const counter = container.querySelector('.quiz-question-counter');
+      const counter = /** @type {HTMLElement} */ (container.querySelector('.quiz-question-counter'));
       expect(counter.textContent).toContain('Q');
 
-      const instruction = container.querySelector('.quiz-instruction-text');
+      const instruction = /** @type {HTMLElement} */ (container.querySelector('.quiz-instruction-text'));
       expect(instruction.textContent).toBe('Listen to the word and select the correct one');
     });
   });
@@ -611,7 +615,7 @@ describe('Quiz Component', () => {
       await quiz.mount(container);
 
       // Answer first question correctly
-      let correctOption = container.querySelector('[data-option="naam"]');
+      const correctOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       correctOption.click();
 
       let state = quiz.getState();
@@ -622,11 +626,11 @@ describe('Quiz Component', () => {
       );
 
       // Move to next question
-      let nextBtn = container.querySelector('[data-action="next"]');
+      const nextBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="next"]'));
       nextBtn.click();
 
       // Answer second question incorrectly
-      const incorrectOption = container.querySelector('[data-option="naam"]');
+      const incorrectOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       incorrectOption.click();
 
       state = quiz.getState();
@@ -644,14 +648,14 @@ describe('Quiz Component', () => {
       expect(dots[1].classList.contains('quiz-progress-dot--current')).toBe(false);
 
       // Answer correctly
-      const correctOption = container.querySelector('[data-option="naam"]');
+      const correctOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       correctOption.click();
 
       // First dot should be correct
       expect(dots[0].classList.contains('quiz-progress-dot--correct')).toBe(true);
 
       // Move to next question
-      const nextBtn = container.querySelector('[data-action="next"]');
+      const nextBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="next"]'));
       nextBtn.click();
 
       dots = container.querySelectorAll('.quiz-progress-dot');
@@ -660,7 +664,7 @@ describe('Quiz Component', () => {
       expect(dots[1].classList.contains('quiz-progress-dot--current')).toBe(true);
 
       // Answer incorrectly
-      const incorrectOption = container.querySelector('[data-option="naam"]');
+      const incorrectOption = /** @type {HTMLButtonElement} */ (container.querySelector('[data-option="naam"]'));
       incorrectOption.click();
 
       // Second dot should be incorrect

@@ -16,19 +16,19 @@ const TEXT = {
     listen: 'Escuchar',
     cta: 'Comenzar Práctica',
     objectivesTitle: 'Objetivos de aprendizaje',
-    recognizeSound: (combo) => `Reconocer el sonido "${combo}" en palabras holandesas`,
-    associateIPA: (combo, ipa) => `Asociar "${combo}" con su pronunciación ${ipa}`,
-    practiceWords: (count) => `Practicar con ${count} palabras comunes`,
-    estimatedTime: (min) => `Tiempo estimado: ${min} minutos`,
+    recognizeSound: (/** @type {string} */ combo) => `Reconocer el sonido "${combo}" en palabras holandesas`,
+    associateIPA: (/** @type {string} */ combo, /** @type {string} */ ipa) => `Asociar "${combo}" con su pronunciación ${ipa}`,
+    practiceWords: (/** @type {number} */ count) => `Practicar con ${count} palabras comunes`,
+    estimatedTime: (/** @type {number} */ min) => `Tiempo estimado: ${min} minutos`,
   },
   en: {
     listen: 'Listen',
     cta: 'Start Practice',
     objectivesTitle: 'Learning objectives',
-    recognizeSound: (combo) => `Recognize the "${combo}" sound in Dutch words`,
-    associateIPA: (combo, ipa) => `Associate "${combo}" with its pronunciation ${ipa}`,
-    practiceWords: (count) => `Practice with ${count} common words`,
-    estimatedTime: (min) => `Estimated time: ${min} minutes`,
+    recognizeSound: (/** @type {string} */ combo) => `Recognize the "${combo}" sound in Dutch words`,
+    associateIPA: (/** @type {string} */ combo, /** @type {string} */ ipa) => `Associate "${combo}" with its pronunciation ${ipa}`,
+    practiceWords: (/** @type {number} */ count) => `Practice with ${count} common words`,
+    estimatedTime: (/** @type {number} */ min) => `Estimated time: ${min} minutes`,
   },
 };
 
@@ -44,7 +44,7 @@ const TEXT = {
  */
 export function createSoundIntro(lesson, container, options = {}) {
   const { language = 'es', onStartPractice, onBack } = options;
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
   const { sound, words, estimatedMinutes } = lesson;
   const description = language === 'en' ? sound.descriptionEN : sound.descriptionES;
   const firstWord = words[0]?.word || sound.combination;
@@ -99,17 +99,17 @@ export function createSoundIntro(lesson, container, options = {}) {
       });
     }
 
-    keydownHandler = (e) => {
+    keydownHandler = (/** @type {KeyboardEvent} */ e) => {
       if (e.key === 'Escape' && onBack) {
         onBack();
       }
     };
-    document.addEventListener('keydown', keydownHandler);
+    document.addEventListener('keydown', /** @type {EventListener} */ (keydownHandler));
   }
 
   function destroy() {
     if (keydownHandler) {
-      document.removeEventListener('keydown', keydownHandler);
+      document.removeEventListener('keydown', /** @type {EventListener} */ (keydownHandler));
       keydownHandler = null;
     }
     stopSpeaking();

@@ -9,7 +9,16 @@ import { createQuizResults } from '../src/components/QuizResults.js';
 // Mock CSS import
 vi.mock('../src/components/QuizResults.css', () => ({}));
 
+/**
+ * querySelector shorthand that returns HTMLElement (non-null assertion for tests)
+ * @param {HTMLElement} el
+ * @param {string} selector
+ * @returns {HTMLElement}
+ */
+const qs = (el, selector) => /** @type {HTMLElement} */ (el.querySelector(selector));
+
 describe('QuizResults Component', () => {
+  /** @type {HTMLElement} */
   let container;
 
   beforeEach(() => {
@@ -77,10 +86,10 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const message = container.querySelector('.quiz-results-message');
+      const message = qs(container, '.quiz-results-message');
       expect(message.textContent).toBe('Muy bien!');
 
-      const icon = container.querySelector('.quiz-results-icon');
+      const icon = qs(container, '.quiz-results-icon');
       expect(icon.textContent).toBe('🎉');
     });
 
@@ -91,10 +100,10 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const score = container.querySelector('.quiz-results-score');
+      const score = qs(container, '.quiz-results-score');
       expect(score.textContent.trim()).toBe('4/5');
 
-      const percentage = container.querySelector('.quiz-results-percentage');
+      const percentage = qs(container, '.quiz-results-percentage');
       expect(percentage.textContent).toBe('80%');
     });
 
@@ -105,15 +114,11 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const primaryBtn = container.querySelector(
-        '.quiz-results-btn--primary[data-action="continue"]'
-      );
+      const primaryBtn = qs(container, '.quiz-results-btn--primary[data-action="continue"]');
       expect(primaryBtn).not.toBeNull();
       expect(primaryBtn.textContent.trim()).toBe('Continuar');
 
-      const ghostBtn = container.querySelector(
-        '.quiz-results-btn--ghost[data-action="retry"]'
-      );
+      const ghostBtn = qs(container, '.quiz-results-btn--ghost[data-action="retry"]');
       expect(ghostBtn).not.toBeNull();
       expect(ghostBtn.textContent.trim()).toBe('Practicar Mas');
     });
@@ -132,9 +137,7 @@ describe('QuizResults Component', () => {
       expect(breakdownValues).toContain('+80');
       expect(breakdownValues).toContain('+10');
 
-      const totalValue = container.querySelector(
-        '.quiz-results-breakdown-total-value'
-      );
+      const totalValue = qs(container, '.quiz-results-breakdown-total-value');
       expect(totalValue.textContent).toBe('+90');
     });
   });
@@ -188,10 +191,10 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const message = container.querySelector('.quiz-results-message');
+      const message = qs(container, '.quiz-results-message');
       expect(message.textContent).toBe('Perfecto!');
 
-      const icon = container.querySelector('.quiz-results-icon');
+      const icon = qs(container, '.quiz-results-icon');
       expect(icon.textContent).toBe('⭐');
     });
 
@@ -210,9 +213,7 @@ describe('QuizResults Component', () => {
       expect(breakdownValues).toContain('+10');
       expect(breakdownValues).toContain('+25');
 
-      const totalValue = container.querySelector(
-        '.quiz-results-breakdown-total-value'
-      );
+      const totalValue = qs(container, '.quiz-results-breakdown-total-value');
       expect(totalValue.textContent).toBe('+135');
     });
   });
@@ -266,10 +267,10 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const message = container.querySelector('.quiz-results-message');
+      const message = qs(container, '.quiz-results-message');
       expect(message.textContent).toBe('Casi lo logras!');
 
-      const icon = container.querySelector('.quiz-results-icon');
+      const icon = qs(container, '.quiz-results-icon');
       expect(icon.textContent).toBe('💪');
     });
 
@@ -280,15 +281,11 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const primaryBtn = container.querySelector(
-        '.quiz-results-btn--primary[data-action="retry"]'
-      );
+      const primaryBtn = qs(container, '.quiz-results-btn--primary[data-action="retry"]');
       expect(primaryBtn).not.toBeNull();
       expect(primaryBtn.textContent.trim()).toBe('Intentar de Nuevo');
 
-      const ghostBtn = container.querySelector(
-        '.quiz-results-btn--ghost[data-action="continue"]'
-      );
+      const ghostBtn = qs(container, '.quiz-results-btn--ghost[data-action="continue"]');
       expect(ghostBtn).not.toBeNull();
       expect(ghostBtn.textContent.trim()).toBe('Practicar Mas');
     });
@@ -300,7 +297,7 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const passMessage = container.querySelector('.quiz-results-pass-message');
+      const passMessage = qs(container, '.quiz-results-pass-message');
       expect(passMessage.textContent.trim()).toBe('Necesitas 80% para aprobar');
     });
   });
@@ -363,13 +360,13 @@ describe('QuizResults Component', () => {
       const badgeSection = container.querySelector('.quiz-results-badge');
       expect(badgeSection).not.toBeNull();
 
-      const badgeName = container.querySelector('.quiz-results-badge-name');
+      const badgeName = qs(container, '.quiz-results-badge-name');
       expect(badgeName.textContent).toBe('AA Master');
 
-      const badgeIcon = container.querySelector('.quiz-results-badge-icon');
+      const badgeIcon = qs(container, '.quiz-results-badge-icon');
       expect(badgeIcon.textContent).toBe('🏆');
 
-      const badgeTitle = container.querySelector('.quiz-results-badge-title');
+      const badgeTitle = qs(container, '.quiz-results-badge-title');
       expect(badgeTitle.textContent).toBe('Insignia Desbloqueada!');
     });
 
@@ -377,7 +374,7 @@ describe('QuizResults Component', () => {
       const quizResults = createQuizResults({
         result: resultWithBadge,
         answers,
-        badge: null,
+        badge: /** @type {any} */ (null),
       });
       quizResults.mount(container);
 
@@ -438,7 +435,7 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const continueBtn = container.querySelector('[data-action="continue"]');
+      const continueBtn = qs(container, '[data-action="continue"]');
       continueBtn.click();
 
       expect(onContinue).toHaveBeenCalledWith(testResult);
@@ -454,7 +451,7 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const retryBtn = container.querySelector('[data-action="retry"]');
+      const retryBtn = qs(container, '[data-action="retry"]');
       retryBtn.click();
 
       expect(onRetry).toHaveBeenCalledTimes(1);
@@ -471,7 +468,7 @@ describe('QuizResults Component', () => {
       quizResults.mount(container);
 
       // Test close button click
-      const closeBtn = container.querySelector('[data-action="close"]');
+      const closeBtn = qs(container, '[data-action="close"]');
       closeBtn.click();
 
       expect(onClose).toHaveBeenCalledTimes(1);
@@ -590,10 +587,10 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const title = container.querySelector('.quiz-results-title');
+      const title = qs(container, '.quiz-results-title');
       expect(title.textContent).toBe('Quiz Completado!');
 
-      const message = container.querySelector('.quiz-results-message');
+      const message = qs(container, '.quiz-results-message');
       expect(message.textContent).toBe('Muy bien!');
     });
 
@@ -605,10 +602,10 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const title = container.querySelector('.quiz-results-title');
+      const title = qs(container, '.quiz-results-title');
       expect(title.textContent).toBe('Quiz Complete!');
 
-      const message = container.querySelector('.quiz-results-message');
+      const message = qs(container, '.quiz-results-message');
       expect(message.textContent).toBe('Great Job!');
     });
 
@@ -626,7 +623,7 @@ describe('QuizResults Component', () => {
       });
       quizResults.mount(container);
 
-      const badgeTitle = container.querySelector('.quiz-results-badge-title');
+      const badgeTitle = qs(container, '.quiz-results-badge-title');
       expect(badgeTitle.textContent).toBe('Badge Unlocked!');
     });
   });

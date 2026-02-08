@@ -41,8 +41,8 @@ describe('BADGES', () => {
     BADGES.forEach((badge) => {
       requiredFields.forEach((field) => {
         expect(badge).toHaveProperty(field);
-        expect(badge[field]).toBeDefined();
-        expect(badge[field]).not.toBe('');
+        expect(/** @type {any} */ (badge)[field]).toBeDefined();
+        expect(/** @type {any} */ (badge)[field]).not.toBe('');
       });
     });
   });
@@ -64,8 +64,8 @@ describe('BADGES', () => {
   it('should have criteria object with type property for all badges', () => {
     BADGES.forEach((badge) => {
       expect(badge.criteria).toHaveProperty('type');
-      expect(typeof badge.criteria.type).toBe('string');
-      expect(badge.criteria.type).not.toBe('');
+      expect(typeof /** @type {any} */ (badge.criteria).type).toBe('string');
+      expect(/** @type {any} */ (badge.criteria).type).not.toBe('');
     });
   });
 
@@ -88,7 +88,7 @@ describe('BADGES', () => {
 
 describe('getBadgeById', () => {
   it('should return correct badge for valid encouragement badge ID', () => {
-    const badge = getBadgeById('never-give-up');
+    const badge = /** @type {any} */ (getBadgeById('never-give-up'));
 
     expect(badge).toBeDefined();
     expect(badge).not.toBeNull();
@@ -98,7 +98,7 @@ describe('getBadgeById', () => {
   });
 
   it('should return correct badge for valid mastery badge ID', () => {
-    const badge = getBadgeById('perfect-score');
+    const badge = /** @type {any} */ (getBadgeById('perfect-score'));
 
     expect(badge).toBeDefined();
     expect(badge).not.toBeNull();
@@ -108,7 +108,7 @@ describe('getBadgeById', () => {
   });
 
   it('should return correct badge for valid milestone badge ID', () => {
-    const badge = getBadgeById('first-steps');
+    const badge = /** @type {any} */ (getBadgeById('first-steps'));
 
     expect(badge).toBeDefined();
     expect(badge).not.toBeNull();
@@ -118,7 +118,7 @@ describe('getBadgeById', () => {
   });
 
   it('should return correct badge for sound master badge ID', () => {
-    const badge = getBadgeById('sound-master-aa');
+    const badge = /** @type {any} */ (getBadgeById('sound-master-aa'));
 
     expect(badge).toBeDefined();
     expect(badge).not.toBeNull();

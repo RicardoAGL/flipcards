@@ -278,7 +278,7 @@ export const BADGES = [
 /**
  * Get badge by ID
  * @param {string} badgeId - The badge ID
- * @returns {Object|null} Badge definition or null
+ * @returns {typeof BADGES[number] | null} Badge definition or null
  */
 export function getBadgeById(badgeId) {
   return BADGES.find(b => b.id === badgeId) || null;
@@ -287,7 +287,7 @@ export function getBadgeById(badgeId) {
 /**
  * Get badges by category
  * @param {string} category - The category to filter by
- * @returns {Array} Badges in that category
+ * @returns {typeof BADGES} Badges in that category
  */
 export function getBadgesByCategory(category) {
   return BADGES.filter(b => b.category === category);
@@ -295,7 +295,7 @@ export function getBadgesByCategory(category) {
 
 /**
  * Get encouragement badges
- * @returns {Array} Encouragement badges
+ * @returns {typeof BADGES} Encouragement badges
  */
 export function getEncouragementBadges() {
   return getBadgesByCategory(BADGE_CATEGORIES.ENCOURAGEMENT);

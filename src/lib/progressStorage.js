@@ -179,6 +179,7 @@ export function updateReviewDate(lessonId, timestamp = Date.now()) {
  */
 export function getReviewCounts() {
   const history = getQuizHistory();
+  /** @type {Record<string, number>} */
   const counts = {};
 
   for (const attempt of history) {

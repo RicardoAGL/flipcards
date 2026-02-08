@@ -34,7 +34,7 @@ const TEXT = {
  */
 export function createSplashScreen(container, options = {}) {
   const { language = 'es', onStart, onLanguageChange } = options;
-  const text = TEXT[language] || TEXT.es;
+  const text = TEXT[/** @type {'es' | 'en'} */ (language)] || TEXT.es;
 
   function render() {
     container.innerHTML = `

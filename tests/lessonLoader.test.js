@@ -60,7 +60,7 @@ describe('Lesson Loader', () => {
   // ==========================================
   describe('getLessonById', () => {
     it('should return lesson for valid ID', () => {
-      const lesson = getLessonById('P1-AA-BEG');
+      const lesson = /** @type {any} */ (getLessonById('P1-AA-BEG'));
 
       expect(lesson).not.toBeNull();
       expect(lesson.lessonId).toBe('P1-AA-BEG');
@@ -73,7 +73,7 @@ describe('Lesson Loader', () => {
     });
 
     it('should return a lesson with correct structure', () => {
-      const lesson = getLessonById('P1-AA-BEG');
+      const lesson = /** @type {any} */ (getLessonById('P1-AA-BEG'));
 
       expect(lesson).toHaveProperty('sound');
       expect(lesson).toHaveProperty('words');
@@ -87,7 +87,7 @@ describe('Lesson Loader', () => {
   // ==========================================
   describe('getLessonForFlipCard', () => {
     it('should return FlipCard-formatted data', () => {
-      const data = getLessonForFlipCard('P1-AA-BEG');
+      const data = /** @type {any} */ (getLessonForFlipCard('P1-AA-BEG'));
 
       expect(data).not.toBeNull();
       expect(data).toHaveProperty('sound');
@@ -103,9 +103,9 @@ describe('Lesson Loader', () => {
     });
 
     it('should format words with prefix, suffix, word, and translation', () => {
-      const data = getLessonForFlipCard('P1-AA-BEG');
+      const data = /** @type {any} */ (getLessonForFlipCard('P1-AA-BEG'));
 
-      data.words.forEach(word => {
+      data.words.forEach((/** @type {any} */ word) => {
         expect(word).toHaveProperty('prefix');
         expect(word).toHaveProperty('suffix');
         expect(word).toHaveProperty('word');
@@ -177,7 +177,7 @@ describe('Lesson Loader', () => {
   // ==========================================
   describe('getNextLesson', () => {
     it('should return next lesson in sequence', () => {
-      const next = getNextLesson('P1-AA-BEG');
+      const next = /** @type {any} */ (getNextLesson('P1-AA-BEG'));
 
       expect(next).not.toBeNull();
       expect(next.lessonId).toBe('P1-AA-ADV');
@@ -196,7 +196,7 @@ describe('Lesson Loader', () => {
     });
 
     it('should include lesson data in result', () => {
-      const next = getNextLesson('P1-AA-BEG');
+      const next = /** @type {any} */ (getNextLesson('P1-AA-BEG'));
 
       expect(next.lesson).toHaveProperty('lessonId');
       expect(next.lesson).toHaveProperty('words');
@@ -208,7 +208,7 @@ describe('Lesson Loader', () => {
   // ==========================================
   describe('getPreviousLesson', () => {
     it('should return previous lesson in sequence', () => {
-      const prev = getPreviousLesson('P1-AA-ADV');
+      const prev = /** @type {any} */ (getPreviousLesson('P1-AA-ADV'));
 
       expect(prev).not.toBeNull();
       expect(prev.lessonId).toBe('P1-AA-BEG');
@@ -308,7 +308,7 @@ describe('Lesson Loader', () => {
   // ==========================================
   describe('getSoundInfo', () => {
     it('should return info for valid sound', () => {
-      const info = getSoundInfo('aa');
+      const info = /** @type {any} */ (getSoundInfo('aa'));
 
       expect(info).not.toBeNull();
       expect(info).toHaveProperty('ipa');
@@ -349,7 +349,7 @@ describe('Lesson Loader', () => {
   // ==========================================
   describe('getLessonMetadata', () => {
     it('should return metadata for valid lesson', () => {
-      const meta = getLessonMetadata('P1-AA-BEG');
+      const meta = /** @type {any} */ (getLessonMetadata('P1-AA-BEG'));
 
       expect(meta).not.toBeNull();
       expect(meta.lessonId).toBe('P1-AA-BEG');

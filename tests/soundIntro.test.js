@@ -13,6 +13,15 @@ vi.mock('../src/lib/tts.js', () => ({
 
 import { speakDutch, stopSpeaking } from '../src/lib/tts.js';
 
+/**
+ * querySelector shorthand that returns HTMLElement (non-null assertion for tests)
+ * @param {HTMLElement} el
+ * @param {string} selector
+ * @returns {HTMLElement}
+ */
+const qs = (el, selector) => /** @type {HTMLElement} */ (el.querySelector(selector));
+
+/** @type {any} */
 const mockLesson = {
   lessonId: 'P1-AA-BEG',
   phase: 1,
@@ -23,6 +32,7 @@ const mockLesson = {
     descriptionEN: "Like 'a' in 'father' but longer",
   },
   level: 'beginner',
+  unlockRequires: null,
   words: [
     { wordId: 'aa-001', word: 'naam', prefix: 'n', suffix: 'm', translation: { es: 'nombre', en: 'name' }, syllables: 1 },
     { wordId: 'aa-002', word: 'jaar', prefix: 'j', suffix: 'r', translation: { es: 'año', en: 'year' }, syllables: 1 },
@@ -38,6 +48,7 @@ const mockLesson = {
 };
 
 describe('SoundIntro', () => {
+  /** @type {HTMLElement} */
   let container;
 
   beforeEach(() => {
@@ -53,35 +64,35 @@ describe('SoundIntro', () => {
   describe('rendering (Spanish)', () => {
     it('should render sound combination prominently', () => {
       createSoundIntro(mockLesson, container, { language: 'es' });
-      const badge = container.querySelector('.sound-intro__badge');
+      const badge = qs(container, '.sound-intro__badge');
       expect(badge).not.toBeNull();
       expect(badge.textContent).toBe('aa');
     });
 
     it('should render IPA notation', () => {
       createSoundIntro(mockLesson, container, { language: 'es' });
-      const ipa = container.querySelector('.sound-intro__ipa');
+      const ipa = qs(container, '.sound-intro__ipa');
       expect(ipa).not.toBeNull();
       expect(ipa.textContent).toContain('[a\u02D0]');
     });
 
     it('should render pronunciation description in Spanish', () => {
       createSoundIntro(mockLesson, container, { language: 'es' });
-      const desc = container.querySelector('.sound-intro__description');
+      const desc = qs(container, '.sound-intro__description');
       expect(desc).not.toBeNull();
       expect(desc.textContent).toContain("Similar a la 'a' en español");
     });
 
     it('should render listen button in Spanish', () => {
       createSoundIntro(mockLesson, container, { language: 'es' });
-      const listenBtn = container.querySelector('.sound-intro__listen');
+      const listenBtn = qs(container, '.sound-intro__listen');
       expect(listenBtn).not.toBeNull();
       expect(listenBtn.textContent).toContain('Escuchar');
     });
 
     it('should render start practice CTA in Spanish', () => {
       createSoundIntro(mockLesson, container, { language: 'es' });
-      const cta = container.querySelector('.sound-intro__cta');
+      const cta = qs(container, '.sound-intro__cta');
       expect(cta).not.toBeNull();
       expect(cta.textContent).toContain('Comenzar Práctica');
     });
@@ -94,13 +105,13 @@ describe('SoundIntro', () => {
 
     it('should show number of words in lesson', () => {
       createSoundIntro(mockLesson, container, { language: 'es' });
-      const objectives = container.querySelector('.sound-intro__objectives');
+      const objectives = qs(container, '.sound-intro__objectives');
       expect(objectives.textContent).toContain('8');
     });
 
     it('should show estimated time', () => {
       createSoundIntro(mockLesson, container, { language: 'es' });
-      const objectives = container.querySelector('.sound-intro__objectives');
+      const objectives = qs(container, '.sound-intro__objectives');
       expect(objectives.textContent).toContain('12');
     });
   });
@@ -108,19 +119,19 @@ describe('SoundIntro', () => {
   describe('rendering (English)', () => {
     it('should render description in English', () => {
       createSoundIntro(mockLesson, container, { language: 'en' });
-      const desc = container.querySelector('.sound-intro__description');
+      const desc = qs(container, '.sound-intro__description');
       expect(desc.textContent).toContain("Like 'a' in 'father'");
     });
 
     it('should render listen button in English', () => {
       createSoundIntro(mockLesson, container, { language: 'en' });
-      const listenBtn = container.querySelector('.sound-intro__listen');
+      const listenBtn = qs(container, '.sound-intro__listen');
       expect(listenBtn.textContent).toContain('Listen');
     });
 
     it('should render CTA in English', () => {
       createSoundIntro(mockLesson, container, { language: 'en' });
-      const cta = container.querySelector('.sound-intro__cta');
+      const cta = qs(container, '.sound-intro__cta');
       expect(cta.textContent).toContain('Start Practice');
     });
   });
@@ -128,7 +139,7 @@ describe('SoundIntro', () => {
   describe('interactions', () => {
     it('should call speakDutch with first word when listen button is clicked', () => {
       createSoundIntro(mockLesson, container, { language: 'es' });
-      const listenBtn = container.querySelector('.sound-intro__listen');
+      const listenBtn = qs(container, '.sound-intro__listen');
       listenBtn.click();
       expect(speakDutch).toHaveBeenCalledWith('naam');
     });
@@ -136,7 +147,7 @@ describe('SoundIntro', () => {
     it('should call onStartPractice when CTA is clicked', () => {
       const onStartPractice = vi.fn();
       createSoundIntro(mockLesson, container, { onStartPractice });
-      const cta = container.querySelector('.sound-intro__cta');
+      const cta = qs(container, '.sound-intro__cta');
       cta.click();
       expect(onStartPractice).toHaveBeenCalledOnce();
     });

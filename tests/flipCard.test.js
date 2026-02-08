@@ -7,13 +7,14 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 
 // Mock localStorage before importing modules that use it
 const localStorageMock = (() => {
+  /** @type {Record<string, string>} */
   let store = {};
   return {
-    getItem: vi.fn((key) => store[key] || null),
-    setItem: vi.fn((key, value) => {
+    getItem: vi.fn(/** @param {string} key */ (key) => store[key] || null),
+    setItem: vi.fn(/** @param {string} key @param {string} value */ (key, value) => {
       store[key] = value;
     }),
-    removeItem: vi.fn((key) => {
+    removeItem: vi.fn(/** @param {string} key */ (key) => {
       delete store[key];
     }),
     clear: vi.fn(() => {
@@ -27,7 +28,7 @@ Object.defineProperty(global, 'localStorage', {
 });
 
 // Mock speechSynthesis globally before imports
-const mockUtterance = vi.fn(function (text) {
+const mockUtterance = vi.fn(function (/** @type {string | undefined} */ text) {
   this.text = text;
   this.lang = '';
   this.rate = 1;
@@ -37,18 +38,18 @@ const mockUtterance = vi.fn(function (text) {
   this.onerror = null;
 });
 
-global.SpeechSynthesisUtterance = mockUtterance;
-global.speechSynthesis = {
+global.SpeechSynthesisUtterance = /** @type {any} */ (mockUtterance);
+global.speechSynthesis = /** @type {any} */ ({
   speak: vi.fn(),
   cancel: vi.fn(),
   getVoices: vi.fn(() => [
-    { lang: 'nl-NL', name: 'Dutch Voice' },
-    { lang: 'en-US', name: 'English Voice' },
+    { lang: 'nl-NL', name: 'Dutch Voice', default: false, localService: true, voiceURI: 'mock-nl' },
+    { lang: 'en-US', name: 'English Voice', default: false, localService: true, voiceURI: 'mock-en' },
   ]),
   speaking: false,
   pending: false,
   paused: false,
-};
+});
 
 // Mock TTS module
 vi.mock('../src/lib/tts.js', () => ({
@@ -67,7 +68,9 @@ import { createFlipCard } from '../src/components/FlipCard.js';
 import { createTTSController, speakDutch } from '../src/lib/tts.js';
 
 describe('FlipCard Component', () => {
+  /** @type {HTMLElement} */
   let container;
+  /** @type {any} */
   let lessonData;
 
   beforeEach(() => {
@@ -124,8 +127,8 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const centerCard = container.querySelector('[data-card="center"]');
-      const soundDisplay = centerCard.querySelector('.flip-card-sound');
+      const centerCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="center"]'));
+      const soundDisplay = /** @type {HTMLElement} */ (centerCard.querySelector('.flip-card-sound'));
 
       expect(soundDisplay.textContent).toBe('aa');
     });
@@ -134,28 +137,28 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const prefixCard = container.querySelector('[data-card="prefix"]');
-      const prefixLetter = prefixCard.querySelector('.flip-card-face--front .flip-card-letter');
+      const prefixCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="prefix"]'));
+      const prefixLetter = /** @type {HTMLElement} */ (prefixCard.querySelector('.flip-card-face--front .flip-card-letter'));
 
-      expect(prefixLetter.textContent.trim()).toBe('n');
+      expect(prefixLetter.textContent?.trim()).toBe('n');
     });
 
     it('should display correct suffix letter', async () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const suffixCard = container.querySelector('[data-card="suffix"]');
-      const suffixLetter = suffixCard.querySelector('.flip-card-face--front .flip-card-letter');
+      const suffixCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="suffix"]'));
+      const suffixLetter = /** @type {HTMLElement} */ (suffixCard.querySelector('.flip-card-face--front .flip-card-letter'));
 
-      expect(suffixLetter.textContent.trim()).toBe('m');
+      expect(suffixLetter.textContent?.trim()).toBe('m');
     });
 
     it('should render word preview with full word', async () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const wordPreview = container.querySelector('.flip-card-word-preview');
-      const wordFull = wordPreview.querySelector('.flip-card-word-full');
+      const wordPreview = /** @type {HTMLElement} */ (container.querySelector('.flip-card-word-preview'));
+      const wordFull = /** @type {HTMLElement} */ (wordPreview.querySelector('.flip-card-word-full'));
 
       expect(wordFull.textContent).toBe('naam');
     });
@@ -166,7 +169,7 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const centerCard = container.querySelector('[data-card="center"]');
+      const centerCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="center"]'));
 
       // Initially not flipped
       expect(centerCard.classList.contains('is-flipped')).toBe(false);
@@ -184,11 +187,11 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const prefixCard = container.querySelector('[data-card="prefix"]');
-      const prefixLetter = prefixCard.querySelector('.flip-card-face--front .flip-card-letter');
+      const prefixCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="prefix"]'));
+      const prefixLetter = /** @type {HTMLElement} */ (prefixCard.querySelector('.flip-card-face--front .flip-card-letter'));
 
       // Initially showing first word (n)
-      expect(prefixLetter.textContent.trim()).toBe('n');
+      expect(prefixLetter.textContent?.trim()).toBe('n');
 
       // Click prefix card
       prefixCard.click();
@@ -200,7 +203,7 @@ describe('FlipCard Component', () => {
       await vi.advanceTimersByTimeAsync(300);
 
       // Should cycle to next word (j)
-      expect(prefixLetter.textContent.trim()).toBe('j');
+      expect(prefixLetter.textContent?.trim()).toBe('j');
       expect(prefixCard.classList.contains('is-flipped')).toBe(false);
     });
 
@@ -208,11 +211,11 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const suffixCard = container.querySelector('[data-card="suffix"]');
-      const suffixLetter = suffixCard.querySelector('.flip-card-face--front .flip-card-letter');
+      const suffixCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="suffix"]'));
+      const suffixLetter = /** @type {HTMLElement} */ (suffixCard.querySelector('.flip-card-face--front .flip-card-letter'));
 
       // Initially showing first word (m)
-      expect(suffixLetter.textContent.trim()).toBe('m');
+      expect(suffixLetter.textContent?.trim()).toBe('m');
 
       // Click suffix card
       suffixCard.click();
@@ -224,7 +227,7 @@ describe('FlipCard Component', () => {
       await vi.advanceTimersByTimeAsync(300);
 
       // Should cycle to next word (r)
-      expect(suffixLetter.textContent.trim()).toBe('r');
+      expect(suffixLetter.textContent?.trim()).toBe('r');
       expect(suffixCard.classList.contains('is-flipped')).toBe(false);
     });
 
@@ -232,8 +235,8 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const prefixCard = container.querySelector('[data-card="prefix"]');
-      const wordFull = container.querySelector('.flip-card-word-full');
+      const prefixCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="prefix"]'));
+      const wordFull = /** @type {HTMLElement} */ (container.querySelector('.flip-card-word-full'));
 
       // Initially showing first word
       expect(wordFull.textContent).toBe('naam');
@@ -250,7 +253,7 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const centerCard = container.querySelector('[data-card="center"]');
+      const centerCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="center"]'));
 
       // Test Enter key
       const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
@@ -323,7 +326,7 @@ describe('FlipCard Component', () => {
       const flipCard = createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const initialWord = container.querySelector('.flip-card-word-full').textContent;
+      const initialWord = /** @type {HTMLElement} */ (container.querySelector('.flip-card-word-full')).textContent;
       expect(initialWord).toBe('naam');
 
       // Update with new lesson data
@@ -340,9 +343,9 @@ describe('FlipCard Component', () => {
       flipCard.setLessonData(newLessonData);
       await vi.runAllTimersAsync();
 
-      const centerCard = container.querySelector('[data-card="center"]');
-      const soundDisplay = centerCard.querySelector('.flip-card-sound');
-      const wordFull = container.querySelector('.flip-card-word-full');
+      const centerCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="center"]'));
+      const soundDisplay = /** @type {HTMLElement} */ (centerCard.querySelector('.flip-card-sound'));
+      const wordFull = /** @type {HTMLElement} */ (container.querySelector('.flip-card-word-full'));
 
       expect(soundDisplay.textContent).toBe('ee');
       expect(wordFull.textContent).toBe('meer');
@@ -359,7 +362,7 @@ describe('FlipCard Component', () => {
 
     it('should disable pronounce button when TTS unavailable', async () => {
       // Mock TTS as unavailable
-      createTTSController.mockReturnValueOnce({
+      /** @type {import('vitest').Mock} */ (createTTSController).mockReturnValueOnce({
         init: vi.fn(() => Promise.resolve(false)),
         stop: vi.fn(),
         speak: vi.fn(),
@@ -370,7 +373,7 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container);
       await vi.runAllTimersAsync();
 
-      const pronounceBtn = container.querySelector('[data-action="pronounce"]');
+      const pronounceBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="pronounce"]'));
 
       expect(pronounceBtn.disabled).toBe(true);
     });
@@ -384,7 +387,7 @@ describe('FlipCard Component', () => {
       // Wait for component initialization and TTS setup
       await new Promise((resolve) => setTimeout(resolve, 10));
 
-      const pronounceBtn = container.querySelector('[data-action="pronounce"]');
+      const pronounceBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="pronounce"]'));
 
       // Note: The button has disabled attribute from initial render,
       // but the component's internal ttsAvailable state is true after init.
@@ -419,7 +422,7 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container, { language: 'es' });
       await vi.runAllTimersAsync();
 
-      const translationContainer = container.querySelector('.flip-card-translation');
+      const translationContainer = /** @type {HTMLElement} */ (container.querySelector('.flip-card-translation'));
       expect(translationContainer.classList.contains('flip-card-translation--hidden')).toBe(true);
     });
 
@@ -435,10 +438,10 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container, { language: 'es' });
       await vi.runAllTimersAsync();
 
-      const toggleBtn = container.querySelector('[data-action="toggle-translation"]');
+      const toggleBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="toggle-translation"]'));
       toggleBtn.click();
 
-      const translationContainer = container.querySelector('.flip-card-translation');
+      const translationContainer = /** @type {HTMLElement} */ (container.querySelector('.flip-card-translation'));
       expect(translationContainer.classList.contains('flip-card-translation--hidden')).toBe(false);
     });
 
@@ -446,47 +449,47 @@ describe('FlipCard Component', () => {
       createFlipCard(lessonData, container, { language: 'es' });
       await vi.runAllTimersAsync();
 
-      const toggleBtn = container.querySelector('[data-action="toggle-translation"]');
+      const toggleBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="toggle-translation"]'));
 
       // Show
       toggleBtn.click();
-      expect(container.querySelector('.flip-card-translation').classList.contains('flip-card-translation--hidden')).toBe(false);
+      expect(/** @type {HTMLElement} */ (container.querySelector('.flip-card-translation')).classList.contains('flip-card-translation--hidden')).toBe(false);
 
       // Hide again
       toggleBtn.click();
-      expect(container.querySelector('.flip-card-translation').classList.contains('flip-card-translation--hidden')).toBe(true);
+      expect(/** @type {HTMLElement} */ (container.querySelector('.flip-card-translation')).classList.contains('flip-card-translation--hidden')).toBe(true);
     });
 
     it('should display correct Spanish translation by default', async () => {
       createFlipCard(lessonData, container, { language: 'es' });
       await vi.runAllTimersAsync();
 
-      const translationText = container.querySelector('.flip-card-translation__text');
+      const translationText = /** @type {HTMLElement} */ (container.querySelector('.flip-card-translation__text'));
       expect(translationText).not.toBeNull();
-      expect(translationText.textContent.trim()).toBe('nombre');
+      expect(translationText.textContent?.trim()).toBe('nombre');
     });
 
     it('should display English translation when language is en', async () => {
       createFlipCard(lessonData, container, { language: 'en' });
       await vi.runAllTimersAsync();
 
-      const translationText = container.querySelector('.flip-card-translation__text');
-      expect(translationText.textContent.trim()).toBe('name');
+      const translationText = /** @type {HTMLElement} */ (container.querySelector('.flip-card-translation__text'));
+      expect(translationText.textContent?.trim()).toBe('name');
     });
 
     it('should update translation when word cycles', async () => {
       createFlipCard(lessonData, container, { language: 'es' });
       await vi.runAllTimersAsync();
 
-      const translationText = container.querySelector('.flip-card-translation__text');
-      expect(translationText.textContent.trim()).toBe('nombre');
+      const translationText = /** @type {HTMLElement} */ (container.querySelector('.flip-card-translation__text'));
+      expect(translationText.textContent?.trim()).toBe('nombre');
 
       // Click prefix card to cycle word
-      const prefixCard = container.querySelector('[data-card="prefix"]');
+      const prefixCard = /** @type {HTMLElement} */ (container.querySelector('[data-card="prefix"]'));
       prefixCard.click();
       await vi.advanceTimersByTimeAsync(300);
 
-      expect(translationText.textContent.trim()).toBe('año');
+      expect(translationText.textContent?.trim()).toBe('año');
     });
 
     it('should handle words without translation gracefully', async () => {
@@ -502,8 +505,8 @@ describe('FlipCard Component', () => {
       createFlipCard(dataNoTranslation, container, { language: 'es' });
       await vi.runAllTimersAsync();
 
-      const translationText = container.querySelector('.flip-card-translation__text');
-      expect(translationText.textContent.trim()).toBe('');
+      const translationText = /** @type {HTMLElement} */ (container.querySelector('.flip-card-translation__text'));
+      expect(translationText.textContent?.trim()).toBe('');
     });
 
     it('should include translation visibility in getState', async () => {
@@ -515,7 +518,7 @@ describe('FlipCard Component', () => {
       expect(state.isTranslationVisible).toBe(false);
 
       // Toggle translation
-      const toggleBtn = container.querySelector('[data-action="toggle-translation"]');
+      const toggleBtn = /** @type {HTMLButtonElement} */ (container.querySelector('[data-action="toggle-translation"]'));
       toggleBtn.click();
 
       const newState = flipCard.getState();
