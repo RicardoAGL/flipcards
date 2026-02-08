@@ -18,7 +18,7 @@
 | Storage | localStorage only (7 keys) |
 | Deployment | GitHub Pages (static SPA) |
 | Backend | None |
-| PWA | No |
+| PWA | Yes (vite-plugin-pwa, offline caching) |
 | Auth | None |
 
 ---
@@ -112,6 +112,11 @@
 
 ### Sprint 7 — Tutorial Overlay
 - [x] **BL-026** Interactive tutorial / help overlay: 4-slide modal carousel, auto-runs on first visit, replayable via `?` header button, bilingual (ES/EN), `TUTORIAL_COMPLETED` localStorage key
+- [x] 559 tests across 17 test files
+
+### Sprint 8 — Type Safety & PWA
+- [x] **BL-025** Enable `checkJs: true` in tsconfig — fixed all ~1,449 JSDoc type errors across 33 files (17 src + 16 test)
+- [x] **BL-023** PWA support via `vite-plugin-pwa`: offline caching, manifest, service worker, Apple meta tags, icon generation
 - [x] 559 tests across 17 test files
 
 ---
@@ -462,7 +467,7 @@ This provides context before the learner encounters individual words.
 ---
 
 ### BL-023: PWA / Service Worker
-**Priority:** P3 | **Effort:** Medium | **Status:** Not Started
+**Priority:** P3 | **Effort:** Medium | **Status:** Complete
 
 Add PWA manifest and service worker for:
 - Offline access (the app has no server dependencies)
@@ -481,7 +486,7 @@ Add PWA manifest and service worker for:
 ---
 
 ### BL-025: Enable `checkJs` in tsconfig
-**Priority:** P3 | **Effort:** Medium | **Status:** Not Started
+**Priority:** P3 | **Effort:** Medium | **Status:** Complete
 
 **From Sprint 2 PR review:** `allowJs: true` was added to fix CI but `checkJs: true` is not enabled, meaning JSDoc type annotations are not validated by tsc. Enabling it surfaces ~1076 errors that need incremental fixing.
 
