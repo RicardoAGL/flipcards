@@ -22,6 +22,8 @@ import {
   getReviewDates,
   getReviewCounts,
   updateReviewDate,
+  getTutorialCompleted,
+  setTutorialCompleted,
 } from './lib/progressStorage.js';
 import { getLessonsDueForReview, selectReviewLessons } from './lib/reviewScheduler.js';
 import { generateReviewQuiz } from './lib/quizHelpers.js';
@@ -29,6 +31,7 @@ import { showCombinedCelebration } from './components/StarIndicator.js';
 import { createBadgeGallery } from './components/BadgeGallery.js';
 import { createSplashScreen } from './components/SplashScreen.js';
 import { createSoundIntro } from './components/SoundIntro.js';
+import { createTutorial } from './components/Tutorial.js';
 
 const TEXT = {
   es: {
@@ -62,6 +65,7 @@ let badgeGallery = null;
 let splashScreen = null;
 let soundIntro = null;
 let reviewedLessonIds = null;
+let tutorial = null;
 
 /**
  * Initialize the application
@@ -99,6 +103,14 @@ function renderLayout(app) {
           </button>
           <h1>Dutch Pronunciation</h1>
           <div class="app-header-right">
+            <button class="app-help-btn" type="button" id="help-btn"
+                    aria-label="Help" style="display: none;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" width="18" height="18">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+                <line x1="12" y1="17" x2="12.01" y2="17"/>
+              </svg>
+            </button>
             <div class="app-header-points" id="header-points">
               <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
@@ -159,6 +171,11 @@ function renderLayout(app) {
     });
   }
 
+  const helpBtn = document.getElementById('help-btn');
+  if (helpBtn) {
+    helpBtn.addEventListener('click', () => showTutorial(false));
+  }
+
   addLayoutStyles();
 }
 
@@ -181,16 +198,24 @@ function mountSplashScreen() {
   const headerTitle = document.querySelector('.app-header-row h1');
   const langToggle = document.getElementById('lang-toggle-btn');
 
+  const helpBtn = document.getElementById('help-btn');
+
   if (footer) { footer.style.display = 'none'; }
   if (backBtn) { backBtn.style.visibility = 'hidden'; }
   if (subtitle) { subtitle.textContent = ''; }
   if (headerPoints) { headerPoints.style.display = 'none'; }
   if (headerTitle) { headerTitle.style.display = 'none'; }
   if (langToggle) { langToggle.style.display = 'none'; }
+  if (helpBtn) { helpBtn.style.display = 'none'; }
 
   splashScreen = createSplashScreen(container, {
     language: currentLanguage,
-    onStart: mountLessonMenu,
+    onStart: () => {
+      mountLessonMenu();
+      if (!getTutorialCompleted()) {
+        showTutorial(true);
+      }
+    },
     onLanguageChange: (lang) => {
       handleLanguageChange(lang);
       // Re-mount splash with new language
@@ -220,6 +245,7 @@ function mountLessonMenu() {
   const headerPoints = document.getElementById('header-points');
   const headerTitle = document.querySelector('.app-header-row h1');
   const langToggle = document.getElementById('lang-toggle-btn');
+  const helpBtn = document.getElementById('help-btn');
 
   if (footer) { footer.style.display = 'none'; }
   if (backBtn) { backBtn.style.visibility = 'hidden'; }
@@ -227,6 +253,7 @@ function mountLessonMenu() {
   if (headerPoints) { headerPoints.style.display = 'none'; }
   if (headerTitle) { headerTitle.style.display = ''; }
   if (langToggle) { langToggle.style.display = ''; }
+  if (helpBtn) { helpBtn.style.display = ''; }
 
   // Create and mount lesson menu
   lessonMenu = createLessonMenu(container, {
@@ -274,6 +301,7 @@ function mountSoundIntro() {
   const headerPoints = document.getElementById('header-points');
   const headerTitle = document.querySelector('.app-header-row h1');
   const langToggle = document.getElementById('lang-toggle-btn');
+  const helpBtn = document.getElementById('help-btn');
 
   if (footer) { footer.style.display = 'none'; }
   if (backBtn) { backBtn.style.visibility = 'visible'; }
@@ -281,6 +309,7 @@ function mountSoundIntro() {
   if (headerPoints) { headerPoints.style.display = 'flex'; }
   if (headerTitle) { headerTitle.style.display = ''; }
   if (langToggle) { langToggle.style.display = ''; }
+  if (helpBtn) { helpBtn.style.display = ''; }
 
   soundIntro = createSoundIntro(currentLesson, container, {
     language: currentLanguage,
@@ -310,12 +339,14 @@ function mountFlipCard() {
   const headerPoints = document.getElementById('header-points');
   const headerTitle = document.querySelector('.app-header-row h1');
   const langToggle = document.getElementById('lang-toggle-btn');
+  const helpBtn = document.getElementById('help-btn');
 
   if (footer) { footer.style.display = 'block'; }
   if (backBtn) { backBtn.style.visibility = 'visible'; }
   if (headerPoints) { headerPoints.style.display = 'flex'; }
   if (headerTitle) { headerTitle.style.display = ''; }
   if (langToggle) { langToggle.style.display = ''; }
+  if (helpBtn) { helpBtn.style.display = ''; }
 
   // Create and mount flip card with current lesson data
   flipCard = createFlipCard(flipCardData, container, { language: currentLanguage });
@@ -383,6 +414,10 @@ function destroyCurrentComponent() {
     soundIntro.destroy();
     soundIntro = null;
   }
+  if (tutorial) {
+    tutorial.destroy();
+    tutorial = null;
+  }
 }
 
 /**
@@ -403,6 +438,7 @@ function mountBadgeGallery() {
   const headerPoints = document.getElementById('header-points');
   const headerTitle = document.querySelector('.app-header-row h1');
   const langToggle = document.getElementById('lang-toggle-btn');
+  const helpBtn = document.getElementById('help-btn');
 
   if (footer) { footer.style.display = 'none'; }
   if (backBtn) { backBtn.style.visibility = 'hidden'; }
@@ -410,6 +446,7 @@ function mountBadgeGallery() {
   if (headerPoints) { headerPoints.style.display = 'none'; }
   if (headerTitle) { headerTitle.style.display = ''; }
   if (langToggle) { langToggle.style.display = ''; }
+  if (helpBtn) { helpBtn.style.display = ''; }
 
   badgeGallery = createBadgeGallery(container, {
     language: currentLanguage,
@@ -520,6 +557,21 @@ function handleBackToMenu() {
 }
 
 /**
+ * Show the tutorial overlay
+ * @param {boolean} isFirstVisit - Whether this is the first visit (marks completion on dismiss)
+ */
+function showTutorial(isFirstVisit) {
+  if (tutorial) { tutorial.destroy(); tutorial = null; }
+  tutorial = createTutorial({
+    language: currentLanguage,
+    onComplete: () => {
+      tutorial = null;
+      if (isFirstVisit) { setTutorialCompleted(); }
+    },
+  });
+}
+
+/**
  * Handle language change
  * @param {string} lang - New language code ('es' or 'en')
  */
@@ -531,6 +583,13 @@ function handleLanguageChange(lang) {
   const langLabel = document.getElementById('lang-label');
   if (langLabel) {
     langLabel.textContent = lang.toUpperCase();
+  }
+
+  // Re-show tutorial with new language if active
+  if (tutorial) {
+    tutorial.destroy();
+    tutorial = null;
+    showTutorial(!getTutorialCompleted());
   }
 
   // Re-render the current view
@@ -710,6 +769,30 @@ function addLayoutStyles() {
       width: 16px;
       height: 16px;
       color: var(--color-primary-500);
+    }
+
+    .app-help-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--rounded-full);
+      color: var(--text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color var(--duration-fast) var(--ease-out),
+                  background-color var(--duration-fast) var(--ease-out);
+    }
+
+    .app-help-btn:hover {
+      color: var(--text-primary);
+      background-color: var(--color-gray-100);
+    }
+
+    .app-help-btn svg {
+      display: block;
     }
 
     .app-lang-btn {
