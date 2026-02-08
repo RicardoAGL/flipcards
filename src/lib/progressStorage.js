@@ -353,14 +353,6 @@ export function getQuizAttemptsForLesson(lessonId) {
 }
 
 /**
- * Get total count of completed quizzes
- * @returns {number} Total quiz count
- */
-export function getTotalQuizCount() {
-  return getQuizHistory().length;
-}
-
-/**
  * Check badge criteria and award any newly earned badges
  * Call this after a quiz is completed
  * @param {Object} quizResult - The quiz result

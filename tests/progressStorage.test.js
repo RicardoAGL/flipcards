@@ -25,7 +25,6 @@ import {
   getQuizHistory,
   recordQuizAttempt,
   getQuizAttemptsForLesson,
-  getTotalQuizCount,
   checkAndAwardBadges,
 } from '../src/lib/progressStorage.js';
 
@@ -489,18 +488,6 @@ describe('Progress Storage', () => {
 
       expect(attempts).toHaveLength(2);
       expect(attempts.every((a) => a.lessonId === 'P1-AA-BEG')).toBe(true);
-    });
-  });
-
-  describe('getTotalQuizCount', () => {
-    it('should return total number of quizzes', () => {
-      const history = [
-        { lessonId: 'P1-AA-BEG', score: 3, total: 5, passed: false, timestamp: 100 },
-        { lessonId: 'P1-EE-BEG', score: 5, total: 5, passed: true, timestamp: 200 },
-      ];
-      localStorageMock.setItem(STORAGE_KEYS.QUIZ_HISTORY, JSON.stringify(history));
-
-      expect(getTotalQuizCount()).toBe(2);
     });
   });
 

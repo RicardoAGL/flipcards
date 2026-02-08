@@ -140,7 +140,7 @@ describe('StarIndicator Component', () => {
 
     it('should render earned stars when milestones achieved', () => {
       getAchievedMilestones.mockReturnValue([
-        { level: 1, points: 300, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
+        { level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' },
         { level: 2, points: 640, color: '#C0C0C0', nameES: 'Plata', nameEN: 'Silver' },
       ]);
 

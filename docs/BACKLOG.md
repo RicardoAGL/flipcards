@@ -142,7 +142,7 @@ Add lessons for Dutch diphthongs and vowel pairs. Currently only "same vowel" so
 ---
 
 ### BL-004: Recalibrate Point Milestones
-**Priority:** P0 | **Effort:** Small | **Status:** Not Started
+**Priority:** P0 | **Effort:** Small | **Status:** Complete
 
 **Problem identified by gamification review:**
 - Current Gold milestone (1500 pts) is unreachable with 8 lessons (max possible: 1280 pts with all perfect scores)
@@ -161,7 +161,7 @@ Phase 2 (18 lessons): Bronze 360 | Silver 1152 | Gold 2304
 ---
 
 ### BL-005: Fix Perfect Bonus Anxiety
-**Priority:** P0 | **Effort:** Small | **Status:** Not Started
+**Priority:** P0 | **Effort:** Small | **Status:** Complete
 
 **Problem identified by gamification review:**
 - Perfect quiz: (5x20) + 10 + 50 = 160 pts
@@ -170,7 +170,7 @@ Phase 2 (18 lessons): Bronze 360 | Silver 1152 | Gold 2304
 
 **Recommendation:** Replace 50-pt perfect bonus with 20-30 pt mastery bonus awarded for 80%+ scores (aligns with existing pass threshold).
 
-**Files:** Lesson JSON files (`perfectBonus`), `src/lib/progressStorage.js`
+**Files:** Lesson JSON files (`masteryBonus`), `src/lib/quizHelpers.js`, `src/components/QuizResults.js`
 
 ---
 
@@ -280,7 +280,7 @@ Currently incorrect quiz answers show only "Not exactly" with the correct answer
 ---
 
 ### BL-011: Practice-Master Badge Criteria
-**Priority:** P2 | **Effort:** Small | **Status:** Not Started
+**Priority:** P2 | **Effort:** Small | **Status:** Complete
 
 **Problem from gamification review:** The "Practice Master" badge rewards volume (10 quizzes, any score) without requiring learning.
 
@@ -316,7 +316,7 @@ Allow users to choose from available Dutch voices. Preview each voice before sel
 ---
 
 ### BL-014: Content Security Policy
-**Priority:** P1 | **Effort:** Small | **Status:** Not Started
+**Priority:** P1 | **Effort:** Small | **Status:** Complete
 
 **From security review:** Add CSP meta tag to `index.html`:
 ```html
@@ -331,7 +331,7 @@ Also move dynamic styles from `addLayoutStyles()` in main.js to a CSS file to ev
 ---
 
 ### BL-015: Pin GitHub Actions to SHA Hashes
-**Priority:** P1 | **Effort:** Small | **Status:** Not Started
+**Priority:** P1 | **Effort:** Small | **Status:** Complete
 
 **From security review:** Current workflows use tag-based references (`@v4`) which can be retargeted. Pin to commit SHAs:
 ```yaml
@@ -346,7 +346,7 @@ uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11  # v4.1.1
 ---
 
 ### BL-016: Add `.envrc` to `.gitignore`
-**Priority:** P1 | **Effort:** Tiny | **Status:** Not Started
+**Priority:** P1 | **Effort:** Tiny | **Status:** Complete
 
 **From security review:** The `.envrc` file is tracked in git. While it doesn't contain real secrets now, it creates a risk of accidentally committing credentials in the future.
 
