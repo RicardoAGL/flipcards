@@ -22,8 +22,8 @@ describe('BADGE_CATEGORIES', () => {
 });
 
 describe('BADGES', () => {
-  it('should contain 15 badge definitions', () => {
-    expect(BADGES).toHaveLength(15);
+  it('should contain 19 badge definitions', () => {
+    expect(BADGES).toHaveLength(19);
   });
 
   it('should have required fields for each badge', () => {
@@ -81,7 +81,7 @@ describe('BADGES', () => {
     );
 
     expect(encouragementBadges).toHaveLength(3);
-    expect(masteryBadges).toHaveLength(9);
+    expect(masteryBadges).toHaveLength(13);
     expect(milestoneBadges).toHaveLength(3);
   });
 });
@@ -152,10 +152,10 @@ describe('getBadgesByCategory', () => {
     expect(ids).toContain('perseverance');
   });
 
-  it('should return 9 mastery badges', () => {
+  it('should return 13 mastery badges', () => {
     const badges = getBadgesByCategory(BADGE_CATEGORIES.MASTERY);
 
-    expect(badges).toHaveLength(9);
+    expect(badges).toHaveLength(13);
     expect(badges.every((b) => b.category === BADGE_CATEGORIES.MASTERY)).toBe(true);
 
     const ids = badges.map((b) => b.id);
@@ -168,6 +168,10 @@ describe('getBadgesByCategory', () => {
     expect(ids).toContain('sound-master-ie');
     expect(ids).toContain('sound-master-ei');
     expect(ids).toContain('sound-master-ij');
+    expect(ids).toContain('sound-master-ou');
+    expect(ids).toContain('sound-master-au');
+    expect(ids).toContain('sound-master-eu');
+    expect(ids).toContain('sound-master-ui');
   });
 
   it('should return 3 milestone badges', () => {

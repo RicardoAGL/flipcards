@@ -1,0 +1,132 @@
+{
+  "lessonId": "P2-OU-ADV",
+  "phase": 2,
+  "sound": {
+    "combination": "ou",
+    "ipa": "[ʌu]",
+    "descriptionES": "Similar al diptongo 'au' en español como en 'cauto', pero más corto",
+    "descriptionEN": "Like 'ow' in 'now' but shorter"
+  },
+  "level": "advanced",
+  "unlockRequires": "P2-OU-BEG",
+  "words": [
+    {
+      "wordId": "ou-101",
+      "word": "vrouw",
+      "prefix": "vr",
+      "suffix": "w",
+      "translation": { "es": "mujer", "en": "woman" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-102",
+      "word": "trouw",
+      "prefix": "tr",
+      "suffix": "w",
+      "translation": { "es": "fiel/boda", "en": "faithful/wedding" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-103",
+      "word": "houden",
+      "prefix": "h",
+      "suffix": "den",
+      "translation": { "es": "mantener/querer", "en": "to hold/to love" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ou-104",
+      "word": "gebouw",
+      "prefix": "geb",
+      "suffix": "w",
+      "translation": { "es": "edificio", "en": "building" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ou-105",
+      "word": "touw",
+      "prefix": "t",
+      "suffix": "w",
+      "translation": { "es": "cuerda", "en": "rope" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-106",
+      "word": "schouder",
+      "prefix": "sch",
+      "suffix": "der",
+      "translation": { "es": "hombro", "en": "shoulder" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ou-107",
+      "word": "vertrouwen",
+      "prefix": "vertr",
+      "suffix": "wen",
+      "translation": { "es": "confiar/confianza", "en": "to trust/trust" },
+      "syllables": 3
+    },
+    {
+      "wordId": "ou-108",
+      "word": "gouden",
+      "prefix": "g",
+      "suffix": "den",
+      "translation": { "es": "dorado", "en": "golden" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ou-109",
+      "word": "vouwen",
+      "prefix": "v",
+      "suffix": "wen",
+      "translation": { "es": "doblar", "en": "to fold" },
+      "syllables": 2
+    },
+    {
+      "wordId": "ou-110",
+      "word": "woud",
+      "prefix": "w",
+      "suffix": "d",
+      "translation": { "es": "bosque", "en": "forest" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-111",
+      "word": "kou",
+      "prefix": "k",
+      "suffix": "",
+      "translation": { "es": "frío (sustantivo)", "en": "cold (noun)" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-112",
+      "word": "bout",
+      "prefix": "b",
+      "suffix": "t",
+      "translation": { "es": "perno/muslo", "en": "bolt/drumstick" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-000",
+      "word": "ou",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 20,
+  "distractorPool": [
+    "vrouw", "trouw", "houden", "gebouw", "touw", "schouder",
+    "vertrouwen", "gouden", "vouwen", "woud", "kou", "bout",
+    "oud", "koud", "goud", "hout", "zout", "fout",
+    "flauw", "grauw", "pauze", "pauw", "nauwelijks", "applaus"
+  ]
+}

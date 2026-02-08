@@ -1,0 +1,99 @@
+{
+  "lessonId": "P2-EU-BEG",
+  "phase": 2,
+  "sound": {
+    "combination": "eu",
+    "ipa": "[ø]",
+    "descriptionES": "Sin equivalente en español. Redondea los labios como para 'o' y di 'e'",
+    "descriptionEN": "No English equivalent. Round lips as for 'o' and say 'ay'"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "eu-001",
+      "word": "neus",
+      "prefix": "n",
+      "suffix": "s",
+      "translation": { "es": "nariz", "en": "nose" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-002",
+      "word": "deur",
+      "prefix": "d",
+      "suffix": "r",
+      "translation": { "es": "puerta", "en": "door" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-003",
+      "word": "kleur",
+      "prefix": "kl",
+      "suffix": "r",
+      "translation": { "es": "color", "en": "color" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-004",
+      "word": "leuk",
+      "prefix": "l",
+      "suffix": "k",
+      "translation": { "es": "divertido", "en": "fun/nice" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-005",
+      "word": "beuk",
+      "prefix": "b",
+      "suffix": "k",
+      "translation": { "es": "haya", "en": "beech tree" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-006",
+      "word": "deuk",
+      "prefix": "d",
+      "suffix": "k",
+      "translation": { "es": "abolladura", "en": "dent" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-007",
+      "word": "reus",
+      "prefix": "r",
+      "suffix": "s",
+      "translation": { "es": "gigante", "en": "giant" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-008",
+      "word": "geul",
+      "prefix": "g",
+      "suffix": "l",
+      "translation": { "es": "canal/zanja", "en": "channel/gully" },
+      "syllables": 1
+    },
+    {
+      "wordId": "eu-000",
+      "word": "eu",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "neus", "deur", "kleur", "leuk", "beuk", "deuk", "reus", "geul",
+    "huis", "muis", "tuin", "bruin", "fruit", "buik",
+    "naam", "boek", "niet", "goed"
+  ]
+}

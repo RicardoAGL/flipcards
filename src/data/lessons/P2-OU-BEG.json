@@ -1,0 +1,99 @@
+{
+  "lessonId": "P2-OU-BEG",
+  "phase": 2,
+  "sound": {
+    "combination": "ou",
+    "ipa": "[ʌu]",
+    "descriptionES": "Similar al diptongo 'au' en español como en 'cauto', pero más corto",
+    "descriptionEN": "Like 'ow' in 'now' but shorter"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "ou-001",
+      "word": "oud",
+      "prefix": "",
+      "suffix": "d",
+      "translation": { "es": "viejo", "en": "old" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-002",
+      "word": "koud",
+      "prefix": "k",
+      "suffix": "d",
+      "translation": { "es": "frío", "en": "cold" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-003",
+      "word": "goud",
+      "prefix": "g",
+      "suffix": "d",
+      "translation": { "es": "oro", "en": "gold" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-004",
+      "word": "hout",
+      "prefix": "h",
+      "suffix": "t",
+      "translation": { "es": "madera", "en": "wood" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-005",
+      "word": "zout",
+      "prefix": "z",
+      "suffix": "t",
+      "translation": { "es": "sal", "en": "salt" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-006",
+      "word": "fout",
+      "prefix": "f",
+      "suffix": "t",
+      "translation": { "es": "error", "en": "mistake" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-007",
+      "word": "bouw",
+      "prefix": "b",
+      "suffix": "w",
+      "translation": { "es": "construcción", "en": "construction" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-008",
+      "word": "mouw",
+      "prefix": "m",
+      "suffix": "w",
+      "translation": { "es": "manga", "en": "sleeve" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ou-000",
+      "word": "ou",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "oud", "koud", "goud", "hout", "zout", "fout", "bouw", "mouw",
+    "blauw", "nauw", "gauw", "rauw", "saus", "dauw", "kauw",
+    "naam", "boek", "niet", "goed"
+  ]
+}

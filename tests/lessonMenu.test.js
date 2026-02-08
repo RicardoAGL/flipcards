@@ -63,11 +63,11 @@ describe('LessonMenu Component', () => {
       expect(container.querySelector('.lesson-menu')).not.toBeNull();
     });
 
-    it('should render all 8 sound cards across phases', () => {
+    it('should render all 12 sound cards across phases', () => {
       createLessonMenu(container, {});
 
       const soundCards = container.querySelectorAll('.sound-card');
-      expect(soundCards).toHaveLength(8);
+      expect(soundCards).toHaveLength(12);
     });
 
     it('should render correct sound labels', () => {
@@ -84,6 +84,10 @@ describe('LessonMenu Component', () => {
       expect(soundTexts).toContain('ie');
       expect(soundTexts).toContain('ei');
       expect(soundTexts).toContain('ij');
+      expect(soundTexts).toContain('ou');
+      expect(soundTexts).toContain('au');
+      expect(soundTexts).toContain('eu');
+      expect(soundTexts).toContain('ui');
     });
 
     it('should render progress card', () => {
@@ -96,8 +100,8 @@ describe('LessonMenu Component', () => {
       createLessonMenu(container, {});
 
       const levelButtons = container.querySelectorAll('.level-btn');
-      // 8 sounds x 2 levels = 16 buttons
-      expect(levelButtons).toHaveLength(16);
+      // 12 sounds x 2 levels = 24 buttons
+      expect(levelButtons).toHaveLength(24);
     });
 
     it('should render Phase 1 and Phase 2 section headers', () => {
@@ -110,7 +114,7 @@ describe('LessonMenu Component', () => {
       expect(titles).toHaveLength(2);
     });
 
-    it('should render Phase 2 sound cards (oe, ie, ei, ij)', () => {
+    it('should render Phase 2 sound cards (oe, ie, ei, ij, ou, au, eu, ui)', () => {
       createLessonMenu(container, {});
 
       const phase2 = container.querySelector('[data-phase="2"]');
@@ -122,6 +126,10 @@ describe('LessonMenu Component', () => {
       expect(soundTexts).toContain('ie');
       expect(soundTexts).toContain('ei');
       expect(soundTexts).toContain('ij');
+      expect(soundTexts).toContain('ou');
+      expect(soundTexts).toContain('au');
+      expect(soundTexts).toContain('eu');
+      expect(soundTexts).toContain('ui');
     });
   });
 
@@ -134,7 +142,7 @@ describe('LessonMenu Component', () => {
     });
 
     it('should show correct progress percentage', () => {
-      // Complete 2 of 16 lessons (13%)
+      // Complete 2 of 24 lessons (8%)
       localStorageMock.setItem(
         STORAGE_KEYS.COMPLETED_LESSONS,
         JSON.stringify(['P1-AA-BEG', 'P1-EE-BEG'])
@@ -143,7 +151,7 @@ describe('LessonMenu Component', () => {
       createLessonMenu(container, {});
 
       const progressBar = container.querySelector('.lesson-menu-progress-bar');
-      expect(progressBar.style.width).toBe('13%');
+      expect(progressBar.style.width).toBe('8%');
     });
 
     it('should display points', () => {

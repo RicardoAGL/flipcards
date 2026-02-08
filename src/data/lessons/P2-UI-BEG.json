@@ -1,0 +1,99 @@
+{
+  "lessonId": "P2-UI-BEG",
+  "phase": 2,
+  "sound": {
+    "combination": "ui",
+    "ipa": "[œy]",
+    "descriptionES": "El sonido más difícil. Similar a 'eu' pero deslizando hacia 'i'",
+    "descriptionEN": "Most difficult Dutch sound. Start with 'eu' and glide toward 'ee'"
+  },
+  "level": "beginner",
+  "unlockRequires": null,
+  "words": [
+    {
+      "wordId": "ui-001",
+      "word": "huis",
+      "prefix": "h",
+      "suffix": "s",
+      "translation": { "es": "casa", "en": "house" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-002",
+      "word": "muis",
+      "prefix": "m",
+      "suffix": "s",
+      "translation": { "es": "ratón", "en": "mouse" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-003",
+      "word": "tuin",
+      "prefix": "t",
+      "suffix": "n",
+      "translation": { "es": "jardín", "en": "garden" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-004",
+      "word": "bruin",
+      "prefix": "br",
+      "suffix": "n",
+      "translation": { "es": "marrón", "en": "brown" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-005",
+      "word": "fruit",
+      "prefix": "fr",
+      "suffix": "t",
+      "translation": { "es": "fruta", "en": "fruit" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-006",
+      "word": "buik",
+      "prefix": "b",
+      "suffix": "k",
+      "translation": { "es": "barriga", "en": "belly" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-007",
+      "word": "duim",
+      "prefix": "d",
+      "suffix": "m",
+      "translation": { "es": "pulgar", "en": "thumb" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-008",
+      "word": "vuist",
+      "prefix": "v",
+      "suffix": "st",
+      "translation": { "es": "puño", "en": "fist" },
+      "syllables": 1
+    },
+    {
+      "wordId": "ui-000",
+      "word": "ui",
+      "prefix": "",
+      "suffix": "",
+      "translation": { "es": "(sonido aislado)", "en": "(standalone sound)" },
+      "syllables": 1
+    }
+  ],
+  "quiz": {
+    "questionCount": 5,
+    "passingScore": 0.8,
+    "pointsPerCorrect": 20,
+    "completionBonus": 10,
+    "masteryBonus": 20
+  },
+  "estimatedMinutes": 12,
+  "distractorPool": [
+    "huis", "muis", "tuin", "bruin", "fruit", "buik", "duim", "vuist",
+    "neus", "deur", "kleur", "leuk", "beuk", "deuk", "reus",
+    "naam", "boek", "niet", "goed"
+  ]
+}

@@ -88,7 +88,7 @@ export const PHASE_1_SOUNDS = ['aa', 'ee', 'oo', 'uu'];
  * Valid sound combinations for Phase 2
  * @type {string[]}
  */
-export const PHASE_2_SOUNDS = ['ui', 'ij', 'ei', 'oe', 'eu', 'au', 'ou'];
+export const PHASE_2_SOUNDS = ['ui', 'ij', 'ei', 'oe', 'eu', 'au', 'ou', 'ie'];
 
 /**
  * Lesson ID pattern regex
