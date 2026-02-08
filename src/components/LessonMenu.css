@@ -468,4 +468,8 @@
   .lesson-menu-progress-bar {
     transition: none;
   }
+
+  .level-btn--review-due::after {
+    animation: none;
+  }
 }

@@ -62,7 +62,7 @@ function shuffleArray(array) {
  * @returns {string} Unique question ID
  */
 function generateQuestionId(lessonId, wordId) {
-  return `${lessonId}-${wordId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  return `${lessonId}-${wordId}-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`;
 }
 
 /**
@@ -464,7 +464,7 @@ export function generateReviewQuiz(lessonIds, questionCount = 5) {
     const options = shuffleArray([word.word, ...distractors]);
 
     return {
-      questionId: `review-${word.wordId}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      questionId: `review-${word.wordId}-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
       wordId: word.wordId,
       correctAnswer: word.word,
       options,

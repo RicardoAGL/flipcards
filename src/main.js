@@ -464,8 +464,8 @@ async function handleStartReview() {
  * Handle review quiz completion
  */
 function handleReviewComplete(result) {
-  // Update review dates for all reviewed lessons
-  if (reviewedLessonIds) {
+  // Only update review dates if the review was passed
+  if (result.passed && reviewedLessonIds) {
     const now = Date.now();
     for (const lessonId of reviewedLessonIds) {
       updateReviewDate(lessonId, now);
@@ -473,7 +473,7 @@ function handleReviewComplete(result) {
   }
 
   // Add points (no badges, no lesson completion for reviews)
-  if (result.pointsEarned > 0) {
+  if (result.passed && result.pointsEarned > 0) {
     addPoints(result.pointsEarned);
   }
 
