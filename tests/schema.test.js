@@ -295,7 +295,7 @@ describe('validateLesson', () => {
       passingScore: 0.8,
       pointsPerCorrect: 20,
       completionBonus: 10,
-      perfectBonus: 25,
+      masteryBonus: 25,
     },
     estimatedMinutes: 5,
   };
@@ -415,14 +415,14 @@ describe('validateLesson', () => {
     expect(result.errors).toContain('quiz.completionBonus must be a number');
   });
 
-  it('should detect invalid quiz.perfectBonus type', () => {
+  it('should detect invalid quiz.masteryBonus type', () => {
     const lesson = {
       ...validLesson,
-      quiz: { ...validLesson.quiz, perfectBonus: undefined },
+      quiz: { ...validLesson.quiz, masteryBonus: undefined },
     };
     const result = validateLesson(lesson);
     expect(result.valid).toBe(false);
-    expect(result.errors).toContain('quiz.perfectBonus must be a number');
+    expect(result.errors).toContain('quiz.masteryBonus must be a number');
   });
 
   it('should detect invalid estimatedMinutes', () => {
@@ -504,7 +504,7 @@ describe('toFlipCardFormat', () => {
       passingScore: 0.8,
       pointsPerCorrect: 20,
       completionBonus: 10,
-      perfectBonus: 25,
+      masteryBonus: 25,
     },
     estimatedMinutes: 5,
   };
@@ -590,7 +590,7 @@ describe('extractMetadata', () => {
       passingScore: 0.8,
       pointsPerCorrect: 20,
       completionBonus: 10,
-      perfectBonus: 25,
+      masteryBonus: 25,
     },
     estimatedMinutes: 5,
   };

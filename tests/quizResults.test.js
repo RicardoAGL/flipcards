@@ -35,7 +35,7 @@ describe('QuizResults Component', () => {
       percentage: 80,
       passed: true,
       points: 90,
-      breakdown: { correctPoints: 80, completionBonus: 10, perfectBonus: 0 },
+      breakdown: { correctPoints: 80, completionBonus: 10, masteryBonus: 0 },
     };
     const passedAnswers = [
       {
@@ -146,7 +146,7 @@ describe('QuizResults Component', () => {
       percentage: 100,
       passed: true,
       points: 135,
-      breakdown: { correctPoints: 100, completionBonus: 10, perfectBonus: 25 },
+      breakdown: { correctPoints: 100, completionBonus: 10, masteryBonus: 25 },
     };
     const perfectAnswers = [
       {
@@ -195,7 +195,7 @@ describe('QuizResults Component', () => {
       expect(icon.textContent).toBe('⭐');
     });
 
-    it('should show perfect bonus in breakdown', () => {
+    it('should show mastery bonus in breakdown', () => {
       const quizResults = createQuizResults({
         result: perfectResult,
         answers: perfectAnswers,
@@ -224,7 +224,7 @@ describe('QuizResults Component', () => {
       percentage: 40,
       passed: false,
       points: 50,
-      breakdown: { correctPoints: 40, completionBonus: 10, perfectBonus: 0 },
+      breakdown: { correctPoints: 40, completionBonus: 10, masteryBonus: 0 },
     };
     const failedAnswers = [
       {
@@ -312,7 +312,7 @@ describe('QuizResults Component', () => {
       percentage: 100,
       passed: true,
       points: 135,
-      breakdown: { correctPoints: 100, completionBonus: 10, perfectBonus: 25 },
+      breakdown: { correctPoints: 100, completionBonus: 10, masteryBonus: 25 },
     };
     const answers = [
       {
@@ -393,7 +393,7 @@ describe('QuizResults Component', () => {
       percentage: 80,
       passed: true,
       points: 90,
-      breakdown: { correctPoints: 80, completionBonus: 10, perfectBonus: 0 },
+      breakdown: { correctPoints: 80, completionBonus: 10, masteryBonus: 0 },
     };
     const testAnswers = [
       {
@@ -491,7 +491,7 @@ describe('QuizResults Component', () => {
       percentage: 80,
       passed: true,
       points: 90,
-      breakdown: { correctPoints: 80, completionBonus: 10, perfectBonus: 0 },
+      breakdown: { correctPoints: 80, completionBonus: 10, masteryBonus: 0 },
     };
     const testAnswers = [
       {
@@ -548,7 +548,7 @@ describe('QuizResults Component', () => {
       percentage: 80,
       passed: true,
       points: 90,
-      breakdown: { correctPoints: 80, completionBonus: 10, perfectBonus: 0 },
+      breakdown: { correctPoints: 80, completionBonus: 10, masteryBonus: 0 },
     };
     const testAnswers = [
       {
@@ -638,7 +638,7 @@ describe('QuizResults Component', () => {
       percentage: 80,
       passed: true,
       points: 90,
-      breakdown: { correctPoints: 80, completionBonus: 10, perfectBonus: 0 },
+      breakdown: { correctPoints: 80, completionBonus: 10, masteryBonus: 0 },
     };
     const testAnswers = [
       {

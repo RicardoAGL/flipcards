@@ -30,7 +30,7 @@ import { lessonsById, lessonsBySound, soundInfo } from '../data/lessons/index.js
  * @property {Object} breakdown - Points breakdown
  * @property {number} breakdown.correctPoints - Points from correct answers
  * @property {number} breakdown.completionBonus - Completion bonus points
- * @property {number} breakdown.perfectBonus - Perfect score bonus (0 if not perfect)
+ * @property {number} breakdown.masteryBonus - Mastery bonus for passing (0 if not passed)
  */
 
 /**
@@ -239,8 +239,8 @@ export function calculateScore(answers, lesson) {
   // Calculate points
   const correctPoints = score * quiz.pointsPerCorrect;
   const completionBonus = quiz.completionBonus;
-  const perfectBonus = score === total ? quiz.perfectBonus : 0;
-  const totalPoints = correctPoints + completionBonus + perfectBonus;
+  const masteryBonus = passed ? quiz.masteryBonus : 0;
+  const totalPoints = correctPoints + completionBonus + masteryBonus;
 
   return {
     score,
@@ -251,7 +251,7 @@ export function calculateScore(answers, lesson) {
     breakdown: {
       correctPoints,
       completionBonus,
-      perfectBonus,
+      masteryBonus,
     },
   };
 }
@@ -347,7 +347,7 @@ export function getPassingScore(lessonId) {
 export function getMaxPoints(lesson) {
   const { quiz } = lesson;
   const questionCount = quiz.questionCount;
-  return (questionCount * quiz.pointsPerCorrect) + quiz.completionBonus + quiz.perfectBonus;
+  return (questionCount * quiz.pointsPerCorrect) + quiz.completionBonus + quiz.masteryBonus;
 }
 
 /**

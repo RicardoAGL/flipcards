@@ -162,7 +162,7 @@ export function createMockLesson(overrides = {}) {
       passingScore: 0.8,
       pointsPerCorrect: 20,
       completionBonus: 10,
-      perfectBonus: 25,
+      masteryBonus: 25,
     },
     estimatedMinutes: 5,
     ...overrides,

@@ -36,7 +36,7 @@
  * @property {number} passingScore - Minimum score to pass (0-1, default: 0.8)
  * @property {number} pointsPerCorrect - Points awarded per correct answer
  * @property {number} completionBonus - Bonus points for completing the quiz
- * @property {number} perfectBonus - Bonus points for a perfect score
+ * @property {number} masteryBonus - Bonus points for passing the quiz (>=80%)
  */
 
 /**
@@ -267,8 +267,8 @@ export function validateLesson(lesson) {
     if (typeof lesson.quiz.completionBonus !== 'number') {
       errors.push('quiz.completionBonus must be a number');
     }
-    if (typeof lesson.quiz.perfectBonus !== 'number') {
-      errors.push('quiz.perfectBonus must be a number');
+    if (typeof lesson.quiz.masteryBonus !== 'number') {
+      errors.push('quiz.masteryBonus must be a number');
     }
   }
 

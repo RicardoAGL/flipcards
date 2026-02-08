@@ -15,8 +15,8 @@ Polish and enhancement features identified after MVP testing. These improvements
 | ID | Feature | Priority | Complexity | Status |
 |----|---------|----------|------------|--------|
 | US-1007 | Quiz Feedback Layout Fix | High | Low | ✅ Complete |
-| US-1004 | Badge Gallery | High | Medium | ⬜ Not Started |
-| US-1001 | Word Translations | High | Medium | ⬜ Not Started |
+| US-1004 | Badge Gallery | High | Medium | ✅ Complete |
+| US-1001 | Word Translations | High | Medium | ✅ Complete |
 | US-1002 | Example Sentences | Medium | Medium | ⬜ Not Started |
 | US-1005 | Point Milestone Stars (global, not per-level) | Medium | Low | ✅ Complete |
 | US-1006 | Encouragement Badges | Medium | Low | ✅ Complete |

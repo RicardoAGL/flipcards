@@ -258,9 +258,9 @@ describe('Progress Storage', () => {
     });
 
     it('should have correct point thresholds', () => {
-      expect(MILESTONES[0].points).toBe(300);
-      expect(MILESTONES[1].points).toBe(800);
-      expect(MILESTONES[2].points).toBe(1500);
+      expect(MILESTONES[0].points).toBe(200);
+      expect(MILESTONES[1].points).toBe(640);
+      expect(MILESTONES[2].points).toBe(1280);
     });
 
     it('should have correct level names', () => {
@@ -275,23 +275,23 @@ describe('Progress Storage', () => {
       expect(getCurrentMilestone(100)).toBeNull();
     });
 
-    it('should return bronze at 300 points', () => {
-      const milestone = getCurrentMilestone(300);
+    it('should return bronze at 200 points', () => {
+      const milestone = getCurrentMilestone(200);
       expect(milestone.level).toBe('bronze');
     });
 
-    it('should return silver at 800 points', () => {
-      const milestone = getCurrentMilestone(800);
+    it('should return silver at 640 points', () => {
+      const milestone = getCurrentMilestone(640);
       expect(milestone.level).toBe('silver');
     });
 
-    it('should return gold at 1500 points', () => {
-      const milestone = getCurrentMilestone(1500);
+    it('should return gold at 1280 points', () => {
+      const milestone = getCurrentMilestone(1280);
       expect(milestone.level).toBe('gold');
     });
 
     it('should return previous milestone when between thresholds', () => {
-      const milestone = getCurrentMilestone(500);
+      const milestone = getCurrentMilestone(400);
       expect(milestone.level).toBe('bronze');
     });
   });
@@ -300,28 +300,28 @@ describe('Progress Storage', () => {
     it('should return bronze as first milestone', () => {
       const next = getNextMilestone(0);
       expect(next.level).toBe('bronze');
-      expect(next.remaining).toBe(300);
+      expect(next.remaining).toBe(200);
     });
 
     it('should return silver after bronze', () => {
-      const next = getNextMilestone(300);
+      const next = getNextMilestone(200);
       expect(next.level).toBe('silver');
-      expect(next.remaining).toBe(500);
+      expect(next.remaining).toBe(440);
     });
 
     it('should return gold after silver', () => {
-      const next = getNextMilestone(800);
+      const next = getNextMilestone(640);
       expect(next.level).toBe('gold');
-      expect(next.remaining).toBe(700);
+      expect(next.remaining).toBe(640);
     });
 
     it('should return null when all milestones achieved', () => {
-      const next = getNextMilestone(1500);
+      const next = getNextMilestone(1280);
       expect(next).toBeNull();
     });
 
     it('should calculate correct remaining points', () => {
-      const next = getNextMilestone(200);
+      const next = getNextMilestone(100);
       expect(next.remaining).toBe(100);
     });
   });
@@ -333,13 +333,13 @@ describe('Progress Storage', () => {
     });
 
     it('should return one milestone at bronze', () => {
-      const achieved = getAchievedMilestones(300);
+      const achieved = getAchievedMilestones(200);
       expect(achieved).toHaveLength(1);
       expect(achieved[0].level).toBe('bronze');
     });
 
     it('should return all milestones at gold', () => {
-      const achieved = getAchievedMilestones(1500);
+      const achieved = getAchievedMilestones(1280);
       expect(achieved).toHaveLength(3);
     });
   });
@@ -351,29 +351,29 @@ describe('Progress Storage', () => {
       expect(result).toBeNull();
     });
 
-    it('should return bronze when crossing 300 threshold', () => {
-      localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '250');
+    it('should return bronze when crossing 200 threshold', () => {
+      localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '150');
       const result = checkNewMilestone(100);
       expect(result).not.toBeNull();
       expect(result.level).toBe('bronze');
     });
 
-    it('should return silver when crossing 800 threshold', () => {
-      localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '750');
+    it('should return silver when crossing 640 threshold', () => {
+      localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '600');
       const result = checkNewMilestone(100);
       expect(result).not.toBeNull();
       expect(result.level).toBe('silver');
     });
 
-    it('should return gold when crossing 1500 threshold', () => {
-      localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '1400');
+    it('should return gold when crossing 1280 threshold', () => {
+      localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '1200');
       const result = checkNewMilestone(200);
       expect(result).not.toBeNull();
       expect(result.level).toBe('gold');
     });
 
     it('should return null when already at a milestone', () => {
-      localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '300');
+      localStorageMock.setItem(STORAGE_KEYS.TOTAL_POINTS, '200');
       const result = checkNewMilestone(100);
       expect(result).toBeNull();
     });
@@ -543,14 +543,14 @@ describe('Progress Storage', () => {
       expect(result).not.toContain('first-steps');
     });
 
-    it('should award practice-master badge after 10 quizzes', () => {
+    it('should award practice-master badge after 10 passed quizzes', () => {
       const history = Array(10)
         .fill(null)
         .map((_, i) => ({
           lessonId: 'P1-AA-BEG',
-          score: 3,
+          score: 4,
           total: 5,
-          passed: false,
+          passed: true,
           timestamp: i * 1000,
         }));
       localStorageMock.setItem(STORAGE_KEYS.QUIZ_HISTORY, JSON.stringify(history));

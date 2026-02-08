@@ -9,7 +9,7 @@ import { BADGES, BADGE_CATEGORIES, getBadgesByCategory } from '../data/badges.js
 import {
   getEarnedBadges,
   getCompletedLessons,
-  getTotalQuizCount,
+  getQuizHistory,
 } from '../lib/progressStorage.js';
 import './BadgeGallery.css';
 
@@ -51,8 +51,9 @@ const TEXT = {
 function getBadgeProgress(badge) {
   const { criteria } = badge;
 
-  if (criteria.type === 'quiz_count') {
-    return { current: getTotalQuizCount(), target: criteria.count };
+  if (criteria.type === 'quiz_pass_count') {
+    const passed = getQuizHistory().filter(a => a.passed).length;
+    return { current: passed, target: criteria.count };
   }
 
   if (criteria.type === 'lessons_completed') {

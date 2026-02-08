@@ -230,17 +230,17 @@ describe('Quiz Helpers', () => {
 
       expect(result.breakdown.correctPoints).toBe(1 * mockLesson.quiz.pointsPerCorrect);
       expect(result.breakdown.completionBonus).toBe(mockLesson.quiz.completionBonus);
-      expect(result.breakdown.perfectBonus).toBe(0); // Not perfect
+      expect(result.breakdown.masteryBonus).toBe(0); // Not passed
     });
 
-    it('should award perfect bonus for 100% score', () => {
+    it('should award mastery bonus for passing score (>=80%)', () => {
       const answers = [
         { questionId: 'q1', selectedAnswer: 'naam', correctAnswer: 'naam', isCorrect: true },
       ];
 
       const result = calculateScore(answers, mockLesson);
 
-      expect(result.breakdown.perfectBonus).toBe(mockLesson.quiz.perfectBonus);
+      expect(result.breakdown.masteryBonus).toBe(mockLesson.quiz.masteryBonus);
     });
 
     it('should calculate total points correctly', () => {
@@ -250,7 +250,7 @@ describe('Quiz Helpers', () => {
       ];
 
       const result = calculateScore(answers, mockLesson);
-      const expected = (2 * 20) + 10 + 25; // 2 correct * 20 + completion 10 + perfect 25
+      const expected = (2 * 20) + 10 + 25; // 2 correct * 20 + completion 10 + mastery 25
 
       expect(result.points).toBe(expected);
     });
@@ -388,7 +388,7 @@ describe('Quiz Helpers', () => {
       const maxPoints = getMaxPoints(mockLesson);
       const expected = (mockLesson.quiz.questionCount * mockLesson.quiz.pointsPerCorrect)
         + mockLesson.quiz.completionBonus
-        + mockLesson.quiz.perfectBonus;
+        + mockLesson.quiz.masteryBonus;
 
       expect(maxPoints).toBe(expected);
     });
