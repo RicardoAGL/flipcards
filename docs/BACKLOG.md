@@ -12,10 +12,10 @@
 | Sounds covered | 4 (aa, ee, oo, uu) |
 | Lessons | 8 (BEG + ADV per sound) |
 | Words | 84 |
-| Tests | 399 (12 test files) |
-| Components | 6 (FlipCard, Quiz, QuizResults, LessonMenu, BadgeGallery, StarIndicator) |
-| Languages | 2 (ES, EN) — UI hardcoded to Spanish |
-| Storage | localStorage only (4 keys) |
+| Tests | 437 (14 test files) |
+| Components | 8 (FlipCard, Quiz, QuizResults, LessonMenu, BadgeGallery, StarIndicator, SplashScreen, SoundIntro) |
+| Languages | 2 (ES, EN) — user-selectable via header toggle + splash screen |
+| Storage | localStorage only (5 keys) |
 | Deployment | GitHub Pages (static SPA) |
 | Backend | None |
 | PWA | No |
@@ -65,6 +65,22 @@
 - [x] Debug globals removed from production
 - [x] 399 tests across 12 files (schema, quizHelpers, lessonLoader, badges, FlipCard, Quiz, QuizResults, StarIndicator, BadgeGallery, LessonMenu, progressStorage, tts)
 
+### Sprint 1 — Security Hardening & Scoring
+- [x] **BL-016** `.envrc` added to `.gitignore`
+- [x] **BL-015** GitHub Actions pinned to SHA hashes
+- [x] **BL-014** CSP meta tag added (with `'unsafe-inline'` for styles)
+- [x] **BL-004** Milestones recalibrated to 200/640/1280
+- [x] **BL-005** `perfectBonus` → `masteryBonus` (20pts for >=80%, not 50pts for 100%)
+- [x] **BL-011** practice-master badge requires passing (not just attempts)
+
+### Sprint 2 — Language & UX
+- [x] **tsconfig fix** Added `allowJs: true` to fix CI typecheck step
+- [x] **BL-002** Language selection with header globe toggle (ES/EN), persisted to localStorage
+- [x] **BL-001** Splash screen shown on every visit as app entry point
+- [x] **BL-020 + BL-021** Sound intro screen with IPA, pronunciation description, listen button, and learning objectives
+- [x] View flow: Splash → Menu → SoundIntro → FlipCard → Quiz → Results → Menu
+- [x] 437 tests across 14 files (added splashScreen, soundIntro test files)
+
 ---
 
 ## Backlog
@@ -78,7 +94,7 @@
 ---
 
 ### BL-001: Splash Screen
-**Priority:** P2 | **Effort:** Small | **Status:** Not Started
+**Priority:** P2 | **Effort:** Small | **Status:** Complete
 
 Add a splash/welcome screen when the app first opens. Should display:
 - App logo/title
@@ -91,7 +107,7 @@ Add a splash/welcome screen when the app first opens. Should display:
 ---
 
 ### BL-002: Language Selection UI
-**Priority:** P1 | **Effort:** Medium | **Status:** Not Started
+**Priority:** P1 | **Effort:** Medium | **Status:** Complete
 
 Currently the UI language is hardcoded to `'es'` in main.js. All components already accept a `language` parameter and have TEXT objects with both ES/EN strings.
 
@@ -386,7 +402,7 @@ This targets the Analyze level on Bloom's Taxonomy and directly supports the rea
 ---
 
 ### BL-020: Pre-Lesson Sound Introduction
-**Priority:** P2 | **Effort:** Small | **Status:** Not Started
+**Priority:** P2 | **Effort:** Small | **Status:** Complete
 
 **From pedagogical review:** Before entering the FlipCard practice, show a brief introduction screen:
 - Sound combination and IPA
@@ -399,7 +415,7 @@ This provides context before the learner encounters individual words.
 ---
 
 ### BL-021: Learning Objectives Display
-**Priority:** P2 | **Effort:** Small | **Status:** Not Started
+**Priority:** P2 | **Effort:** Small | **Status:** Complete
 
 **From pedagogical review:** Display explicit learning objectives at the start of each lesson or lesson group. Example: "After this lesson, you will be able to recognize the 'aa' sound in 8 common Dutch words."
 
@@ -422,23 +438,41 @@ Add PWA manifest and service worker for:
 
 ---
 
+### BL-024: Localize Footer & View UI Strings
+**Priority:** P2 | **Effort:** Small | **Status:** Not Started
+
+**From Sprint 2 PR review:** Footer button labels ("Start Quiz", "Back to Practice", "How to use:") and subtitle strings remain hardcoded in English while all other surfaces now respect language preference.
+
+**Files:** `src/main.js` (`updateViewUI()`, `renderLayout()` footer section)
+
+---
+
+### BL-025: Enable `checkJs` in tsconfig
+**Priority:** P3 | **Effort:** Medium | **Status:** Not Started
+
+**From Sprint 2 PR review:** `allowJs: true` was added to fix CI but `checkJs: true` is not enabled, meaning JSDoc type annotations are not validated by tsc. Enabling it surfaces ~1076 errors that need incremental fixing.
+
+**Files:** `tsconfig.json`, various source and test files
+
+---
+
 ---
 
 ## Recommended Implementation Order
 
-### Sprint 1 — Quick Wins & Critical Fixes
-1. BL-016: Add `.envrc` to `.gitignore` (tiny)
-2. BL-015: Pin GitHub Actions to SHA hashes (small)
-3. BL-014: Content Security Policy (small)
-4. BL-005: Fix perfect bonus anxiety (small)
-5. BL-004: Recalibrate point milestones (small)
-6. BL-011: Practice-master badge criteria (small)
+### Sprint 1 — Quick Wins & Critical Fixes ✅
+1. ~~BL-016: Add `.envrc` to `.gitignore` (tiny)~~
+2. ~~BL-015: Pin GitHub Actions to SHA hashes (small)~~
+3. ~~BL-014: Content Security Policy (small)~~
+4. ~~BL-005: Fix perfect bonus anxiety (small)~~
+5. ~~BL-004: Recalibrate point milestones (small)~~
+6. ~~BL-011: Practice-master badge criteria (small)~~
 
-### Sprint 2 — Language & UX
-7. BL-002: Language selection UI (medium)
-8. BL-001: Splash screen (small)
-9. BL-020: Pre-lesson sound introduction (small)
-10. BL-021: Learning objectives display (small)
+### Sprint 2 — Language & UX ✅
+7. ~~BL-002: Language selection UI (medium)~~
+8. ~~BL-001: Splash screen (small)~~
+9. ~~BL-020: Pre-lesson sound introduction (small)~~
+10. ~~BL-021: Learning objectives display (small)~~
 
 ### Sprint 3 — Content Expansion
 11. BL-003: Phase 2 vowel pair lessons — first batch: oe, ie, ei, ij (large)
