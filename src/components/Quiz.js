@@ -33,6 +33,7 @@ const TEXT = {
     next: 'Siguiente',
     listenAgain: 'Escuchar de nuevo',
     autoPlaying: 'Escuchando...',
+    ttsUnavailable: 'Pronunciación no disponible en este navegador',
   },
   en: {
     title: 'Quiz',
@@ -46,6 +47,7 @@ const TEXT = {
     next: 'Next',
     listenAgain: 'Listen again',
     autoPlaying: 'Listening...',
+    ttsUnavailable: 'Pronunciation not available in this browser',
   },
 };
 
@@ -167,7 +169,9 @@ export function createQuiz(lesson, options = {}) {
             </svg>
             <span class="quiz-listen-text">${isSpeaking ? text.autoPlaying : text.listenAgain}</span>
           </button>
-          ` : ''}
+          ` : `
+          <div class="quiz-tts-warning" role="status">${text.ttsUnavailable}</div>
+          `}
 
           <!-- IPA Reference (Secondary) -->
           <div class="quiz-reference">

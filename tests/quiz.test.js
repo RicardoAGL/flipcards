@@ -416,6 +416,24 @@ describe('Quiz Component', () => {
   });
 
   describe('TTS Integration', () => {
+    it('should not show TTS warning when TTS is available', async () => {
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      const warning = container.querySelector('.quiz-tts-warning');
+      expect(warning).toBeNull();
+    });
+
+    it('should show TTS warning when TTS is unavailable', async () => {
+      isDutchVoiceAvailable.mockResolvedValueOnce(false);
+
+      const quiz = createQuiz(mockLesson, { questionCount: 3 });
+      await quiz.mount(container);
+
+      const warning = container.querySelector('.quiz-tts-warning');
+      expect(warning).not.toBeNull();
+    });
+
     it('should check TTS availability on mount', async () => {
       const quiz = createQuiz(mockLesson, { questionCount: 3 });
       await quiz.mount(container);
