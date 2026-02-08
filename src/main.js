@@ -22,9 +22,10 @@ import {
 import { showMilestoneCelebration, showBadgeCelebrations } from './components/StarIndicator.js';
 import { createBadgeGallery } from './components/BadgeGallery.js';
 import { createSplashScreen } from './components/SplashScreen.js';
+import { createSoundIntro } from './components/SoundIntro.js';
 
 // Application state
-let currentView = 'splash'; // 'splash' | 'menu' | 'flipcard' | 'quiz' | 'badges'
+let currentView = 'splash'; // 'splash' | 'menu' | 'sound-intro' | 'flipcard' | 'quiz' | 'badges'
 let currentLanguage = getLanguage();
 let selectedLessonId = null;
 let currentLesson = null;
@@ -34,6 +35,7 @@ let quiz = null;
 let lessonMenu = null;
 let badgeGallery = null;
 let splashScreen = null;
+let soundIntro = null;
 
 /**
  * Initialize the application
@@ -225,7 +227,42 @@ function handleSelectLesson(lessonId) {
   currentLesson = lessonsById[lessonId];
   flipCardData = getLessonForFlipCard(lessonId);
 
-  mountFlipCard();
+  mountSoundIntro();
+}
+
+/**
+ * Mount the Sound Intro component
+ */
+function mountSoundIntro() {
+  const container = document.getElementById('main-container');
+  if (!container) {
+    return;
+  }
+
+  destroyCurrentComponent();
+
+  const footer = document.getElementById('app-footer');
+  const backBtn = document.getElementById('back-btn');
+  const subtitle = document.getElementById('view-subtitle');
+  const headerPoints = document.getElementById('header-points');
+  const headerTitle = document.querySelector('.app-header-row h1');
+  const langToggle = document.getElementById('lang-toggle-btn');
+
+  if (footer) { footer.style.display = 'none'; }
+  if (backBtn) { backBtn.style.visibility = 'visible'; }
+  if (subtitle) { subtitle.textContent = ''; }
+  if (headerPoints) { headerPoints.style.display = 'flex'; }
+  if (headerTitle) { headerTitle.style.display = ''; }
+  if (langToggle) { langToggle.style.display = ''; }
+
+  soundIntro = createSoundIntro(currentLesson, container, {
+    language: currentLanguage,
+    onStartPractice: mountFlipCard,
+    onBack: mountLessonMenu,
+  });
+
+  currentView = 'sound-intro';
+  updatePointsDisplay();
 }
 
 /**
@@ -315,6 +352,10 @@ function destroyCurrentComponent() {
     splashScreen.destroy();
     splashScreen = null;
   }
+  if (soundIntro) {
+    soundIntro.destroy();
+    soundIntro = null;
+  }
 }
 
 /**
@@ -385,9 +426,10 @@ function handleLanguageChange(lang) {
 
   // Re-render the current view
   const viewMounters = {
-    menu: mountLessonMenu,
-    flipcard: mountFlipCard,
-    badges: mountBadgeGallery,
+    'menu': mountLessonMenu,
+    'sound-intro': mountSoundIntro,
+    'flipcard': mountFlipCard,
+    'badges': mountBadgeGallery,
   };
 
   const mounter = viewMounters[currentView];
