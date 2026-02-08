@@ -71,6 +71,7 @@ import {
   showMilestoneCelebration,
   showBadgeCelebration,
   showBadgeCelebrations,
+  showCombinedCelebration,
   createStarIndicator,
 } from '../src/components/StarIndicator.js';
 import {
@@ -381,6 +382,127 @@ describe('StarIndicator Component', () => {
       showBadgeCelebrations([], { onComplete });
 
       expect(onComplete).toHaveBeenCalled();
+    });
+  });
+
+  describe('showCombinedCelebration', () => {
+    beforeEach(() => {
+      // Reset getBadgeById to return valid badges
+      getBadgeById.mockImplementation((id) => {
+        const badges = {
+          'first-steps': {
+            id: 'first-steps',
+            nameES: 'Primeros Pasos',
+            nameEN: 'First Steps',
+            descriptionES: 'Completa tu primera lección',
+            descriptionEN: 'Complete your first lesson',
+            icon: '🎯',
+          },
+          'perfect-score': {
+            id: 'perfect-score',
+            nameES: 'Puntuación Perfecta',
+            nameEN: 'Perfect Score',
+            descriptionES: 'Quiz perfecto',
+            descriptionEN: 'Perfect quiz',
+            icon: '💯',
+          },
+        };
+        return badges[id] || null;
+      });
+    });
+
+    it('should call onDismiss immediately if no badges and no milestone', () => {
+      const onDismiss = vi.fn();
+
+      showCombinedCelebration({ badges: [], milestone: null, onDismiss });
+
+      expect(onDismiss).toHaveBeenCalled();
+      expect(document.body.querySelector('.combined-celebration')).toBeNull();
+    });
+
+    it('should delegate to showBadgeCelebration for single badge without milestone', () => {
+      showCombinedCelebration({ badges: ['first-steps'], milestone: null, language: 'es' });
+
+      const overlay = document.body.querySelector('.badge-celebration');
+      expect(overlay).not.toBeNull();
+      expect(overlay.textContent).toContain('Primeros Pasos');
+      // Should NOT have combined class
+      expect(document.body.querySelector('.combined-celebration')).toBeNull();
+    });
+
+    it('should delegate to showMilestoneCelebration for milestone without badges', () => {
+      const milestone = { level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' };
+
+      showCombinedCelebration({ badges: [], milestone, language: 'es' });
+
+      const overlay = document.body.querySelector('.milestone-celebration');
+      expect(overlay).not.toBeNull();
+      expect(overlay.textContent).toContain('Bronce');
+      expect(document.body.querySelector('.combined-celebration')).toBeNull();
+    });
+
+    it('should show combined modal for multiple badges', () => {
+      showCombinedCelebration({
+        badges: ['first-steps', 'perfect-score'],
+        milestone: null,
+        language: 'es',
+      });
+
+      const overlay = document.body.querySelector('.combined-celebration');
+      expect(overlay).not.toBeNull();
+      expect(overlay.textContent).toContain('Insignias Ganadas');
+      expect(overlay.textContent).toContain('Primeros Pasos');
+      expect(overlay.textContent).toContain('Puntuación Perfecta');
+    });
+
+    it('should show combined modal for badge + milestone', () => {
+      const milestone = { level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' };
+
+      showCombinedCelebration({
+        badges: ['first-steps'],
+        milestone,
+        language: 'es',
+      });
+
+      const overlay = document.body.querySelector('.combined-celebration');
+      expect(overlay).not.toBeNull();
+      expect(overlay.textContent).toContain('Insignias Ganadas');
+      expect(overlay.textContent).toContain('Primeros Pasos');
+      expect(overlay.textContent).toContain('Hito Alcanzado');
+      expect(overlay.textContent).toContain('Bronce');
+    });
+
+    it('should dismiss on button click', () => {
+      const onDismiss = vi.fn();
+
+      showCombinedCelebration({
+        badges: ['first-steps', 'perfect-score'],
+        milestone: null,
+        language: 'es',
+        onDismiss,
+      });
+
+      const overlay = document.body.querySelector('.combined-celebration');
+      expect(overlay).not.toBeNull();
+
+      overlay.querySelector('[data-dismiss]').click();
+
+      expect(document.body.querySelector('.combined-celebration')).toBeNull();
+      expect(onDismiss).toHaveBeenCalled();
+    });
+
+    it('should use correct language for EN', () => {
+      showCombinedCelebration({
+        badges: ['first-steps', 'perfect-score'],
+        milestone: null,
+        language: 'en',
+      });
+
+      const overlay = document.body.querySelector('.combined-celebration');
+      expect(overlay).not.toBeNull();
+      expect(overlay.textContent).toContain('Badges Earned');
+      expect(overlay.textContent).toContain('First Steps');
+      expect(overlay.textContent).toContain('Perfect Score');
     });
   });
 });

@@ -25,10 +25,29 @@ import {
 } from './lib/progressStorage.js';
 import { getLessonsDueForReview, selectReviewLessons } from './lib/reviewScheduler.js';
 import { generateReviewQuiz } from './lib/quizHelpers.js';
-import { showMilestoneCelebration, showBadgeCelebrations } from './components/StarIndicator.js';
+import { showCombinedCelebration } from './components/StarIndicator.js';
 import { createBadgeGallery } from './components/BadgeGallery.js';
 import { createSplashScreen } from './components/SplashScreen.js';
 import { createSoundIntro } from './components/SoundIntro.js';
+
+const TEXT = {
+  es: {
+    startQuiz: 'Iniciar Quiz',
+    backToPractice: 'Volver a Practicar',
+    howToUse: '<strong>Cómo usar:</strong> Toca las tarjetas laterales para recorrer las palabras. Toca la tarjeta central para ver la guía de pronunciación.',
+    practiceSound: (sound) => `Practica el sonido "${sound}"`,
+    testKnowledge: 'Pon a prueba tu conocimiento',
+    quizInstructions: '<strong>Quiz:</strong> Selecciona la palabra que contiene el sonido mostrado. ¡Obtén 80% para aprobar!',
+  },
+  en: {
+    startQuiz: 'Start Quiz',
+    backToPractice: 'Back to Practice',
+    howToUse: '<strong>How to use:</strong> Tap the side cards to cycle through words. Tap the center card to see the pronunciation guide.',
+    practiceSound: (sound) => `Practice the "${sound}" sound`,
+    testKnowledge: 'Test your knowledge',
+    quizInstructions: '<strong>Quiz:</strong> Select the word that contains the sound shown. Get 80% correct to pass!',
+  },
+};
 
 // Application state
 let currentView = 'splash'; // 'splash' | 'menu' | 'sound-intro' | 'flipcard' | 'quiz' | 'badges'
@@ -109,14 +128,13 @@ function renderLayout(app) {
             class="app-btn app-btn--primary"
             type="button"
             id="toggle-view-btn"
-            aria-label="Start Quiz"
+            aria-label="${(TEXT[currentLanguage] || TEXT.es).startQuiz}"
           >
-            Start Quiz
+            ${(TEXT[currentLanguage] || TEXT.es).startQuiz}
           </button>
         </div>
         <p class="instructions" id="instructions">
-          <strong>How to use:</strong> Tap the side cards to cycle through words.
-          Tap the center card to see the pronunciation guide.
+          ${(TEXT[currentLanguage] || TEXT.es).howToUse}
         </p>
       </footer>
     </main>
@@ -564,32 +582,18 @@ function handleQuizComplete(result) {
     }
   }
 
-  // Chain celebrations: badges → milestone → menu
+  // Show combined celebration modal, then return to menu
   const returnToMenu = () => {
     mountLessonMenu();
   };
 
-  const showMilestoneOrReturn = () => {
-    if (newMilestone) {
-      showMilestoneCelebration(newMilestone, {
-        language: currentLanguage,
-        onDismiss: returnToMenu,
-      });
-    } else {
-      returnToMenu();
-    }
-  };
-
-  // Show badge celebrations first, then milestone, then return
   setTimeout(() => {
-    if (newBadges.length > 0) {
-      showBadgeCelebrations(newBadges, {
-        language: currentLanguage,
-        onComplete: showMilestoneOrReturn,
-      });
-    } else {
-      showMilestoneOrReturn();
-    }
+    showCombinedCelebration({
+      badges: newBadges,
+      milestone: newMilestone,
+      language: currentLanguage,
+      onDismiss: returnToMenu,
+    });
   }, 600);
 }
 
@@ -607,34 +611,29 @@ function updateViewUI() {
   const subtitle = document.getElementById('view-subtitle');
   const toggleBtn = document.getElementById('toggle-view-btn');
   const instructions = document.getElementById('instructions');
+  const text = TEXT[currentLanguage] || TEXT.es;
 
   if (currentView === 'flipcard' && currentLesson) {
     if (subtitle) {
-      subtitle.textContent = `Practice the "${currentLesson.sound.combination}" sound`;
+      subtitle.textContent = text.practiceSound(currentLesson.sound.combination);
     }
     if (toggleBtn) {
-      toggleBtn.textContent = 'Start Quiz';
-      toggleBtn.setAttribute('aria-label', 'Start Quiz');
+      toggleBtn.textContent = text.startQuiz;
+      toggleBtn.setAttribute('aria-label', text.startQuiz);
     }
     if (instructions) {
-      instructions.innerHTML = `
-        <strong>How to use:</strong> Tap the side cards to cycle through words.
-        Tap the center card to see the pronunciation guide.
-      `;
+      instructions.innerHTML = text.howToUse;
     }
   } else if (currentView === 'quiz') {
     if (subtitle) {
-      subtitle.textContent = 'Test your knowledge';
+      subtitle.textContent = text.testKnowledge;
     }
     if (toggleBtn) {
-      toggleBtn.textContent = 'Back to Practice';
-      toggleBtn.setAttribute('aria-label', 'Back to Practice');
+      toggleBtn.textContent = text.backToPractice;
+      toggleBtn.setAttribute('aria-label', text.backToPractice);
     }
     if (instructions) {
-      instructions.innerHTML = `
-        <strong>Quiz:</strong> Select the word that contains the sound shown.
-        Get 80% correct to pass!
-      `;
+      instructions.innerHTML = text.quizInstructions;
     }
   }
 }

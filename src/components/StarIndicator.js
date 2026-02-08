@@ -27,6 +27,9 @@ const TEXT = {
     allMilestonesComplete: '¡Todos los hitos completados!',
     newBadge: '¡Nueva Insignia!',
     badgeEarned: 'Has ganado',
+    celebrations: '¡Celebraciones!',
+    badgesEarned: 'Insignias Ganadas',
+    milestoneReached: 'Hito Alcanzado',
   },
   en: {
     congratulations: 'Congratulations!',
@@ -39,6 +42,9 @@ const TEXT = {
     allMilestonesComplete: 'All milestones complete!',
     newBadge: 'New Badge!',
     badgeEarned: 'You earned',
+    celebrations: 'Celebrations!',
+    badgesEarned: 'Badges Earned',
+    milestoneReached: 'Milestone Reached',
   },
 };
 
@@ -308,6 +314,105 @@ export function showBadgeCelebrations(badgeIds, options = {}) {
   };
 
   showNext();
+}
+
+/**
+ * Show a combined celebration modal for multiple badges and/or milestone
+ * @param {Object} options - Configuration options
+ * @param {string[]} [options.badges=[]] - Array of badge IDs to celebrate
+ * @param {Object|null} [options.milestone=null] - Milestone achieved
+ * @param {string} [options.language='es'] - Display language
+ * @param {Function} [options.onDismiss] - Callback when dismissed
+ */
+export function showCombinedCelebration({ badges = [], milestone = null, language = 'es', onDismiss } = {}) {
+  const hasBadges = badges.length > 0;
+  const hasMilestone = milestone !== null;
+
+  // No celebrations needed
+  if (!hasBadges && !hasMilestone) {
+    if (onDismiss) { onDismiss(); }
+    return;
+  }
+
+  // Single badge, no milestone — delegate
+  if (badges.length === 1 && !hasMilestone) {
+    showBadgeCelebration(badges[0], { language, onDismiss });
+    return;
+  }
+
+  // No badges, milestone only — delegate
+  if (!hasBadges && hasMilestone) {
+    showMilestoneCelebration(milestone, { language, onDismiss });
+    return;
+  }
+
+  // Combined modal: 2+ badges, or 1+ badge AND milestone
+  const text = TEXT[language] || TEXT.es;
+
+  const badgeItems = badges.map((id) => {
+    const badge = getBadgeById(id);
+    if (!badge) { return ''; }
+    const name = language === 'es' ? badge.nameES : badge.nameEN;
+    return `
+      <div class="combined-celebration-badge">
+        <span class="combined-celebration-badge-icon">${badge.icon}</span>
+        <span class="combined-celebration-badge-name">${name}</span>
+      </div>
+    `;
+  }).join('');
+
+  let milestoneSection = '';
+  if (hasMilestone) {
+    const milestoneName = language === 'es' ? milestone.nameES : milestone.nameEN;
+    milestoneSection = `
+      <div class="combined-celebration-section">
+        <h3 class="combined-celebration-section-title">${text.milestoneReached}</h3>
+        <svg class="combined-celebration-star" viewBox="0 0 24 24" fill="${milestone.color}">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+        </svg>
+        <span>${milestoneName} — ${milestone.points} pts</span>
+      </div>
+    `;
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'milestone-celebration combined-celebration';
+  overlay.setAttribute('role', 'dialog');
+  overlay.setAttribute('aria-modal', 'true');
+  overlay.setAttribute('aria-label', text.celebrations);
+
+  overlay.innerHTML = `
+    <div class="combined-celebration-content">
+      <h2 class="milestone-celebration-title">${text.congratulations}</h2>
+      <div class="combined-celebration-section">
+        <h3 class="combined-celebration-section-title">${text.badgesEarned}</h3>
+        <div class="combined-celebration-badges">${badgeItems}</div>
+      </div>
+      ${milestoneSection}
+      <button class="milestone-celebration-btn" type="button" data-dismiss>
+        ${text.continue}
+      </button>
+    </div>
+  `;
+
+  const handleKeydown = (e) => {
+    if (e.key === 'Escape') { dismiss(); }
+  };
+
+  const dismiss = () => {
+    document.removeEventListener('keydown', handleKeydown);
+    overlay.remove();
+    if (onDismiss) { onDismiss(); }
+  };
+
+  overlay.querySelector('[data-dismiss]').addEventListener('click', dismiss);
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) { dismiss(); }
+  });
+  document.addEventListener('keydown', handleKeydown);
+
+  document.body.appendChild(overlay);
+  overlay.querySelector('[data-dismiss]').focus();
 }
 
 /**
