@@ -384,6 +384,12 @@ async function mountQuiz() {
   // Destroy existing components
   destroyCurrentComponent();
 
+  // Hide language toggle and help button during quiz
+  const langToggle = document.getElementById('lang-toggle-btn');
+  const helpBtn = document.getElementById('help-btn');
+  if (langToggle) { langToggle.style.display = 'none'; }
+  if (helpBtn) { helpBtn.style.display = 'none'; }
+
   // Create and mount quiz with same lesson as FlipCard
   quiz = createQuiz(/** @type {import('./data/schema.js').Lesson} */ (currentLesson), {
     questionCount: 5,
@@ -503,6 +509,12 @@ async function handleStartReview() {
   }
 
   destroyCurrentComponent();
+
+  // Hide language toggle and help button during review quiz
+  const langToggle = document.getElementById('lang-toggle-btn');
+  const helpBtn = document.getElementById('help-btn');
+  if (langToggle) { langToggle.style.display = 'none'; }
+  if (helpBtn) { helpBtn.style.display = 'none'; }
 
   // Synthetic review scoring config
   const reviewLesson = {
