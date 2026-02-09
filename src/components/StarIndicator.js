@@ -187,8 +187,15 @@ export function showMilestoneCelebration(milestone, options = {}) {
     </div>
   `;
 
+  // Handle escape key
+  /** @type {(e: KeyboardEvent) => void} */
+  const handleKeydown = (e) => {
+    if (e.key === 'Escape') { dismiss(); }
+  };
+
   // Dismiss handler
   const dismiss = () => {
+    document.removeEventListener('keydown', handleKeydown);
     overlay.remove();
     if (onDismiss) {
       onDismiss();
@@ -203,14 +210,6 @@ export function showMilestoneCelebration(milestone, options = {}) {
     }
   });
 
-  // Handle escape key
-  /** @type {(e: KeyboardEvent) => void} */
-  const handleKeydown = (e) => {
-    if (e.key === 'Escape') {
-      dismiss();
-      document.removeEventListener('keydown', handleKeydown);
-    }
-  };
   document.addEventListener('keydown', handleKeydown);
 
   // Add to DOM
@@ -259,8 +258,15 @@ export function showBadgeCelebration(badgeId, options = {}) {
     </div>
   `;
 
+  // Handle escape key
+  /** @type {(e: KeyboardEvent) => void} */
+  const handleKeydown = (e) => {
+    if (e.key === 'Escape') { dismiss(); }
+  };
+
   // Dismiss handler
   const dismiss = () => {
+    document.removeEventListener('keydown', handleKeydown);
     overlay.remove();
     if (onDismiss) {
       onDismiss();
@@ -275,14 +281,6 @@ export function showBadgeCelebration(badgeId, options = {}) {
     }
   });
 
-  // Handle escape key
-  /** @type {(e: KeyboardEvent) => void} */
-  const handleKeydown = (e) => {
-    if (e.key === 'Escape') {
-      dismiss();
-      document.removeEventListener('keydown', handleKeydown);
-    }
-  };
   document.addEventListener('keydown', handleKeydown);
 
   // Add to DOM

@@ -157,6 +157,25 @@ describe('StarIndicator Component', () => {
     });
   });
 
+  describe('showMilestoneCelebration - listener cleanup', () => {
+    it('should remove keydown listener on button click dismiss', () => {
+      const spy = vi.spyOn(document, 'removeEventListener');
+      showMilestoneCelebration(/** @type {any} */ ({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' }), { language: 'es' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.milestone-celebration'));
+      /** @type {HTMLButtonElement} */ (overlay.querySelector('[data-dismiss]')).click();
+      expect(spy).toHaveBeenCalledWith('keydown', expect.any(Function));
+      spy.mockRestore();
+    });
+    it('should remove keydown listener on backdrop click dismiss', () => {
+      const spy = vi.spyOn(document, 'removeEventListener');
+      showMilestoneCelebration(/** @type {any} */ ({ level: 1, points: 200, color: '#CD7F32', nameES: 'Bronce', nameEN: 'Bronze' }), { language: 'es' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.milestone-celebration'));
+      overlay.click();
+      expect(spy).toHaveBeenCalledWith('keydown', expect.any(Function));
+      spy.mockRestore();
+    });
+  });
+
   describe('showBadgeCelebration', () => {
     it('should show badge celebration overlay', () => {
       showBadgeCelebration('first-steps', { language: 'es' });
@@ -164,6 +183,22 @@ describe('StarIndicator Component', () => {
       expect(overlay).not.toBeNull();
       const badgeName = /** @type {HTMLElement} */ (overlay.querySelector('.badge-celebration-name'));
       expect(badgeName.textContent).toContain('Primeros Pasos');
+    });
+    it('should remove keydown listener on button click dismiss', () => {
+      const spy = vi.spyOn(document, 'removeEventListener');
+      showBadgeCelebration('first-steps', { language: 'es' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.badge-celebration'));
+      /** @type {HTMLButtonElement} */ (overlay.querySelector('[data-dismiss]')).click();
+      expect(spy).toHaveBeenCalledWith('keydown', expect.any(Function));
+      spy.mockRestore();
+    });
+    it('should remove keydown listener on backdrop click dismiss', () => {
+      const spy = vi.spyOn(document, 'removeEventListener');
+      showBadgeCelebration('first-steps', { language: 'es' });
+      const overlay = /** @type {HTMLElement} */ (document.body.querySelector('.badge-celebration'));
+      overlay.click();
+      expect(spy).toHaveBeenCalledWith('keydown', expect.any(Function));
+      spy.mockRestore();
     });
     it('should call onDismiss immediately if badge not found', () => {
       getBadgeByIdMock.mockReturnValue(null);

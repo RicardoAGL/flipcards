@@ -107,7 +107,7 @@ export function createBadgeGallery(container, options = {}) {
       .map((cat) => {
         const badges = getBadgesByCategory(cat);
         const cardsHTML = badges
-          .map((badge) => renderBadgeCard(badge, earnedMap, text, language))
+          .map((badge) => renderBadgeCard(badge, earnedMap, language))
           .join('');
 
         return `
@@ -137,10 +137,9 @@ export function createBadgeGallery(container, options = {}) {
    * Render a single badge card
    * @param {typeof BADGES[number]} badge
    * @param {Map<string, any>} earnedMap
-   * @param {typeof TEXT['es']} _text
    * @param {string} lang
    */
-  function renderBadgeCard(badge, earnedMap, _text, lang) {
+  function renderBadgeCard(badge, earnedMap, lang) {
     const earned = earnedMap.get(badge.id);
     const stateClass = earned ? 'badge-card--earned' : 'badge-card--locked';
     const name = lang === 'en' ? badge.nameEN : badge.nameES;
